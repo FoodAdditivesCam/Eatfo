@@ -259,7 +259,14 @@ public class OCRMainActivity extends AppCompatActivity {
             try {
                 Log.d(TAG, "created Cloud Vision request object, sending request");
                 BatchAnnotateImagesResponse response = mRequest.execute();
-                return convertResponseToString(response);
+                String res = "OCR 출력 결과\n\n";
+                String[] resArr = splitString(convertResponseToString(response));
+
+                for(int i=0; i<resArr.length;i++){
+                    res+=resArr[i];
+                    res+=" ❤ ";
+                }
+                return res;
 
             } catch (GoogleJsonResponseException e) {
                 Log.d(TAG, "failed to make API request because " + e.getContent());
@@ -267,6 +274,7 @@ public class OCRMainActivity extends AppCompatActivity {
                 Log.d(TAG, "failed to make API request because of other IOException " +
                         e.getMessage());
             }
+
             return "Cloud Vision API request failed. Check logs for details.";
         }
 
@@ -314,7 +322,7 @@ public class OCRMainActivity extends AppCompatActivity {
     }
 
     private static String convertResponseToString(BatchAnnotateImagesResponse response) {
-        String message = "OCR 출력 결과\n\n";
+        String message = "";
 
         List<EntityAnnotation> labels = response.getResponses().get(0).getTextAnnotations();
         if (labels != null) {
@@ -323,5 +331,14 @@ public class OCRMainActivity extends AppCompatActivity {
             message += "nothing";
         }
         return message; //xml에 메세지 띄울 data
+    }
+
+    private static String[] splitString(String txt){
+        List<String> resList= SplitTest.splitText(txt);
+        String[] res = new String[resList.size()];
+        for(int i = 0; i<resList.size(); i++){
+            res[i] = resList.get(i);
+        }
+        return res;
     }
 }
