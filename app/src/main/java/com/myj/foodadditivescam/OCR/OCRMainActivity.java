@@ -85,76 +85,82 @@ public class OCRMainActivity extends AppCompatActivity {
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(com.myj.foodadditivescam.OCR.OCRMainActivity.this);
-            builder
-                    .setMessage(R.string.dialog_select_prompt)
-                    .setPositiveButton(R.string.dialog_select_gallery, (dialog, which) -> startGalleryChooser())
-                    .setNegativeButton(R.string.dialog_select_camera, (dialog, which) -> startCamera());
-            builder.create().show();
+            Intent intent = new Intent(this, ImageLoadActivity.class);
+            startActivity(intent);
+            finish();
         });
 
         mImageDetails = findViewById(R.id.image_details);
         mMainImage = findViewById(R.id.main_image);
+
+        Uri imageUri = (Uri)getIntent().getParcelableExtra("imageUri");
+
+        Log.d("minjeong","uri:  "+imageUri);
+        uploadImage(imageUri);
     }
 
-    public void startGalleryChooser() {
-        if (PermissionUtils.requestPermission(this, GALLERY_PERMISSIONS_REQUEST, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-            Intent intent = new Intent();
-            intent.setType("image/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent, "Select a photo"),
-                    GALLERY_IMAGE_REQUEST);
-        }
-    }
-
-    public void startCamera() {
-        if (PermissionUtils.requestPermission(
-                this,
-                CAMERA_PERMISSIONS_REQUEST,
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.CAMERA)) {
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            Uri photoUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", getCameraFile());
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            startActivityForResult(intent, CAMERA_IMAGE_REQUEST);
-        }
-    }
-
-    public File getCameraFile() {
-        File dir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        return new File(dir, FILE_NAME);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == GALLERY_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
-            uploadImage(data.getData());
-        } else if (requestCode == CAMERA_IMAGE_REQUEST && resultCode == RESULT_OK) {
-            Uri photoUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", getCameraFile());
-            uploadImage(photoUri);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(
-            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case CAMERA_PERMISSIONS_REQUEST:
-                if (PermissionUtils.permissionGranted(requestCode, CAMERA_PERMISSIONS_REQUEST, grantResults)) {
-                    startCamera();
-                }
-                break;
-            case GALLERY_PERMISSIONS_REQUEST:
-                if (PermissionUtils.permissionGranted(requestCode, GALLERY_PERMISSIONS_REQUEST, grantResults)) {
-                    startGalleryChooser();
-                }
-                break;
-        }
-    }
+//    public void startGalleryChooser() {
+//        if (PermissionUtils.requestPermission(this, GALLERY_PERMISSIONS_REQUEST, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+//            Intent intent = new Intent();
+//            intent.setType("image/*");
+//            intent.setAction(Intent.ACTION_GET_CONTENT);
+//            startActivityForResult(Intent.createChooser(intent, "Select a photo"),
+//                    GALLERY_IMAGE_REQUEST);
+//        }
+//    }
+//
+//    public void startCamera() {
+//        if (PermissionUtils.requestPermission(
+//                this,
+//                CAMERA_PERMISSIONS_REQUEST,
+//                Manifest.permission.READ_EXTERNAL_STORAGE,
+//                Manifest.permission.CAMERA)) {
+//            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//            Uri photoUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", getCameraFile());
+//            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+//            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//            startActivityForResult(intent, CAMERA_IMAGE_REQUEST);
+//        }
+//    }
+//
+//    public File getCameraFile() {
+//        File dir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+//        return new File(dir, FILE_NAME);
+//    }
+//
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        Uri uri = null;
+//        if (requestCode == GALLERY_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
+//            uri = data.getData();
+//        } else if (requestCode == CAMERA_IMAGE_REQUEST && resultCode == RESULT_OK) {
+//            Uri photoUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", getCameraFile());
+//            uri = photoUri;
+//        }
+//        Log.d("minjeong","ocrmainacititydml uri:  "+uri);
+//        Intent intent = new Intent(this, ImageLoadActivity.class);
+//        intent.putExtra("imageUri", uri);
+//        startActivity(intent);
+//    }
+//
+//    @Override
+//    public void onRequestPermissionsResult(
+//            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        switch (requestCode) {
+//            case CAMERA_PERMISSIONS_REQUEST:
+//                if (PermissionUtils.permissionGranted(requestCode, CAMERA_PERMISSIONS_REQUEST, grantResults)) {
+//                    startCamera();
+//                }
+//                break;
+//            case GALLERY_PERMISSIONS_REQUEST:
+//                if (PermissionUtils.permissionGranted(requestCode, GALLERY_PERMISSIONS_REQUEST, grantResults)) {
+//                    startGalleryChooser();
+//                }
+//                break;
+//        }
+//    }
 
     public void uploadImage(Uri uri) {
         if (uri != null) {
