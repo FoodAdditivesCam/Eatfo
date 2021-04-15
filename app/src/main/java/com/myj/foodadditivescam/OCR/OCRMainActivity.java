@@ -327,6 +327,7 @@ public class OCRMainActivity extends AppCompatActivity {
         return Bitmap.createScaledBitmap(bitmap, resizedWidth, resizedHeight, false);
     }
 
+    // 텍스트 결과값 리턴 받아 출력
     private static String convertResponseToString(BatchAnnotateImagesResponse response) {
         String message = "";
 
@@ -336,7 +337,7 @@ public class OCRMainActivity extends AppCompatActivity {
         } else {
             message += "nothing";
         }
-        return message; //xml에 메세지 띄울 data
+        return message + "ㅎ"; //xml에 메세지 띄울 data
     }
 
     private static String[] splitString(String txt){
