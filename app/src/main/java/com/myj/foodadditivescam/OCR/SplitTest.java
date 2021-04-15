@@ -7,8 +7,8 @@ class SplitTest {
 
     public static List<String> splitText(String text) {
         //읽어오는 과정에서 생긴 엔터 삭제
-        text = text.replace("\r\n", " ");
-        text = text.replace("\n", " ");
+        text = text.replace("\r\n", "");
+        text = text.replace("\n", "");
 
 //        //괄호 안 데이터 삭제
 //		while(true) {
