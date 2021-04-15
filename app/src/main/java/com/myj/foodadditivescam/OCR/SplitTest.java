@@ -7,8 +7,8 @@ class SplitTest {
 
     public static List<String> splitText(String text) {
         //읽어오는 과정에서 생긴 엔터 삭제
-        text = text.replace("\r\n", " ");
-        text = text.replace("\n", " ");
+        text = text.replace("\r\n", "");
+        text = text.replace("\n", "");
 
 //        //괄호 안 데이터 삭제
 //		while(true) {
@@ -35,18 +35,18 @@ class SplitTest {
             }
         }
 
-        int index=0;
-        //원재료명이라는 텍스트를 찾아서
-        for(int i=0; i<txtLst2.size(); i++) {
-            if(txtLst2.get(i).contains("원재료")) {
-                index = i;
-                break;
-            }
-        }
-        //그 이전의 데이터 삭제
-        for(int i=0; i<index; i++) {
-            txtLst2.remove(0);
-        }
+//        int index=0;
+//        //원재료명이라는 텍스트를 찾아서
+//        for(int i=0; i<txtLst2.size(); i++) {
+//            if(txtLst2.get(i).contains("원재료")) {
+//                index = i;
+//                break;
+//            }
+//        }
+//        //그 이전의 데이터 삭제
+//        for(int i=0; i<index; i++) {
+//            txtLst2.remove(0);
+//        }
 
         for(int i = 0; i<txtLst2.size();i++) {
             //비어있는 데이터 삭제
