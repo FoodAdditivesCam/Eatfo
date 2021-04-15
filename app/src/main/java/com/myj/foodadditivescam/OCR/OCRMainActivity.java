@@ -58,6 +58,8 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.myj.foodadditivescam.search.SearchAPI;
+
 
 public class OCRMainActivity extends AppCompatActivity {
     private static final String CLOUD_VISION_API_KEY = "AIzaSyCf3oiA6C1LQze8QTQyNvnFnQLUTm_YA9I";
@@ -272,6 +274,8 @@ public class OCRMainActivity extends AppCompatActivity {
                     res+=resArr[i];
                     res+="\n";
                 }
+
+
                 return res;
 
             } catch (GoogleJsonResponseException e) {
@@ -284,6 +288,7 @@ public class OCRMainActivity extends AppCompatActivity {
             return "Cloud Vision API request failed. Check logs for details.";
         }
 
+        // doInBackGround()가 정상적으로 완료된 경우 호출되는 함수
         protected void onPostExecute(String result) {
             com.myj.foodadditivescam.OCR.OCRMainActivity activity = mActivityWeakReference.get();
             if (activity != null && !activity.isFinishing()) {
@@ -337,7 +342,7 @@ public class OCRMainActivity extends AppCompatActivity {
         } else {
             message += "nothing";
         }
-        return message + "ㅎ"; //xml에 메세지 띄울 data
+        return message; //xml에 메세지 띄울 data
     }
 
     private static String[] splitString(String txt){
@@ -347,5 +352,10 @@ public class OCRMainActivity extends AppCompatActivity {
             res[i] = resList.get(i);
         }
         return res;
+    }
+
+    private static String resultAPI(String txt){
+        // List<String> resList = SearchAPI.search();
+        return "s";
     }
 }

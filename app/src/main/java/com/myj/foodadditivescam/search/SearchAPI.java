@@ -10,12 +10,12 @@ import java.util.Map;
 
 // 네이버 검색 API 예제 - 백과사전 검색
 public class SearchAPI {
-    public static void main(String[] args) {
+    public static String search() {
         String clientId = "tVlc9pBssrbsVHxi77Ph"; //애플리케이션 클라이언트 아이디값"
         String clientSecret = "Ep1q50Vrmm"; //애플리케이션 클라이언트 시크릿값"
 
-
         String text = null;
+
         try {
             text = URLEncoder.encode("그린팩토리", "UTF-8");
         } catch (UnsupportedEncodingException e) {
@@ -34,6 +34,8 @@ public class SearchAPI {
 
 
         System.out.println(responseBody);
+
+        return responseBody;
     }
 
 
