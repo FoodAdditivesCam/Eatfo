@@ -270,7 +270,7 @@ public class OCRMainActivity extends AppCompatActivity {
 
                 for(int i=0; i<resArr.length;i++){
                     res+=resArr[i];
-                    res+=" ❤ ";
+                    res+="\n";
                 }
                 return res;
 
