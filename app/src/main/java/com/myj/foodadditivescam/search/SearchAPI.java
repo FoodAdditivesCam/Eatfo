@@ -1,5 +1,6 @@
 package com.myj.foodadditivescam.search;
 
+// 네이버 검색 API 예제 - 백과사전 검색
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -8,23 +9,23 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
-// 네이버 검색 API 예제 - 백과사전 검색
+
 public class SearchAPI {
-    public static String search() {
+    public static String search(String word) {
         String clientId = "tVlc9pBssrbsVHxi77Ph"; //애플리케이션 클라이언트 아이디값"
         String clientSecret = "Ep1q50Vrmm"; //애플리케이션 클라이언트 시크릿값"
 
-        String text = null;
 
+        String text = word;
         try {
-            text = URLEncoder.encode("그린팩토리", "UTF-8");
+            text = URLEncoder.encode(text, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException("검색어 인코딩 실패",e);
         }
 
 
-        // String apiURL = "https://openapi.naver.com/v1/search/blog?query=" + text;    // json 결과
-        String apiURL = "https://openapi.naver.com/v1/search/encyc.xml?query="+ text; // xml 결과
+        String apiURL = "https://openapi.naver.com/v1/search/encyc.json?query=" + text;    // json 결과
+        // String apiURL = "https://openapi.naver.com/v1/search/encyc.xml?query="+ text; // xml 결과
 
 
         Map<String, String> requestHeaders = new HashMap<>();
@@ -34,7 +35,6 @@ public class SearchAPI {
 
 
         System.out.println(responseBody);
-
         return responseBody;
     }
 

@@ -49,16 +49,33 @@ import com.google.api.services.vision.v1.model.BatchAnnotateImagesResponse;
 import com.google.api.services.vision.v1.model.EntityAnnotation;
 import com.google.api.services.vision.v1.model.Feature;
 import com.google.api.services.vision.v1.model.Image;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.myj.foodadditivescam.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.StringReader;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.myj.foodadditivescam.search.SearchAPI;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 
 public class OCRMainActivity extends AppCompatActivity {
@@ -275,8 +292,13 @@ public class OCRMainActivity extends AppCompatActivity {
                     res+="\n";
                 }
 
+                // 성분 개수 만큼 백과사전에 검색
+                String result = null;
+                for(int i=0; i<resArr.length;i++){
+                    result += resultAPI(resArr[i]) + "\n";
+                }
 
-                return res;
+                return result;
 
             } catch (GoogleJsonResponseException e) {
                 Log.d(TAG, "failed to make API request because " + e.getContent());
@@ -284,7 +306,6 @@ public class OCRMainActivity extends AppCompatActivity {
                 Log.d(TAG, "failed to make API request because of other IOException " +
                         e.getMessage());
             }
-
             return "Cloud Vision API request failed. Check logs for details.";
         }
 
@@ -345,6 +366,7 @@ public class OCRMainActivity extends AppCompatActivity {
         return message; //xml에 메세지 띄울 data
     }
 
+
     private static String[] splitString(String txt){
         List<String> resList= SplitTest.splitText(txt);
         String[] res = new String[resList.size()];
@@ -354,8 +376,37 @@ public class OCRMainActivity extends AppCompatActivity {
         return res;
     }
 
-    private static String resultAPI(String txt){
-        // List<String> resList = SearchAPI.search();
-        return "s";
+    // 네이버 백과사전 API 검색 결과를 JSON으로 받아와 파싱해주는 함수
+    private static String resultAPI(String word) {
+        String jsonResult = SearchAPI.search(word);
+        String result = null;
+
+        try {
+            JSONObject jsonObject = new JSONObject(jsonResult);
+            String items = jsonObject.getString("items");
+            JSONArray jsonArray = new JSONArray(items);
+
+            result += word + "검색 결과\n";
+
+            for (int i=0; i < jsonArray.length(); i++) {
+                JSONObject subJsonObject = jsonArray.getJSONObject(i);
+                String title = subJsonObject.getString("title");
+                String link  = subJsonObject.getString("link");
+                String description = subJsonObject.getString("description");
+                if ("".equals(title)) {
+                    continue;
+                }
+
+                result += ("title : " + title + "\n" + "link : " + link + "\n"
+                        + "description : " + description + "\n\n");
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
+
+
 }
