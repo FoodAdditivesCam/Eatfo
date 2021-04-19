@@ -16,18 +16,20 @@
 
 package com.myj.foodadditivescam.OCR;
 
-import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Point;
+import android.graphics.PointF;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
-import androidx.annotation.NonNull;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.core.content.FileProvider;
-import androidx.appcompat.app.AlertDialog;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
@@ -46,19 +48,18 @@ import com.google.api.services.vision.v1.VisionRequestInitializer;
 import com.google.api.services.vision.v1.model.AnnotateImageRequest;
 import com.google.api.services.vision.v1.model.BatchAnnotateImagesRequest;
 import com.google.api.services.vision.v1.model.BatchAnnotateImagesResponse;
+import com.google.api.services.vision.v1.model.Block;
 import com.google.api.services.vision.v1.model.EntityAnnotation;
 import com.google.api.services.vision.v1.model.Feature;
 import com.google.api.services.vision.v1.model.Image;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.api.services.vision.v1.model.Page;
+import com.google.api.services.vision.v1.model.Paragraph;
+import com.google.api.services.vision.v1.model.TextAnnotation;
+import com.google.api.services.vision.v1.model.Vertex;
 import com.myj.foodadditivescam.R;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.StringReader;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,14 +69,6 @@ import com.myj.foodadditivescam.search.SearchAPI;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 
 public class OCRMainActivity extends AppCompatActivity {
@@ -94,6 +87,9 @@ public class OCRMainActivity extends AppCompatActivity {
 
     private TextView mImageDetails;
     private ImageView mMainImage;
+    private Bitmap bitmap;
+    private List boundary=new ArrayList<List>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,79 +114,18 @@ public class OCRMainActivity extends AppCompatActivity {
         uploadImage(imageUri);
     }
 
-//    public void startGalleryChooser() {
-//        if (PermissionUtils.requestPermission(this, GALLERY_PERMISSIONS_REQUEST, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-//            Intent intent = new Intent();
-//            intent.setType("image/*");
-//            intent.setAction(Intent.ACTION_GET_CONTENT);
-//            startActivityForResult(Intent.createChooser(intent, "Select a photo"),
-//                    GALLERY_IMAGE_REQUEST);
-//        }
-//    }
-//
-//    public void startCamera() {
-//        if (PermissionUtils.requestPermission(
-//                this,
-//                CAMERA_PERMISSIONS_REQUEST,
-//                Manifest.permission.READ_EXTERNAL_STORAGE,
-//                Manifest.permission.CAMERA)) {
-//            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//            Uri photoUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", getCameraFile());
-//            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-//            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//            startActivityForResult(intent, CAMERA_IMAGE_REQUEST);
-//        }
-//    }
-//
-//    public File getCameraFile() {
-//        File dir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-//        return new File(dir, FILE_NAME);
-//    }
-//
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        Uri uri = null;
-//        if (requestCode == GALLERY_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
-//            uri = data.getData();
-//        } else if (requestCode == CAMERA_IMAGE_REQUEST && resultCode == RESULT_OK) {
-//            Uri photoUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", getCameraFile());
-//            uri = photoUri;
-//        }
-//        Log.d("minjeong","ocrmainacititydml uri:  "+uri);
-//        Intent intent = new Intent(this, ImageLoadActivity.class);
-//        intent.putExtra("imageUri", uri);
-//        startActivity(intent);
-//    }
-//
-//    @Override
-//    public void onRequestPermissionsResult(
-//            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        switch (requestCode) {
-//            case CAMERA_PERMISSIONS_REQUEST:
-//                if (PermissionUtils.permissionGranted(requestCode, CAMERA_PERMISSIONS_REQUEST, grantResults)) {
-//                    startCamera();
-//                }
-//                break;
-//            case GALLERY_PERMISSIONS_REQUEST:
-//                if (PermissionUtils.permissionGranted(requestCode, GALLERY_PERMISSIONS_REQUEST, grantResults)) {
-//                    startGalleryChooser();
-//                }
-//                break;
-//        }
-//    }
-
     public void uploadImage(Uri uri) {
         if (uri != null) {
             try {
                 // scale the image to save on bandwidth
-                Bitmap bitmap =
+                bitmap =
                         scaleBitmapDown(
                                 MediaStore.Images.Media.getBitmap(getContentResolver(), uri),
                                 MAX_DIMENSION);
 
                 callCloudVision(bitmap);
+
+                // 이미지 로드
                 mMainImage.setImageBitmap(bitmap);
 
             } catch (IOException e) {
@@ -270,7 +205,7 @@ public class OCRMainActivity extends AppCompatActivity {
         return annotateRequest;
     }
 
-    private static class LableDetectionTask extends AsyncTask<Object, Void, String> {
+    private class LableDetectionTask extends AsyncTask<Object, Void, String> { //static
         private final WeakReference<OCRMainActivity> mActivityWeakReference;
         private Vision.Images.Annotate mRequest;
 
@@ -285,7 +220,62 @@ public class OCRMainActivity extends AppCompatActivity {
                 Log.d(TAG, "created Cloud Vision request object, sending request");
                 BatchAnnotateImagesResponse response = mRequest.execute();
                 String res = "OCR 출력 결과\n\n";
+
+                // boundary 화
+//                List<EntityAnnotation> labels = response.getResponses().get(0).getTextAnnotations();
+
+//                // 단어별
+//                for(int labelidx=1; labelidx<labels.size();labelidx++){
+//                    List<Vertex> bound = labels.get(labelidx).getBoundingPoly().getVertices();
+//                    if (bound != null) {
+//                        boundary.add((float)bound.get(0).getX()); boundary.add((float)bound.get(0).getY());
+//                        boundary.add((float)bound.get(1).getX()); boundary.add((float)bound.get(1).getY());
+//                        boundary.add((float)bound.get(2).getX()); boundary.add((float)bound.get(2).getY());
+//                        boundary.add((float)bound.get(3).getX()); boundary.add((float)bound.get(3).getY());
+//
+//                        Log.d("minjeong", "roi_width: "+bound.get(1).getX()+"   roi_hieght: "+bound.get(0).getX());
+//                    } else {
+//                        Log.d("minjeong", "boundary failed");
+//                    }
+//                }
+
+
+//                // ocr한 범위 전체
+//                if (labels != null) {
+//                    List<Vertex> bound = labels.get(0).getBoundingPoly().getVertices();
+//                    boundary.add((float)bound.get(0).getX()); boundary.add((float)bound.get(0).getY());
+//                    boundary.add((float)bound.get(1).getX()); boundary.add((float)bound.get(1).getY());
+//                    boundary.add((float)bound.get(2).getX()); boundary.add((float)bound.get(2).getY());
+//                    boundary.add((float)bound.get(3).getX()); boundary.add((float)bound.get(3).getY());
+//
+//                    Log.d("minjeong", "roi_width: "+bound.get(1).getX()+"   roi_hieght: "+bound.get(0).getX());
+//                } else {
+//                    Log.d("minjeong", "boundary failed");
+//                }
+
+                //Paragraph별
+                List<Block> labels = response.getResponses().get(0).getFullTextAnnotation().getPages().get(0).getBlocks();
+                for(int labelidx=0; labelidx<labels.size();labelidx++){
+                    Log.d("minjeong","paragh size: "+labels.size());
+                    List<Vertex>bound = labels.get(labelidx).getParagraphs().get(0).getBoundingBox().getVertices();
+                    if (labels.get(labelidx) != null) {
+                        boundary.add((float)bound.get(0).getX()); boundary.add((float)bound.get(0).getY());
+                        boundary.add((float)bound.get(1).getX()); boundary.add((float)bound.get(1).getY());
+                        boundary.add((float)bound.get(2).getX()); boundary.add((float)bound.get(2).getY());
+                        boundary.add((float)bound.get(3).getX()); boundary.add((float)bound.get(3).getY());
+
+                        Log.d("minjeong", "roi_width: "+bound.get(1).getX()+"   roi_hieght: "+bound.get(0).getX());
+                    } else {
+                        Log.d("minjeong", "boundary failed");
+                    }
+                }
+
+                //text split
                 String[] resArr = splitString(convertResponseToString(response));
+//                List<String> wordsArr = convertResponseToString(response);
+//                for(int i=0;i<wordsArr.size();i++){
+//                    Log.d("wordsArr",wordsArr.get(i));
+//                }
 
                 for(int i=0; i<resArr.length;i++){
                     res+=resArr[i];
@@ -298,7 +288,7 @@ public class OCRMainActivity extends AppCompatActivity {
                     result += resultAPI(resArr[i]) + "\n";
                 }
 
-                return result;
+                return result; //result
 
             } catch (GoogleJsonResponseException e) {
                 Log.d(TAG, "failed to make API request because " + e.getContent());
@@ -315,6 +305,18 @@ public class OCRMainActivity extends AppCompatActivity {
             if (activity != null && !activity.isFinishing()) {
                 TextView imageDetail = activity.findViewById(R.id.image_details);
                 imageDetail.setText(result);
+
+                Log.d("minjeong","이미지로드 boundary: "+boundary);
+                Paint paint = new Paint();
+                paint.setColor(Color.RED);
+                paint.setStrokeWidth(7f);
+                Canvas canvas = new Canvas(bitmap);
+                for(int box=0;box<boundary.size();box+=8){
+                    canvas.drawLine((float)boundary.get(box), (float)boundary.get(box+1),(float)boundary.get(box+2),(float)boundary.get(box+3),paint);
+                    canvas.drawLine((float)boundary.get(box+4), (float)boundary.get(box+5),(float)boundary.get(box+2),(float)boundary.get(box+3),paint);
+                    canvas.drawLine((float)boundary.get(box+6), (float)boundary.get(box+7),(float)boundary.get(box+4),(float)boundary.get(box+5),paint);
+                    canvas.drawLine((float)boundary.get(box), (float)boundary.get(box+1),(float)boundary.get(box+6), (float)boundary.get(box+7),paint);
+                }
             }
         }
     }
@@ -356,8 +358,13 @@ public class OCRMainActivity extends AppCompatActivity {
     // 텍스트 결과값 리턴 받아 출력
     private static String convertResponseToString(BatchAnnotateImagesResponse response) {
         String message = "";
-
         List<EntityAnnotation> labels = response.getResponses().get(0).getTextAnnotations();
+
+//        List<String> words = new ArrayList<>();
+//        for(int i=1;i<labels.size();i++){
+//            words.add(labels.get(i).getDescription());
+//        }
+
         if (labels != null) {
             message+=labels.get(0).getDescription();
         } else {
