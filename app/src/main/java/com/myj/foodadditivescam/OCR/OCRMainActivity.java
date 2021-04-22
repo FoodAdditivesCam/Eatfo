@@ -221,54 +221,9 @@ public class OCRMainActivity extends AppCompatActivity {
                 BatchAnnotateImagesResponse response = mRequest.execute();
                 String res = "OCR 출력 결과\n\n";
 
-                // boundary 화
-//                List<EntityAnnotation> labels = response.getResponses().get(0).getTextAnnotations();
-
-//                // 단어별
-//                for(int labelidx=1; labelidx<labels.size();labelidx++){
-//                    List<Vertex> bound = labels.get(labelidx).getBoundingPoly().getVertices();
-//                    if (bound != null) {
-//                        boundary.add((float)bound.get(0).getX()); boundary.add((float)bound.get(0).getY());
-//                        boundary.add((float)bound.get(1).getX()); boundary.add((float)bound.get(1).getY());
-//                        boundary.add((float)bound.get(2).getX()); boundary.add((float)bound.get(2).getY());
-//                        boundary.add((float)bound.get(3).getX()); boundary.add((float)bound.get(3).getY());
-//
-//                        Log.d("minjeong", "roi_width: "+bound.get(1).getX()+"   roi_hieght: "+bound.get(0).getX());
-//                    } else {
-//                        Log.d("minjeong", "boundary failed");
-//                    }
-//                }
-
-
-//                // ocr한 범위 전체
-//                if (labels != null) {
-//                    List<Vertex> bound = labels.get(0).getBoundingPoly().getVertices();
-//                    boundary.add((float)bound.get(0).getX()); boundary.add((float)bound.get(0).getY());
-//                    boundary.add((float)bound.get(1).getX()); boundary.add((float)bound.get(1).getY());
-//                    boundary.add((float)bound.get(2).getX()); boundary.add((float)bound.get(2).getY());
-//                    boundary.add((float)bound.get(3).getX()); boundary.add((float)bound.get(3).getY());
-//
-//                    Log.d("minjeong", "roi_width: "+bound.get(1).getX()+"   roi_hieght: "+bound.get(0).getX());
-//                } else {
-//                    Log.d("minjeong", "boundary failed");
-//                }
-
-                //Paragraph별
-                List<Block> labels = response.getResponses().get(0).getFullTextAnnotation().getPages().get(0).getBlocks();
-                for(int labelidx=0; labelidx<labels.size();labelidx++){
-                    Log.d("minjeong","paragh size: "+labels.size());
-                    List<Vertex>bound = labels.get(labelidx).getParagraphs().get(0).getBoundingBox().getVertices();
-                    if (labels.get(labelidx) != null) {
-                        boundary.add((float)bound.get(0).getX()); boundary.add((float)bound.get(0).getY());
-                        boundary.add((float)bound.get(1).getX()); boundary.add((float)bound.get(1).getY());
-                        boundary.add((float)bound.get(2).getX()); boundary.add((float)bound.get(2).getY());
-                        boundary.add((float)bound.get(3).getX()); boundary.add((float)bound.get(3).getY());
-
-                        Log.d("minjeong", "roi_width: "+bound.get(1).getX()+"   roi_hieght: "+bound.get(0).getX());
-                    } else {
-                        Log.d("minjeong", "boundary failed");
-                    }
-                }
+                // 이미지 box boundary
+                BoxBoundary box=new BoxBoundary();
+                boundary = box.ParagraphBoundary(response);
 
                 //text split
                 String[] resArr = splitString(convertResponseToString(response));
