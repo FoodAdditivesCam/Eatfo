@@ -72,7 +72,7 @@ import org.json.JSONObject;
 
 
 public class OCRMainActivity extends AppCompatActivity {
-    private static final String CLOUD_VISION_API_KEY = "AIzaSyCf3oiA6C1LQze8QTQyNvnFnQLUTm_YA9I";
+    private static final String CLOUD_VISION_API_KEY = "AIzaSyAZhmCpNXx_rXSAhnGLN_MR2U7EH3X5n88";
     public static final String FILE_NAME = "temp.jpg";
     private static final String ANDROID_CERT_HEADER = "X-Android-Cert";
     private static final String ANDROID_PACKAGE_HEADER = "X-Android-Package";
