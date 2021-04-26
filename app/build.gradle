@@ -46,4 +46,5 @@ dependencies {
     implementation 'com.google.http-client:google-http-client-gson:1.23.0' exclude module: 'httpclient'
     implementation 'com.google.apis:google-api-services-vision:v1-rev369-1.23.0'
     implementation 'com.soundcloud.android:android-crop:1.0.1@aar'
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
 }
