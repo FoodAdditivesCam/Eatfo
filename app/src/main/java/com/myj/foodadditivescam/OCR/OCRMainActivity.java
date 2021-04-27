@@ -21,8 +21,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Point;
-import android.graphics.PointF;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -48,14 +46,9 @@ import com.google.api.services.vision.v1.VisionRequestInitializer;
 import com.google.api.services.vision.v1.model.AnnotateImageRequest;
 import com.google.api.services.vision.v1.model.BatchAnnotateImagesRequest;
 import com.google.api.services.vision.v1.model.BatchAnnotateImagesResponse;
-import com.google.api.services.vision.v1.model.Block;
 import com.google.api.services.vision.v1.model.EntityAnnotation;
 import com.google.api.services.vision.v1.model.Feature;
 import com.google.api.services.vision.v1.model.Image;
-import com.google.api.services.vision.v1.model.Page;
-import com.google.api.services.vision.v1.model.Paragraph;
-import com.google.api.services.vision.v1.model.TextAnnotation;
-import com.google.api.services.vision.v1.model.Vertex;
 import com.myj.foodadditivescam.R;
 
 import java.io.ByteArrayOutputStream;
@@ -105,13 +98,15 @@ public class OCRMainActivity extends AppCompatActivity {
             finish();
         });
 
-        mImageDetails = findViewById(R.id.image_details);
-        mMainImage = findViewById(R.id.main_image);
+        if(getIntent()!=null) {
+            mImageDetails = findViewById(R.id.image_details);
+            mMainImage = findViewById(R.id.main_image);
 
-        Uri imageUri = (Uri)getIntent().getParcelableExtra("imageUri");
+            Uri imageUri = (Uri) getIntent().getParcelableExtra("imageUri");
 
-        Log.d("minjeong","uri:  "+imageUri);
-        uploadImage(imageUri);
+            Log.d("minjeong", "uri:  " + imageUri);
+            uploadImage(imageUri);
+        }
     }
 
     public void uploadImage(Uri uri) {
@@ -369,6 +364,5 @@ public class OCRMainActivity extends AppCompatActivity {
 
         return result;
     }
-
 
 }

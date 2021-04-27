@@ -18,16 +18,13 @@ package com.myj.foodadditivescam.OCR;
 
 import android.Manifest;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -36,29 +33,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.api.client.extensions.android.http.AndroidHttp;
-import com.google.api.client.googleapis.json.GoogleJsonResponseException;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.gson.GsonFactory;
-import com.google.api.services.vision.v1.Vision;
-import com.google.api.services.vision.v1.VisionRequest;
-import com.google.api.services.vision.v1.VisionRequestInitializer;
-import com.google.api.services.vision.v1.model.AnnotateImageRequest;
-import com.google.api.services.vision.v1.model.BatchAnnotateImagesRequest;
-import com.google.api.services.vision.v1.model.BatchAnnotateImagesResponse;
-import com.google.api.services.vision.v1.model.EntityAnnotation;
-import com.google.api.services.vision.v1.model.Feature;
-import com.google.api.services.vision.v1.model.Image;
 import com.myj.foodadditivescam.R;
+import com.theartofdev.edmodo.cropper.CropImage;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
-import java.lang.ref.WeakReference;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class ImageLoadActivity extends AppCompatActivity {
@@ -74,9 +52,6 @@ public class ImageLoadActivity extends AppCompatActivity {
     private static final int GALLERY_IMAGE_REQUEST = 1;
     public static final int CAMERA_PERMISSIONS_REQUEST = 2;
     public static final int CAMERA_IMAGE_REQUEST = 3;
-
-    private TextView mImageDetails;
-    private ImageView mMainImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,8 +70,6 @@ public class ImageLoadActivity extends AppCompatActivity {
             builder.create().show();
         });
 
-        mImageDetails = findViewById(R.id.image_details);
-        mMainImage = findViewById(R.id.main_image);
     }
 
     public void startGalleryChooser() {
@@ -138,9 +111,16 @@ public class ImageLoadActivity extends AppCompatActivity {
             Uri photoUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", getCameraFile());
             uri = photoUri;
         }
-        Log.d("minjeong","ocrmainacititydml uri:  "+uri);
+
+        CropImage.activity(uri)
+                .start(this);
+
+        CropImage.ActivityResult res = CropImage.getActivityResult(data);
+        Uri resUri =res.getUri();
+
+        Log.d("minjeong","ocrmainacititydml uri:  "+resUri);
         Intent intent = new Intent(this, OCRMainActivity.class);
-        intent.putExtra("imageUri", uri);
+        intent.putExtra("imageUri", resUri);
         startActivity(intent);
         finish();
     }
