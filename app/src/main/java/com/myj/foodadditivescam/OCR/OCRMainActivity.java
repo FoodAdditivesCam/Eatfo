@@ -16,8 +16,13 @@
 
 package com.myj.foodadditivescam.OCR;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -31,6 +36,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,6 +59,7 @@ import com.myj.foodadditivescam.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,9 +69,16 @@ import com.myj.foodadditivescam.search.SearchAPI;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.CameraBridgeViewBase;
+import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.android.OpenCVLoader;
+import org.opencv.android.Utils;
+import org.opencv.core.Mat;
+import org.opencv.core.Size;
+import org.opencv.imgproc.Imgproc;
 
-
-public class OCRMainActivity extends AppCompatActivity {
+public class OCRMainActivity extends AppCompatActivity{
     private static final String CLOUD_VISION_API_KEY = "AIzaSyAZhmCpNXx_rXSAhnGLN_MR2U7EH3X5n88";
     public static final String FILE_NAME = "temp.jpg";
     private static final String ANDROID_CERT_HEADER = "X-Android-Cert";
@@ -82,7 +96,12 @@ public class OCRMainActivity extends AppCompatActivity {
     private ImageView mMainImage;
     private Bitmap bitmap;
     private List boundary=new ArrayList<List>();
+    private boolean isOpenCvLoaded = false;
+    private Context mContext;
 
+    static {
+        System.loadLibrary("opencv_java4");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +109,10 @@ public class OCRMainActivity extends AppCompatActivity {
         setContentView(R.layout.ocr_activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        mContext =  this.getApplicationContext();
+
+        // OpenCV load
+        OpenCVLoad();
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
@@ -109,6 +132,37 @@ public class OCRMainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, ImageLoadActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // opencv load
+        OpenCVLoad();
+    }
+
+    // LoaderCallback
+    private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(mContext) {
+        @Override
+        public void onManagerConnected(int status) {
+            switch (status) {
+                case LoaderCallbackInterface.SUCCESS:
+                    Log.i(TAG, "OpenCV loaded successfully");
+                    break;
+                default:
+                    super.onManagerConnected(status);
+                    break;
+            }
+        }
+    };
+
+
     public void uploadImage(Uri uri) {
         if (uri != null) {
             try {
@@ -118,10 +172,18 @@ public class OCRMainActivity extends AppCompatActivity {
                                 MediaStore.Images.Media.getBitmap(getContentResolver(), uri),
                                 MAX_DIMENSION);
 
-                callCloudVision(bitmap);
+                // 이미지 전처리
+                Bitmap grayBitmap=bitmap;
+                Log.d(TAG, "isOpenCvLoaded: "+ isOpenCvLoaded);
+                grayBitmap = GrayScaling(bitmap);
+                grayBitmap = Threshold(grayBitmap);
+//                grayBitmap = detectEdge(bitmap);
+
+                // api 시작
+                callCloudVision(grayBitmap);
 
                 // 이미지 로드
-                mMainImage.setImageBitmap(bitmap);
+                mMainImage.setImageBitmap(grayBitmap);
 
             } catch (IOException e) {
                 Log.d(TAG, "Image picking failed because " + e.getMessage());
@@ -222,15 +284,19 @@ public class OCRMainActivity extends AppCompatActivity {
 
                 //text split
                 String[] resArr = splitString(convertResponseToString(response));
-//                List<String> wordsArr = convertResponseToString(response);
-//                for(int i=0;i<wordsArr.size();i++){
-//                    Log.d("wordsArr",wordsArr.get(i));
-//                }
+                List<String> wordsArr = responseToList(response);
+
+                String word = "";
+                for(int i=0;i<wordsArr.size();i++){
+                    word+=(wordsArr.get(i)+"\n");
+                }
+                Log.d("wordsArr", "<<ocr에서 직접 split된 결과>>\n"+word);
 
                 for(int i=0; i<resArr.length;i++){
                     res+=resArr[i];
-                    res+="\n";
+                    res+="\n"; // "\n"으로 수정
                 }
+                Log.d("wordsArr", "<<직접 텍스트 처리한 결과>>\n"+res);
 
                 // 성분 개수 만큼 백과사전에 검색
                 String result = null;
@@ -238,7 +304,7 @@ public class OCRMainActivity extends AppCompatActivity {
                     result += resultAPI(resArr[i]) + "\n";
                 }
 
-                return result; //result
+                return res; //result
 
             } catch (GoogleJsonResponseException e) {
                 Log.d(TAG, "failed to make API request because " + e.getContent());
@@ -261,7 +327,7 @@ public class OCRMainActivity extends AppCompatActivity {
                 paint.setColor(Color.RED);
                 paint.setStrokeWidth(7f);
                 Canvas canvas = new Canvas(bitmap);
-                for(int box=0;box<boundary.size();box+=8){
+                for(int box=0;box<boundary.size();box+=8){ // -7?
                     canvas.drawLine((float)boundary.get(box), (float)boundary.get(box+1),(float)boundary.get(box+2),(float)boundary.get(box+3),paint);
                     canvas.drawLine((float)boundary.get(box+4), (float)boundary.get(box+5),(float)boundary.get(box+2),(float)boundary.get(box+3),paint);
                     canvas.drawLine((float)boundary.get(box+6), (float)boundary.get(box+7),(float)boundary.get(box+4),(float)boundary.get(box+5),paint);
@@ -310,17 +376,36 @@ public class OCRMainActivity extends AppCompatActivity {
         String message = "";
         List<EntityAnnotation> labels = response.getResponses().get(0).getTextAnnotations();
 
-//        List<String> words = new ArrayList<>();
-//        for(int i=1;i<labels.size();i++){
-//            words.add(labels.get(i).getDescription());
-//        }
-
         if (labels != null) {
             message+=labels.get(0).getDescription();
         } else {
             message += "nothing";
         }
         return message; //xml에 메세지 띄울 data
+    }
+    // OCR에서 직접 split된 것 가져오기
+    private static List responseToList(BatchAnnotateImagesResponse response){
+        List<String> words = new ArrayList<>();
+        String cur = "", temp="";
+        try {
+            List<EntityAnnotation> labels = response.getResponses().get(0).getTextAnnotations();
+            for (int i = 1; i < labels.size(); i++) {
+                cur=labels.get(i).getDescription();
+                if (cur.equals(",")) {
+                    words.add(temp);
+                    temp="";
+                }else{
+                    temp+=cur;
+                }
+            }
+            words.add("<<OCR이 split>>");
+            for (int i = 1; i < labels.size(); i++) {
+                words.add(labels.get(i).getDescription());
+            }
+        }catch (Exception e){
+            Log.d(TAG, "responseToList error: "+e);
+        }
+        return words;
     }
 
 
@@ -365,4 +450,85 @@ public class OCRMainActivity extends AppCompatActivity {
         return result;
     }
 
+    //opencv
+    private void OpenCVLoad(){
+        if (!OpenCVLoader.initDebug()) {
+            Log.d(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
+            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION, mContext, mLoaderCallback);
+        } else {
+            Log.d(TAG, "OpenCV library found inside package. Using it!");
+            mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
+            isOpenCvLoaded = true;
+        }
+    }
+    private Bitmap GrayScaling(Bitmap bitmap){
+        Bitmap grayBitmap=bitmap;
+        if( isOpenCvLoaded ) {
+            Log.d(TAG, "into GrayScaling");
+            // gray scaling
+            try {
+                Bitmap tempbitmap=bitmap;
+                Mat gray = new Mat();
+                Utils.bitmapToMat(tempbitmap, gray);
+
+                Imgproc.cvtColor(gray, gray, Imgproc.COLOR_RGBA2GRAY);
+
+                grayBitmap = Bitmap.createBitmap(gray.cols(), gray.rows(), Bitmap.Config.ARGB_8888);
+                Utils.matToBitmap(gray, grayBitmap);
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return grayBitmap;
+    }
+    private Bitmap Threshold(Bitmap bitmap){
+        Bitmap thresBitmap=bitmap;
+        if( isOpenCvLoaded ) {
+            Log.d(TAG, "into Threshold");
+            // gray scaling
+            try {
+                Bitmap tempbitmap=bitmap;
+                Mat thres = new Mat();
+                Utils.bitmapToMat(tempbitmap, thres);
+
+//                Imgproc.threshold(thres, thres, 150, 255, Imgproc.THRESH_BINARY);
+
+//                Imgproc.GaussianBlur(thres,thres, new Size(5,5), 0);
+//                Imgproc.threshold(thres, thres, 0, 255, Imgproc.THRESH_BINARY+Imgproc.THRESH_OTSU);
+
+//                Imgproc.adaptiveThreshold(thres, thres, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C,Imgproc.THRESH_BINARY,21,5);
+
+//                Imgproc.adaptiveThreshold(thres, thres, 255, Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C,Imgproc.THRESH_BINARY,5,10); //21,5
+
+                thresBitmap = Bitmap.createBitmap(thres.cols(), thres.rows(), Bitmap.Config.ARGB_8888);
+                Utils.matToBitmap(thres, thresBitmap);
+            }catch (Exception e) {
+                e.printStackTrace();
+                Log.d(TAG, "Threshold error: "+e);
+            }
+        }
+        return thresBitmap;
+    }
+    private Bitmap detectEdge(Bitmap bitmap){
+        Bitmap edgeBitmap=bitmap;
+        if( isOpenCvLoaded ) {
+            Log.d(TAG, "into detectEdge");
+            // gray scaling
+            try {
+                Bitmap tempbitmap=bitmap;
+                Mat edge = new Mat();
+                Utils.bitmapToMat(tempbitmap, edge);
+                Mat canny = new Mat();
+
+                Imgproc.Canny(edge, canny, 100, 150);
+
+                edgeBitmap = Bitmap.createBitmap(canny.cols(), canny.rows(), Bitmap.Config.ARGB_8888);
+                Utils.matToBitmap(canny, edgeBitmap);
+                Log.d(TAG, "into detectEdge1");
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return edgeBitmap;
+    }
 }

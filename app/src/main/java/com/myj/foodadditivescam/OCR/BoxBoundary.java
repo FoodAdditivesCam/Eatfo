@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BoxBoundary {
+    private static final String TAG = OCRMainActivity.class.getSimpleName();
+
     // boundary 화
     public List wordBoundary(BatchAnnotateImagesResponse response){
         List<EntityAnnotation> labels = response.getResponses().get(0).getTextAnnotations();
@@ -51,22 +53,31 @@ public class BoxBoundary {
     }
     public List ParagraphBoundary(BatchAnnotateImagesResponse response){
         //Paragraph별
-        List<Block> labels = response.getResponses().get(0).getFullTextAnnotation().getPages().get(0).getBlocks();
         List boundary = new ArrayList();
-        for(int labelidx=0; labelidx<labels.size();labelidx++){
-            Log.d("minjeong","paragh size: "+labels.size());
-            List<Vertex>bound = labels.get(labelidx).getParagraphs().get(0).getBoundingBox().getVertices();
-            if (labels.get(labelidx) != null) {
-                boundary.add((float)bound.get(0).getX()); boundary.add((float)bound.get(0).getY());
-                boundary.add((float)bound.get(1).getX()); boundary.add((float)bound.get(1).getY());
-                boundary.add((float)bound.get(2).getX()); boundary.add((float)bound.get(2).getY());
-                boundary.add((float)bound.get(3).getX()); boundary.add((float)bound.get(3).getY());
+        try {
+            List<Block> labels = response.getResponses().get(0).getFullTextAnnotation().getPages().get(0).getBlocks();
+            for (int labelidx = 0; labelidx < labels.size(); labelidx++) {
+                Log.d("minjeong", "paragh size: " + labels.size());
+                List<Vertex> bound = labels.get(labelidx).getParagraphs().get(0).getBoundingBox().getVertices();
+                if (labels.get(labelidx) != null) {
+                    boundary.add((float) bound.get(0).getX());
+                    boundary.add((float) bound.get(0).getY());
+                    boundary.add((float) bound.get(1).getX());
+                    boundary.add((float) bound.get(1).getY());
+                    boundary.add((float) bound.get(2).getX());
+                    boundary.add((float) bound.get(2).getY());
+                    boundary.add((float) bound.get(3).getX());
+                    boundary.add((float) bound.get(3).getY());
 
-                Log.d("minjeong", "roi_width: "+bound.get(1).getX()+"   roi_hieght: "+bound.get(0).getX());
-            } else {
-                Log.d("minjeong", "boundary failed");
+                    Log.d("minjeong", "roi_width: " + bound.get(1).getX() + "   roi_hieght: " + bound.get(0).getX());
+                } else {
+                    Log.d("minjeong", "boundary failed");
+                }
             }
+        }catch (Exception e){
+            Log.d(TAG, "paragraphBoundary error: "+e);
         }
+
         return boundary;
     }
 }

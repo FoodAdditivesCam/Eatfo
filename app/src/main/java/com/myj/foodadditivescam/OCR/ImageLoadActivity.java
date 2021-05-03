@@ -17,6 +17,7 @@
 package com.myj.foodadditivescam.OCR;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -35,23 +36,19 @@ import androidx.core.content.FileProvider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.myj.foodadditivescam.R;
 import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
 
 
 public class ImageLoadActivity extends AppCompatActivity {
-    private static final String CLOUD_VISION_API_KEY = "AIzaSyCf3oiA6C1LQze8QTQyNvnFnQLUTm_YA9I";
     public static final String FILE_NAME = "temp.jpg";
-    private static final String ANDROID_CERT_HEADER = "X-Android-Cert";
-    private static final String ANDROID_PACKAGE_HEADER = "X-Android-Package";
-    private static final int MAX_LABEL_RESULTS = 10;
-    private static final int MAX_DIMENSION = 1200;
 
-    private static final String TAG = ImageLoadActivity.class.getSimpleName();
     private static final int GALLERY_PERMISSIONS_REQUEST = 0;
     private static final int GALLERY_IMAGE_REQUEST = 1;
     public static final int CAMERA_PERMISSIONS_REQUEST = 2;
     public static final int CAMERA_IMAGE_REQUEST = 3;
+    public static final int REQUEST_IMAGE_CROP = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,23 +104,32 @@ public class ImageLoadActivity extends AppCompatActivity {
         Uri uri = null;
         if (requestCode == GALLERY_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
             uri = data.getData();
+            CropImage.activity(uri)
+                    .start(this);
         } else if (requestCode == CAMERA_IMAGE_REQUEST && resultCode == RESULT_OK) {
             Uri photoUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", getCameraFile());
             uri = photoUri;
+            CropImage.activity(uri)
+                    .start(this);
         }
 
-        CropImage.activity(uri)
-                .start(this);
+//        CropImage.activity(uri)
+//                .start(this);
 
         CropImage.ActivityResult res = CropImage.getActivityResult(data);
-        Uri resUri =res.getUri();
+        if(res!=null){
+            Log.d("minjeong","ocrmainacititydml res:  "+res);
+            Uri resUri = res.getUri();
 
-        Log.d("minjeong","ocrmainacititydml uri:  "+resUri);
-        Intent intent = new Intent(this, OCRMainActivity.class);
-        intent.putExtra("imageUri", resUri);
-        startActivity(intent);
-        finish();
+            Log.d("minjeong","ocrmainacititydml uri:  "+resUri);
+            Intent intent = new Intent(this, OCRMainActivity.class);
+            intent.putExtra("imageUri", resUri);
+            startActivity(intent);
+            finish();
+        }
+
     }
+
 
     @Override
     public void onRequestPermissionsResult(
@@ -143,175 +149,29 @@ public class ImageLoadActivity extends AppCompatActivity {
         }
     }
 
-//    public void uploadImage(Uri uri) {
-//        Log.d("minjeong","uploadimage에 들어옴");
-//        if (uri != null) {
-//            try {
-//                Log.d("minjeong","try문에 들어옴");
-//                // scale the image to save on bandwidth
-//                Bitmap bitmap =
-//                        scaleBitmapDown(
-//                                MediaStore.Images.Media.getBitmap(getContentResolver(), uri),
-//                                MAX_DIMENSION);
-//
-//                callCloudVision(bitmap);
-//                Log.d("minjeong","callcloudvision 뒤에 옴");
-//                mMainImage.setImageBitmap(bitmap);
-//
-//            } catch (IOException e) {
-//                Log.d(TAG, "Image picking failed because " + e.getMessage());
-//                Toast.makeText(this, R.string.image_picker_error, Toast.LENGTH_LONG).show();
-//            }
-//        } else {
-//            Log.d(TAG, "Image picker gave us a null image.");
-//            Toast.makeText(this, R.string.image_picker_error, Toast.LENGTH_LONG).show();
-//        }
-//    }
-//
-//    private Vision.Images.Annotate prepareAnnotationRequest(Bitmap bitmap) throws IOException {
-//        HttpTransport httpTransport = AndroidHttp.newCompatibleTransport();
-//        JsonFactory jsonFactory = GsonFactory.getDefaultInstance();
-//
-//        VisionRequestInitializer requestInitializer =
-//                new VisionRequestInitializer(CLOUD_VISION_API_KEY) {
-//                    /**
-//                     * We override this so we can inject important identifying fields into the HTTP
-//                     * headers. This enables use of a restricted cloud platform API key.
-//                     */
-//                    @Override
-//                    protected void initializeVisionRequest(VisionRequest<?> visionRequest)
-//                            throws IOException {
-//                        super.initializeVisionRequest(visionRequest);
-//
-//                        String packageName = getPackageName();
-//                        visionRequest.getRequestHeaders().set(ANDROID_PACKAGE_HEADER, packageName);
-//
-//                        String sig = PackageManagerUtils.getSignature(getPackageManager(), packageName);
-//
-//                        visionRequest.getRequestHeaders().set(ANDROID_CERT_HEADER, sig);
-//                    }
-//                };
-//
-//        Vision.Builder builder = new Vision.Builder(httpTransport, jsonFactory, null);
-//        builder.setVisionRequestInitializer(requestInitializer);
-//
-//        Vision vision = builder.build();
-//
-//        BatchAnnotateImagesRequest batchAnnotateImagesRequest =
-//                new BatchAnnotateImagesRequest();
-//        batchAnnotateImagesRequest.setRequests(new ArrayList<AnnotateImageRequest>() {{
-//            AnnotateImageRequest annotateImageRequest = new AnnotateImageRequest();
-//
-//            // Add the image
-//            Image base64EncodedImage = new Image();
-//            // Convert the bitmap to a JPEG
-//            // Just in case it's a format that Android understands but Cloud Vision
-//            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, byteArrayOutputStream);
-//            byte[] imageBytes = byteArrayOutputStream.toByteArray();
-//
-//            // Base64 encode the JPEG
-//            base64EncodedImage.encodeContent(imageBytes);
-//            annotateImageRequest.setImage(base64EncodedImage);
-//
-//            // add the features we want
-//            annotateImageRequest.setFeatures(new ArrayList<Feature>() {{
-//                Feature textDetection = new Feature();
-//                textDetection.setType("TEXT_DETECTION"); //클라우드 비전의 어떤 기능을 사용할지
-//                textDetection.setMaxResults(10);
-//                add(textDetection);
-//            }});
-//
-//            // Add the list of one thing to the request
-//            add(annotateImageRequest);
-//        }});
-//
-//        Vision.Images.Annotate annotateRequest =
-//                vision.images().annotate(batchAnnotateImagesRequest);
-//        // Due to a bug: requests to Vision API containing large images fail when GZipped.
-//        annotateRequest.setDisableGZipContent(true);
-//        Log.d(TAG, "created Cloud Vision request object, sending request");
-//
-//        return annotateRequest;
-//    }
-//
-//    private static class LableDetectionTask extends AsyncTask<Object, Void, String> {
-//        private final WeakReference<ImageLoadActivity> mActivityWeakReference;
-//        private Vision.Images.Annotate mRequest;
-//
-//        LableDetectionTask(ImageLoadActivity activity, Vision.Images.Annotate annotate) {
-//            mActivityWeakReference = new WeakReference<>(activity);
-//            mRequest = annotate;
-//        }
-//
-//        @Override
-//        protected String doInBackground(Object... params) {
-//            try {
-//                Log.d(TAG, "created Cloud Vision request object, sending request");
-//                BatchAnnotateImagesResponse response = mRequest.execute();
-//                return convertResponseToString(response);
-//
-//            } catch (GoogleJsonResponseException e) {
-//                Log.d(TAG, "failed to make API request because " + e.getContent());
-//            } catch (IOException e) {
-//                Log.d(TAG, "failed to make API request because of other IOException " +
-//                        e.getMessage());
-//            }
-//            return "Cloud Vision API request failed. Check logs for details.";
-//        }
-//
-//        protected void onPostExecute(String result) {
-//            ImageLoadActivity activity = mActivityWeakReference.get();
-//            if (activity != null && !activity.isFinishing()) {
-//                TextView imageDetail = activity.findViewById(R.id.image_details);
-//                imageDetail.setText(result);
-//            }
-//        }
-//    }
-//
-//    private void callCloudVision(final Bitmap bitmap) {
-//        // Switch text to loading
-//        mImageDetails.setText(R.string.loading_message);
-//
-//        // Do the real work in an async task, because we need to use the network anyway
-//        try {
-//            AsyncTask<Object, Void, String> labelDetectionTask = new LableDetectionTask(this, prepareAnnotationRequest(bitmap));
-//            labelDetectionTask.execute();
-//        } catch (IOException e) {
-//            Log.d(TAG, "failed to make API request because of other IOException " +
-//                    e.getMessage());
-//        }
-//    }
-//
-//    private Bitmap scaleBitmapDown(Bitmap bitmap, int maxDimension) {
-//
-//        int originalWidth = bitmap.getWidth();
-//        int originalHeight = bitmap.getHeight();
-//        int resizedWidth = maxDimension;
-//        int resizedHeight = maxDimension;
-//
-//        if (originalHeight > originalWidth) {
-//            resizedHeight = maxDimension;
-//            resizedWidth = (int) (resizedHeight * (float) originalWidth / (float) originalHeight);
-//        } else if (originalWidth > originalHeight) {
-//            resizedWidth = maxDimension;
-//            resizedHeight = (int) (resizedWidth * (float) originalHeight / (float) originalWidth);
-//        } else if (originalHeight == originalWidth) {
-//            resizedHeight = maxDimension;
-//            resizedWidth = maxDimension;
-//        }
-//        return Bitmap.createScaledBitmap(bitmap, resizedWidth, resizedHeight, false);
-//    }
-//
-//    private static String convertResponseToString(BatchAnnotateImagesResponse response) {
-//        String message = "OCR 출력 결과\n\n";
-//
-//        List<EntityAnnotation> labels = response.getResponses().get(0).getTextAnnotations();
-//        if (labels != null) {
-//            message+=labels.get(0).getDescription();
-//        } else {
-//            message += "nothing";
-//        }
-//        return message; //xml에 메세지 띄울 data
-//    }
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+        // AlertDialog 빌더를 이용해 종료시 발생시킬 창을 띄운다
+        android.app.AlertDialog.Builder alBuilder = new android.app.AlertDialog.Builder(this);
+        alBuilder.setMessage("종료하시겠습니까?");
+
+        // "예" 버튼을 누르면 실행되는 리스너
+        alBuilder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish(); // 현재 액티비티를 종료한다. (MainActivity에서 작동하기 때문에 애플리케이션을 종료한다.)
+            }
+        });
+        // "아니오" 버튼을 누르면 실행되는 리스너
+        alBuilder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                return; // 아무런 작업도 하지 않고 돌아간다
+            }
+        });
+        alBuilder.setTitle("프로그램 종료");
+        alBuilder.show(); // AlertDialog.Bulider로 만든 AlertDialog를 보여준다.
+    }
+
 }
