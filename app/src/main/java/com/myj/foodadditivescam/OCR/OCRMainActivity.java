@@ -62,9 +62,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.myj.foodadditivescam.search.SearchAPI;
+import com.myj.foodadditivescam.search.Symspell;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -404,4 +406,44 @@ public class OCRMainActivity extends AppCompatActivity{
 
         return result;
     }
+
+    private static String symspell(String input) {
+        String result = "";
+        try{
+            // json에서 값이 들어있는 scores 객체를 가져옴
+            JSONObject jObject= Symspell.symspell(input);
+            JSONObject scores = (JSONObject) jObject.get("scores");
+            System.out.println(scores.toString());
+
+            // 검색 결과 개수 구하기
+            ArrayList<String> jArray = new ArrayList<String> ();
+            Iterator i = scores.keys();
+            while(i.hasNext()) {
+                jArray.add(i.next().toString());
+            }
+
+            //Log.d("scores: ", String.valueOf(jArray.size()));
+
+            // 이름만 추출하기
+            ArrayList<String> jName = new ArrayList<String>();
+            for(int j = 0; j < jArray.size(); j++) {
+                String element = scores.getString(jArray.get(j));
+
+                // 첫 번째 것만 선택
+                if(j == 0) {
+                    jName.add(element.split(",")[0]);
+                    //Log.d("value", jName.get(j));
+                }
+
+            }
+            result = jName.get(0);
+            Log.d("scores: ", String.valueOf(jName));
+
+        } catch(Exception e) {
+            Log.w("symspell err", e.toString());
+        }
+
+        return result;
+    }
+
 }
