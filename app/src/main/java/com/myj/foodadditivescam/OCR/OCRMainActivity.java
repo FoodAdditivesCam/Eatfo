@@ -35,6 +35,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -92,6 +95,7 @@ public class OCRMainActivity extends AppCompatActivity{
     private List boundary=new ArrayList<List>();
     private boolean isOpenCvLoaded = false;
     private Context mContext;
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,8 +107,8 @@ public class OCRMainActivity extends AppCompatActivity{
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
-            Intent intent = new Intent(this, ImageLoadActivity.class);
-            startActivity(intent);
+            Intent intent2 = new Intent(this, ImageLoadActivity.class);
+            startActivity(intent2);
             finish();
         });
 
@@ -115,8 +119,14 @@ public class OCRMainActivity extends AppCompatActivity{
             Uri imageUri = (Uri) getIntent().getParcelableExtra("imageUri");
 
             Log.d("minjeong", "uri:  " + imageUri);
+
+            intent = new Intent(this, ShowResult.class);
             uploadImage(imageUri);
         }
+
+        //intent.putExtra("itemName", );
+        //intent.putExtra("tag", );
+        //intent.putExtra("info", );
     }
 
     @Override
@@ -265,7 +275,7 @@ public class OCRMainActivity extends AppCompatActivity{
                     // result += resultAPI(sym);
                 }
 
-
+                intent.putExtra("itemName", resArr);
                 return result; //result
 
             } catch (GoogleJsonResponseException e) {
@@ -281,9 +291,6 @@ public class OCRMainActivity extends AppCompatActivity{
         protected void onPostExecute(String result) {
             com.myj.foodadditivescam.OCR.OCRMainActivity activity = mActivityWeakReference.get();
             if (activity != null && !activity.isFinishing()) {
-                TextView imageDetail = activity.findViewById(R.id.image_details);
-                imageDetail.setText(result);
-
                 Log.d("minjeong","이미지로드 boundary: "+boundary);
                 Paint paint = new Paint();
                 paint.setColor(Color.RED);
@@ -296,6 +303,9 @@ public class OCRMainActivity extends AppCompatActivity{
                     canvas.drawLine((float)boundary.get(box), (float)boundary.get(box+1),(float)boundary.get(box+6), (float)boundary.get(box+7),paint);
                 }
             }
+
+            startActivity(intent);
+            finish();
         }
     }
 
