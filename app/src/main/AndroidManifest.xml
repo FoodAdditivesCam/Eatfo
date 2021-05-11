@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".OCR.CropperActivity"></activity>
+        <activity android:name=".OCR.ShowResult"></activity>
+        <activity android:name=".OCR.CropperActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
