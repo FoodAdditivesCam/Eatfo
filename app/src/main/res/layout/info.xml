@@ -27,13 +27,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="원재료 명" />
+                android:text="원재료 명"
+                android:textColor="#000000"
+                android:textColorHighlight="#FFFFFF"
+                android:textSize="24sp" />
 
             <TextView
                 android:id="@+id/tag"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="태그" />
+                android:text="태그"
+                android:textColor="@color/colorPrimaryDark" />
         </LinearLayout>
 
         <Button
