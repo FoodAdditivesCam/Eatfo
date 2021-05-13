@@ -13,7 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.myj.foodadditivescam.R;
 
 class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements OnInfoClickListener {
-    private String[] localDataSet;  //받아온 데이터
+    private String[] NameSet;  //받아온 데이터
+    private String[] TagSet;  //받아온 데이터
+    private String[] InfoSet;  //받아온 데이터
     OnInfoClickListener listener;
 
     @Override
@@ -24,16 +26,17 @@ class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> impl
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView textInfo;   //설명
         public TextView textName;   //원재료 명
+        public TextView textTag;        //태그
+        public TextView textInfo;   //설명
         public Button showBtn;      //보기 버튼
 
         public ViewHolder(View view, final OnInfoClickListener listener) {
             super(view);
             // Define click listener for the ViewHolder's View
-
-            textInfo = (TextView) view.findViewById(R.id.info);
             textName = (TextView) view.findViewById(R.id.itemName);
+            textTag = (TextView) view.findViewById(R.id.tag);
+            textInfo = (TextView) view.findViewById(R.id.info);
             showBtn = (Button) view.findViewById(R.id.showBtn);
 
             showBtn.setOnClickListener(new View.OnClickListener() {
@@ -49,8 +52,10 @@ class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> impl
         }
     }
 
-    public RecyclerAdapter(String[] dataSet){
-        localDataSet = dataSet;
+    public RecyclerAdapter(String[] nameSet, String[] tagset, String[] infoSet){
+        this.NameSet = nameSet;
+        this.TagSet = tagset;
+        this.InfoSet = infoSet;
     }
 
     @NonNull
@@ -65,13 +70,15 @@ class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> impl
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ViewHolder thisHolder = (ViewHolder) holder;
-        thisHolder.textName.setText(localDataSet[position]);
+        thisHolder.textName.setText(NameSet[position]);
+        thisHolder.textTag.setText(TagSet[position]);
+        thisHolder.textInfo.setText(InfoSet[position]);
     }
 
     @Override
     public int getItemCount() {
         try{
-            return localDataSet.length;
+            return NameSet.length;
         }catch (Exception e){
             return 0;
         }

@@ -21,21 +21,17 @@ public class ShowInfo extends AppCompatActivity {
         TextView imageDetail = (TextView) findViewById(R.id.image_details);
         imageDetail.setVisibility(View.GONE);
 
-        String[] res = getIntent().getStringArrayExtra("itemName");
-        Log.d(ShowResult.class.getSimpleName(), "인텐트 가져옴 "+res.length+"개");
-        RecyclerAdapter adapter = new RecyclerAdapter(res);
+        String name = getIntent().getStringExtra("itemName");
+        String tag = getIntent().getStringExtra("tag");
+        String info = getIntent().getStringExtra("info");
+        Log.d(ShowResult.class.getSimpleName(), "인텐트 가져옴: "+name);
+        String[] nameLst = {name};
+        String[] tagLst = {tag};
+        String[] infoLst= {info};
+        RecyclerAdapter adapter = new RecyclerAdapter(nameLst, tagLst, infoLst);
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setAdapter(adapter);
     }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Intent intent = new Intent(this, ImageLoadActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
 }
