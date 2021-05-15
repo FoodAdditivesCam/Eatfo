@@ -31,6 +31,22 @@ class SplitTest {
         for(int i = 0; i<txtLst.length; i++) {
             String[] strlst = txtLst[i].split(" ");
             for(int j = 0; j<strlst.length;j++) {
+                if(strlst[j].contains("(")){
+                    String[] tmp = strlst[j].split("\\(");
+                    for(int k=0; k<tmp.length; k++){
+                        txtLst2.add(tmp[k]);
+                    }
+                    if(!strlst[j].contains(")")){
+                        continue;
+                    }
+                }
+                if(strlst[j].contains(")")){
+                    String[] tmp = strlst[j].split("\\)");
+                    for(int k=0; k<tmp.length; k++){
+                        txtLst2.add(tmp[k]);
+                    }
+                    continue;
+                }
                 txtLst2.add(strlst[j]);
             }
         }

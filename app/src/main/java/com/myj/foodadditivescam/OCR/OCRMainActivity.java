@@ -275,7 +275,7 @@ public class OCRMainActivity extends AppCompatActivity{
                     // result += resultAPI(sym);
                 }
 
-                intent.putExtra("itemName", resArr);
+                intent.putExtra("data", res);
                 return result; //result
 
             } catch (GoogleJsonResponseException e) {
@@ -289,20 +289,20 @@ public class OCRMainActivity extends AppCompatActivity{
 
         // doInBackGround()가 정상적으로 완료된 경우 호출되는 함수
         protected void onPostExecute(String result) {
-            com.myj.foodadditivescam.OCR.OCRMainActivity activity = mActivityWeakReference.get();
-            if (activity != null && !activity.isFinishing()) {
-                Log.d("minjeong","이미지로드 boundary: "+boundary);
-                Paint paint = new Paint();
-                paint.setColor(Color.RED);
-                paint.setStrokeWidth(7f);
-                Canvas canvas = new Canvas(bitmap);
-                for(int box=0;box<boundary.size();box+=8){ // -7?
-                    canvas.drawLine((float)boundary.get(box), (float)boundary.get(box+1),(float)boundary.get(box+2),(float)boundary.get(box+3),paint);
-                    canvas.drawLine((float)boundary.get(box+4), (float)boundary.get(box+5),(float)boundary.get(box+2),(float)boundary.get(box+3),paint);
-                    canvas.drawLine((float)boundary.get(box+6), (float)boundary.get(box+7),(float)boundary.get(box+4),(float)boundary.get(box+5),paint);
-                    canvas.drawLine((float)boundary.get(box), (float)boundary.get(box+1),(float)boundary.get(box+6), (float)boundary.get(box+7),paint);
-                }
-            }
+//            com.myj.foodadditivescam.OCR.OCRMainActivity activity = mActivityWeakReference.get();
+//            if (activity != null && !activity.isFinishing()) {
+//                Log.d("minjeong","이미지로드 boundary: "+boundary);
+//                Paint paint = new Paint();
+//                paint.setColor(Color.RED);
+//                paint.setStrokeWidth(7f);
+//                Canvas canvas = new Canvas(bitmap);
+//                for(int box=0;box<boundary.size();box+=8){ // -7?
+//                    canvas.drawLine((float)boundary.get(box), (float)boundary.get(box+1),(float)boundary.get(box+2),(float)boundary.get(box+3),paint);
+//                    canvas.drawLine((float)boundary.get(box+4), (float)boundary.get(box+5),(float)boundary.get(box+2),(float)boundary.get(box+3),paint);
+//                    canvas.drawLine((float)boundary.get(box+6), (float)boundary.get(box+7),(float)boundary.get(box+4),(float)boundary.get(box+5),paint);
+//                    canvas.drawLine((float)boundary.get(box), (float)boundary.get(box+1),(float)boundary.get(box+6), (float)boundary.get(box+7),paint);
+//                }
+//            }
 
             startActivity(intent);
             finish();
