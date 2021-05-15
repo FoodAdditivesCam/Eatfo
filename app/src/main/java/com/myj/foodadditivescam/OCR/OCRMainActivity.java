@@ -275,7 +275,7 @@ public class OCRMainActivity extends AppCompatActivity{
                     // result += resultAPI(sym);
                 }
 
-                intent.putExtra("itemName", resArr);
+                intent.putExtra("data", res);
                 return result; //result
 
             } catch (GoogleJsonResponseException e) {

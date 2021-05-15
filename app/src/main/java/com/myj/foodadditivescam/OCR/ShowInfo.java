@@ -18,17 +18,14 @@ public class ShowInfo extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_info);
-        TextView imageDetail = (TextView) findViewById(R.id.image_details);
-        imageDetail.setVisibility(View.GONE);
 
-        String name = getIntent().getStringExtra("itemName");
-        String tag = getIntent().getStringExtra("tag");
-        String info = getIntent().getStringExtra("info");
-        Log.d(ShowResult.class.getSimpleName(), "인텐트 가져옴: "+name);
-        String[] nameLst = {name};
-        String[] tagLst = {tag};
-        String[] infoLst= {info};
-        RecyclerAdapter adapter = new RecyclerAdapter(nameLst, tagLst, infoLst);
+        String[] name = getIntent().getStringArrayExtra("itemName");
+        String[] tag = getIntent().getStringArrayExtra("tag");
+        String[] info = getIntent().getStringArrayExtra("info");
+
+        Log.d(ShowResult.class.getSimpleName(), "인텐트 가져옴: "+name.length + "개");
+
+        RecyclerAdapter adapter = new RecyclerAdapter(name, tag, info);
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
