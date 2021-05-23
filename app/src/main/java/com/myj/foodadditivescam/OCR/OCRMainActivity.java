@@ -74,6 +74,12 @@ import com.myj.foodadditivescam.search.Symspell;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.android.OpenCVLoader;
+import org.opencv.android.Utils;
+import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
 
 public class OCRMainActivity extends AppCompatActivity{
     private static final String CLOUD_VISION_API_KEY = "AIzaSyAZhmCpNXx_rXSAhnGLN_MR2U7EH3X5n88";
@@ -97,6 +103,17 @@ public class OCRMainActivity extends AppCompatActivity{
     private Context mContext;
     Intent intent;
 
+    static {
+        System.loadLibrary("opencv_java4");
+    }
+
+//    if (!OpenCVLoader.initDebug()){
+//        Log.e("OpenCv", "Unable to load OpenCV");
+//    }
+//    else{
+//        Log.d("OpenCv", "OpenCV loaded");
+//    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +121,9 @@ public class OCRMainActivity extends AppCompatActivity{
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mContext =  this.getApplicationContext();
+
+        // OpenCV load
+        OpenCVLoad();
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
@@ -136,6 +156,26 @@ public class OCRMainActivity extends AppCompatActivity{
         startActivity(intent);
         finish();
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // opencv load
+        OpenCVLoad();
+    }
+    // LoaderCallback
+    private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(mContext) {
+        @Override
+        public void onManagerConnected(int status) {
+            switch (status) {
+                case LoaderCallbackInterface.SUCCESS:
+                    Log.i(TAG, "OpenCV loaded successfully");
+                    break;
+                default:
+                    super.onManagerConnected(status);
+                    break;
+            }
+        }
+    };
 
     public void uploadImage(Uri uri) {
         if (uri != null) {
@@ -147,10 +187,18 @@ public class OCRMainActivity extends AppCompatActivity{
                                 MAX_DIMENSION);
 
                 // api 시작
-                callCloudVision(bitmap);
+//                callCloudVision(bitmap);
+
+                // 이미지 전처리
+                Bitmap grayBitmap=bitmap;
+                Log.d(TAG, "isOpenCvLoaded: "+ isOpenCvLoaded);
+                grayBitmap = GrayScaling(bitmap);
+//                grayBitmap = detectEdge(bitmap);
+                // api 시작
+                callCloudVision(grayBitmap);
 
                 // 이미지 로드
-                mMainImage.setImageBitmap(bitmap);
+                mMainImage.setImageBitmap(grayBitmap); //bitmap
 
             } catch (IOException e) {
                 Log.d(TAG, "Image picking failed because " + e.getMessage());
@@ -459,6 +507,88 @@ public class OCRMainActivity extends AppCompatActivity{
         }
 
         return result;
+    }
+
+    //opencv
+    private void OpenCVLoad(){
+        if (!OpenCVLoader.initDebug()) {
+            Log.d(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
+            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION, mContext, mLoaderCallback);
+        } else {
+            Log.d(TAG, "OpenCV library found inside package. Using it!");
+            mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
+            isOpenCvLoaded = true;
+        }
+    }
+    private Bitmap GrayScaling(Bitmap bitmap){
+        Bitmap grayBitmap=bitmap;
+        if( isOpenCvLoaded ) {
+            Log.d(TAG, "into GrayScaling");
+            // gray scaling
+            try {
+                Bitmap tempbitmap=bitmap;
+                Mat gray = new Mat();
+                Utils.bitmapToMat(tempbitmap, gray);
+
+                Imgproc.cvtColor(gray, gray, Imgproc.COLOR_RGBA2GRAY);
+
+                grayBitmap = Bitmap.createBitmap(gray.cols(), gray.rows(), Bitmap.Config.ARGB_8888);
+                Utils.matToBitmap(gray, grayBitmap);
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return grayBitmap;
+    }
+    private Bitmap Threshold(Bitmap bitmap){
+        Bitmap thresBitmap=bitmap;
+        if( isOpenCvLoaded ) {
+            Log.d(TAG, "into Threshold");
+            // gray scaling
+            try {
+                Bitmap tempbitmap=bitmap;
+                Mat thres = new Mat();
+                Utils.bitmapToMat(tempbitmap, thres);
+
+//                Imgproc.threshold(thres, thres, 150, 255, Imgproc.THRESH_BINARY);
+
+//                Imgproc.GaussianBlur(thres,thres, new Size(5,5), 0);
+//                Imgproc.threshold(thres, thres, 0, 255, Imgproc.THRESH_BINARY+Imgproc.THRESH_OTSU);
+
+//                Imgproc.adaptiveThreshold(thres, thres, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C,Imgproc.THRESH_BINARY,21,5);
+
+//                Imgproc.adaptiveThreshold(thres, thres, 255, Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C,Imgproc.THRESH_BINARY,5,10); //21,5
+
+                thresBitmap = Bitmap.createBitmap(thres.cols(), thres.rows(), Bitmap.Config.ARGB_8888);
+                Utils.matToBitmap(thres, thresBitmap);
+            }catch (Exception e) {
+                e.printStackTrace();
+                Log.d(TAG, "Threshold error: "+e);
+            }
+        }
+        return thresBitmap;
+    }
+    private Bitmap detectEdge(Bitmap bitmap){
+        Bitmap edgeBitmap=bitmap;
+        if( isOpenCvLoaded ) {
+            Log.d(TAG, "into detectEdge");
+            // gray scaling
+            try {
+                Bitmap tempbitmap=bitmap;
+                Mat edge = new Mat();
+                Utils.bitmapToMat(tempbitmap, edge);
+                Mat canny = new Mat();
+
+                Imgproc.Canny(edge, canny, 100, 150);
+
+                edgeBitmap = Bitmap.createBitmap(canny.cols(), canny.rows(), Bitmap.Config.ARGB_8888);
+                Utils.matToBitmap(canny, edgeBitmap);
+                Log.d(TAG, "into detectEdge1");
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return edgeBitmap;
     }
 
 }
