@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.myj.foodadditivescam.R;
 import com.myj.foodadditivescam.search.SearchAPI;
@@ -43,29 +44,35 @@ public class ShowResult extends AppCompatActivity {
 //        }
 
         LinearLayout linearLayout = findViewById(R.id.linearLayout2);
-        for(int i = 2; i<res.length; i++){
-            Button tagBtn = new Button(this);
-            tagBtn.setId(i);
-            tagBtn.setText(res[i]);
-            tagBtn.setHeight(ConstraintLayout.LayoutParams.WRAP_CONTENT);
-            linearLayout.addView(tagBtn);
 
-            String[] nameLst= {res[i], res[i], res[i], res[i], res[i]};
-            String[] tagLst= {"태그", "태그, 태그", "태그, 태그, 태그", "태그, 태그, 태그, 태그", "태그, 태그, 태그, 태그, 태그"};
-            String[] infoLst= {res[i]+"입니다.", res[i]+"입니다.", res[i]+"입니다.", res[i]+"입니다.", res[i]+"입니다."};
+        if(res[2].equals("nothing")){
+            TextView nothing = new TextView(this);
+            nothing.setText("검색 결과가 없습니다.");
+            linearLayout.addView(nothing);
+        }else {
+            for (int i = 2; i < res.length; i++) {
+                Button tagBtn = new Button(this);
+                tagBtn.setId(i);
+                tagBtn.setText(res[i]);
+                tagBtn.setHeight(ConstraintLayout.LayoutParams.WRAP_CONTENT);
+                linearLayout.addView(tagBtn);
 
-            tagBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getApplicationContext(), ShowInfo.class);
-                    intent.putExtra("itemName", nameLst);
-                    intent.putExtra("tag", tagLst);
-                    intent.putExtra("info", infoLst);
-                    startActivity(intent);
-                }
-            });
+                String[] nameLst = {res[i], res[i], res[i], res[i], res[i]};
+                String[] tagLst = {"태그", "태그, 태그", "태그, 태그, 태그", "태그, 태그, 태그, 태그", "태그, 태그, 태그, 태그, 태그"};
+                String[] infoLst = {res[i] + "입니다.", res[i] + "입니다.", res[i] + "입니다.", res[i] + "입니다.", res[i] + "입니다."};
+
+                tagBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getApplicationContext(), ShowInfo.class);
+                        intent.putExtra("itemName", nameLst);
+                        intent.putExtra("tag", tagLst);
+                        intent.putExtra("info", infoLst);
+                        startActivity(intent);
+                    }
+                });
+            }
         }
-
     }
 
     @Override
