@@ -132,11 +132,11 @@ public class OCRMainActivity extends AppCompatActivity{
             finish();
         });
 
-        if(getIntent()!=null) {
+        Uri imageUri = (Uri) getIntent().getParcelableExtra("imageUri");
+        if(imageUri != null) {
             mImageDetails = findViewById(R.id.image_details);
             mMainImage = findViewById(R.id.main_image);
 
-            Uri imageUri = (Uri) getIntent().getParcelableExtra("imageUri");
 
             Log.d("minjeong", "uri:  " + imageUri);
 
