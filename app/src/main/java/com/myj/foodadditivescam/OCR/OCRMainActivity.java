@@ -322,6 +322,7 @@ public class OCRMainActivity extends AppCompatActivity{
                     // 네이버 백과사전 API 검색
                     // result += resultAPI(sym);
                 }
+                Log.d(TAG, "오타교정 끝");
 
                 intent.putExtra("data", res);
                 return result; //result
@@ -337,6 +338,7 @@ public class OCRMainActivity extends AppCompatActivity{
 
         // doInBackGround()가 정상적으로 완료된 경우 호출되는 함수
         protected void onPostExecute(String result) {
+            Log.d(TAG, "이제 결과 화면으로 넘어갈거임");
 //            com.myj.foodadditivescam.OCR.OCRMainActivity activity = mActivityWeakReference.get();
 //            if (activity != null && !activity.isFinishing()) {
 //                Log.d("minjeong","이미지로드 boundary: "+boundary);
