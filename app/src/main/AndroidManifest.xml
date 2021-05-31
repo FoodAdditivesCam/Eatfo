@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".OCR.ShowInfo"></activity>
+        <activity android:name=".getUserData"></activity>
+        <activity android:name=".OCR.ShowInfo" />
         <activity android:name=".OCR.ShowResult" />
         <activity android:name=".OCR.CropperActivity" />
 
