@@ -70,6 +70,7 @@ import java.util.List;
 
 import com.myj.foodadditivescam.search.SearchAPI;
 import com.myj.foodadditivescam.search.Symspell;
+import com.myj.foodadditivescam.search.GetResult;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -316,8 +317,9 @@ public class OCRMainActivity extends AppCompatActivity{
                 // 성분 개수 오타 교정 후 백과사전에 검색
                 String result = null;
                 for(int i=0; i<resArr.length;i++){
-                    String sym = symspell(resArr[i]);
-                    result += sym + "\n";
+                    // String sym = symspell(resArr[i]);
+                    getResult(resArr);
+                    // result += sym + "\n";
 
                     // 네이버 백과사전 API 검색
                     // result += resultAPI(sym);
@@ -470,6 +472,25 @@ public class OCRMainActivity extends AppCompatActivity{
         }
 
         return result;
+    }
+
+    private static String getResult(String[] resArr) {
+        JSONObject obj = new JSONObject();
+        List<String> list = new ArrayList<String>();
+        for(int i = 0; i < resArr.length; i++) {
+            list.add(resArr[i]);
+        }
+
+        try {
+            obj.accumulate("input", list);
+        } catch(Exception e) {
+            System.out.print(e.toString());
+        }
+        System.out.println(obj);
+
+        JSONObject json = GetResult.POST(obj);
+
+        return json.toString();
     }
 
     private static String symspell(String input) {
