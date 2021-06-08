@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 
-import com.myj.foodadditivescam.OCR.OCRMainActivity;
+import com.myj.foodadditivescam.OCR.ImageLoadActivity;
 
 public class Splash extends AppCompatActivity {
 
@@ -32,7 +32,7 @@ public class Splash extends AppCompatActivity {
             }else{
                 //최초실행이 아니면 OCRMainActivity 실행
                 Log.d("Is first Time?", "not first");
-                intent = new Intent(this, OCRMainActivity.class);
+                intent = new Intent(this, ImageLoadActivity.class);
             }
 
             startActivity(intent);
