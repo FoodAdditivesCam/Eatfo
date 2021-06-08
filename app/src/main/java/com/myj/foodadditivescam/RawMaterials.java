@@ -1,6 +1,9 @@
 package com.myj.foodadditivescam;
 
-public class RawMaterials {
+import java.io.Serializable;
+
+public class RawMaterials implements Serializable {
+    private static final long serialVersionUID = 1L;
     private int id;
     private String name;
     private String description;
@@ -12,7 +15,7 @@ public class RawMaterials {
     private String reference;
     private String link;
 
-    RawMaterials(int id, String name, String description, String tag1, String tag2, String tag3, String tag4, String tag5, String reference, String link){
+    public RawMaterials(int id, String name, String description, String tag1, String tag2, String tag3, String tag4, String tag5, String reference, String link){
         this.id = id;
         this.name = name;
         this.description = description;
@@ -25,23 +28,44 @@ public class RawMaterials {
         this.link = link;
     }
 
-    String getName(){
+    public int getId(){
+        return id;
+    }
+
+    public String getName(){
         return name;
     }
 
-    String getDescription(){
+    public String getDescription(){
         return description;
     }
 
-    String getReference(){
+    public String getReference(){
         return reference;
     }
 
-    String getLink(){
+    public String getLink(){
         return link;
     }
 
-    String[] getTags(){
-        return new String[]{tag1, tag2, tag3, tag4, tag5};
+    public String getTags(){
+        String res="";
+
+        if(!tag1.equals("null")){
+            res+=tag1;
+        }
+        if(!tag2.equals("null")){
+            res+=tag2;
+        }
+        if(!tag3.equals("null")){
+            res+=tag3;
+        }
+        if(!tag4.equals("null")){
+            res+=tag4;
+        }
+        if(!tag5.equals("null")){
+            res+=tag5;
+        }
+        return res;
     }
 }
