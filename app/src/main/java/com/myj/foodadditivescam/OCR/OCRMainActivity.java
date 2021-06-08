@@ -16,16 +16,9 @@
 
 package com.myj.foodadditivescam.OCR;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -35,11 +28,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,13 +52,13 @@ import com.myj.foodadditivescam.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import com.myj.foodadditivescam.RawMaterials;
+import com.myj.foodadditivescam.result.ShowResult;
 import com.myj.foodadditivescam.search.SearchAPI;
 import com.myj.foodadditivescam.search.Symspell;
 import com.myj.foodadditivescam.search.GetResult;
@@ -146,9 +136,6 @@ public class OCRMainActivity extends AppCompatActivity{
             uploadImage(imageUri);
         }
 
-        //intent.putExtra("itemName", );
-        //intent.putExtra("tag", );
-        //intent.putExtra("info", );
     }
 
     @Override
