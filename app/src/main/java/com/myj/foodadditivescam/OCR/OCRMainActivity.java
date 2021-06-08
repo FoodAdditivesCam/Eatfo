@@ -302,11 +302,11 @@ public class OCRMainActivity extends AppCompatActivity{
                 String[] resArr = splitString(convertResponseToString(response));
                 List<String> wordsArr = responseToList(response);
 
-                String word = "";
-                for(int i=0;i<wordsArr.size();i++){
-                    word+=(wordsArr.get(i)+"\n");
-                }
-                Log.d("wordsArr", "<<ocr에서 직접 split된 결과>>\n"+word);
+//                String word = "";
+//                for(int i=0;i<wordsArr.size();i++){
+//                    word+=(wordsArr.get(i)+"\n");
+//                }
+//                Log.d("wordsArr", "<<ocr에서 직접 split된 결과>>\n"+word);
 
                 for(int i=0; i<resArr.length;i++){
                     res+=resArr[i];
@@ -315,19 +315,21 @@ public class OCRMainActivity extends AppCompatActivity{
                 Log.d("wordsArr", "<<직접 텍스트 처리한 결과>>\n"+res);
 
                 // 성분 개수 오타 교정 후 백과사전에 검색
-                String result = null;
-                for(int i=0; i<resArr.length;i++){
-                    // String sym = symspell(resArr[i]);
-                    getResult(resArr);
-                    // result += sym + "\n";
-
-                    // 네이버 백과사전 API 검색
-                    // result += resultAPI(sym);
-                }
+//                String result = null;
+//                for(int i=0; i<resArr.length;i++){
+//                    // String sym = symspell(resArr[i]);
+////                    getResult(resArr);
+//                    // result += sym + "\n";
+//
+//                    // 네이버 백과사전 API 검색
+//                    // result += resultAPI(sym);
+//                }
+                // server db data
+                String fin_list = getResult(resArr);
                 Log.d(TAG, "오타교정 끝");
 
                 intent.putExtra("data", res);
-                return result; //result
+                return res; //result
 
             } catch (GoogleJsonResponseException e) {
                 Log.d(TAG, "failed to make API request because " + e.getContent());
@@ -477,6 +479,7 @@ public class OCRMainActivity extends AppCompatActivity{
     private static String getResult(String[] resArr) {
         JSONObject obj = new JSONObject();
         List<String> list = new ArrayList<String>();
+        String score="";
         for(int i = 0; i < resArr.length; i++) {
             list.add(resArr[i]);
         }
@@ -484,13 +487,20 @@ public class OCRMainActivity extends AppCompatActivity{
         try {
             obj.accumulate("input", list);
         } catch(Exception e) {
-            System.out.print(e.toString());
+            System.out.print("obj.accumulate err"+e.toString());
         }
         System.out.println(obj);
 
         JSONObject json = GetResult.POST(obj);
+        try {
+            Log.d("ocr-result","result 들어왔으!!"+json.toString());
+            score =  json.getString("scores");
+            Log.d("ocr-result", score);
+        }catch(Exception e) {
+            System.out.print("ocr-result"+e.toString());
+        }
 
-        return json.toString();
+        return score;
     }
 
     private static String symspell(String input) {
