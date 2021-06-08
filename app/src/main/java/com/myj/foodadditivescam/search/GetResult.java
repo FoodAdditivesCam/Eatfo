@@ -16,7 +16,7 @@ public class GetResult {
     public static JSONObject POST(JSONObject input) {
         JSONObject json = null;
         try{
-            URL url = new URL("http://10.0.2.2/result"); // 3.35.255.25:80
+            URL url = new URL("http://3.35.255.25:80/result"); // 3.35.255.25:80
             HttpURLConnection urlConn = (HttpURLConnection)url.openConnection();
             urlConn.setRequestMethod("POST");
             urlConn.setRequestProperty("Accept-Charset", "utf-8"); // Accept-Charset 설정.
