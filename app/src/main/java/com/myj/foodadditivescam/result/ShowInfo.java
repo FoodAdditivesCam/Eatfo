@@ -1,15 +1,13 @@
-package com.myj.foodadditivescam.OCR;
+package com.myj.foodadditivescam.result;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
 
+import com.myj.foodadditivescam.OCR.RecyclerAdapter;
 import com.myj.foodadditivescam.R;
 
 public class ShowInfo extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package com.myj.foodadditivescam.OCR;
+package com.myj.foodadditivescam.result;
 
 import android.view.View;
 

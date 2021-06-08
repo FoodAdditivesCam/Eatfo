@@ -1,30 +1,17 @@
-package com.myj.foodadditivescam.OCR;
+package com.myj.foodadditivescam.result;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
 
+import com.myj.foodadditivescam.OCR.ImageLoadActivity;
 import com.myj.foodadditivescam.R;
 import com.myj.foodadditivescam.RawMaterials;
-import com.myj.foodadditivescam.search.SearchAPI;
-import com.myj.foodadditivescam.search.Symspell;
-import com.myj.foodadditivescam.wordCloud;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 
 public class ShowResult extends AppCompatActivity {
 
