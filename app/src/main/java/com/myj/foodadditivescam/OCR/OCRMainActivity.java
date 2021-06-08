@@ -68,6 +68,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.myj.foodadditivescam.RawMaterials;
 import com.myj.foodadditivescam.search.SearchAPI;
 import com.myj.foodadditivescam.search.Symspell;
 import com.myj.foodadditivescam.search.GetResult;
@@ -325,16 +326,37 @@ public class OCRMainActivity extends AppCompatActivity{
 //                    // result += resultAPI(sym);
 //                }
                 // server db data
-                String fin_list = getResult(resArr);
-                Log.d(TAG, "오타교정 끝");
+                JSONArray fin_list = new JSONArray(getResult(resArr));
 
-                intent.putExtra("data", res);
+                //fin_list에 들어있는 데이터를 꺼내서 객체 만들어가지고 객체 배열에 저장
+                RawMaterials[] rms = new RawMaterials[fin_list.length()];
+
+                for(int i=0; i<fin_list.length(); i++){
+                    JSONObject jsonObject = fin_list.getJSONObject(i);
+                    RawMaterials rm = new RawMaterials(jsonObject.getInt("id"),
+                            jsonObject.getString("name"),
+                            jsonObject.getString("description"),
+                            jsonObject.getString("tag1"),
+                            jsonObject.getString("tag2"),
+                            jsonObject.getString("tag3"),
+                            jsonObject.getString("tag4"),
+                            jsonObject.getString("tag5"),
+                            jsonObject.getString("reference"),
+                            jsonObject.getString("link"));
+                    rms[i] = rm;
+                }
+
+                //intent.putExtra("data", res);
+                intent.putExtra("rms", rms);
                 return res; //result
 
             } catch (GoogleJsonResponseException e) {
                 Log.d(TAG, "failed to make API request because " + e.getContent());
             } catch (IOException e) {
                 Log.d(TAG, "failed to make API request because of other IOException " +
+                        e.getMessage());
+            } catch (JSONException e) {
+                Log.d(TAG, "failed to change JsonObject " +
                         e.getMessage());
             }
             return "Cloud Vision API request failed. Check logs for details.";
