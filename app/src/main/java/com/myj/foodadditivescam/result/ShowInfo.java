@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.myj.foodadditivescam.OCR.RecyclerAdapter;
 import com.myj.foodadditivescam.R;
 
 public class ShowInfo extends AppCompatActivity {
