@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
 import com.myj.foodadditivescam.OCR.ImageLoadActivity;
 import com.myj.foodadditivescam.R;
 import com.myj.foodadditivescam.RawMaterials;
@@ -23,6 +24,7 @@ public class ShowResult extends AppCompatActivity {
 
         //인텐트로 넘어온 원재료 정보 객체 리스트 가져오기
         RawMaterials[] rms = (RawMaterials[]) getIntent().getSerializableExtra("rms");
+        String url = (String) getIntent().getSerializableExtra("url");
 
         //태그 리스트 만들기
         String tags="";
@@ -30,9 +32,9 @@ public class ShowResult extends AppCompatActivity {
             tags+=rm.getTags()+" ";
         }
 //        wordCloud wcd = new wordCloud();
-//        ImageView imageView = (ImageView) findViewById(R.id.imageView);
+        ImageView imageView = (ImageView) findViewById(R.id.imageView);
 //        //태그 리스트 주고 워드클라우드 그려서 imageView 수정해주기
-//        imageView.setImageBitmap(wcd.createWordCloud(tags));
+        Glide.with(this).load(url).into(imageView);
 
         LinearLayout linearLayout = findViewById(R.id.linearLayout2);
         for (RawMaterials rm : rms) {
