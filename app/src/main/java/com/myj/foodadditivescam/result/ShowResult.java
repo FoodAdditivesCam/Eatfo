@@ -13,7 +13,6 @@ import com.bumptech.glide.Glide;
 import com.myj.foodadditivescam.OCR.ImageLoadActivity;
 import com.myj.foodadditivescam.R;
 import com.myj.foodadditivescam.RawMaterials;
-import com.myj.foodadditivescam.wordCloud.wordCloud;
 
 public class ShowResult extends AppCompatActivity {
 
@@ -31,9 +30,8 @@ public class ShowResult extends AppCompatActivity {
         for(RawMaterials rm : rms){
             tags+=rm.getTags()+" ";
         }
-//        wordCloud wcd = new wordCloud();
         ImageView imageView = (ImageView) findViewById(R.id.imageView);
-//        //태그 리스트 주고 워드클라우드 그려서 imageView 수정해주기
+        //태그 리스트 주고 워드클라우드 그려서 imageView 수정해주기
         Glide.with(this).load(url).into(imageView);
 
         LinearLayout linearLayout = findViewById(R.id.linearLayout2);
