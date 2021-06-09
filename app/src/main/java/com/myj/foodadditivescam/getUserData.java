@@ -17,7 +17,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import com.myj.foodadditivescam.OCR.OCRMainActivity;
+import com.myj.foodadditivescam.OCR.ImageLoadActivity;
 
 public class getUserData extends AppCompatActivity {
 
@@ -216,7 +216,7 @@ public class getUserData extends AppCompatActivity {
 //                    Log.d("checked values: ", str);
 
                 //OCRMainActivity 실행
-                Intent intent = new Intent(v.getContext(), OCRMainActivity.class);
+                Intent intent = new Intent(v.getContext(), ImageLoadActivity.class);
                 startActivity(intent);
                 finish();
             }else{  //라디오버튼 체크 안했으면

@@ -1,6 +1,5 @@
-package com.myj.foodadditivescam.OCR;
+package com.myj.foodadditivescam.result;
 
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
