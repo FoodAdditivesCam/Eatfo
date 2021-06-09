@@ -23,6 +23,7 @@ public class ShowResult extends AppCompatActivity {
 
         //인텐트로 넘어온 원재료 정보 객체 리스트 가져오기
         RawMaterials[] rms = (RawMaterials[]) getIntent().getSerializableExtra("rms");
+        String url = (String) getIntent().getSerializableExtra("url");
 
         //태그 리스트 만들기
         String tags="";

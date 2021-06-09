@@ -313,7 +313,9 @@ public class OCRMainActivity extends AppCompatActivity{
 //                    // result += resultAPI(sym);
 //                }
                 // server db data
-                JSONArray fin_list = new JSONArray(getResult(resArr));
+                String rs[] = getResult(resArr);
+                String url = rs[1];
+                JSONArray fin_list = new JSONArray(rs[0]);
 
                 //fin_list에 들어있는 데이터를 꺼내서 객체 만들어가지고 객체 배열에 저장
                 RawMaterials[] rms = new RawMaterials[fin_list.length()];
@@ -335,6 +337,7 @@ public class OCRMainActivity extends AppCompatActivity{
 
                 //intent.putExtra("data", res);
                 intent.putExtra("rms", rms);
+                intent.putExtra("url", url);
                 return res; //result
 
             } catch (GoogleJsonResponseException e) {
@@ -485,10 +488,11 @@ public class OCRMainActivity extends AppCompatActivity{
         return result;
     }
 
-    private static String getResult(String[] resArr) {
+    private static String[] getResult(String[] resArr) {
         JSONObject obj = new JSONObject();
         List<String> list = new ArrayList<String>();
-        String score="";
+        String score = "";
+        String url = "";
         for(int i = 0; i < resArr.length; i++) {
             list.add(resArr[i]);
         }
@@ -504,12 +508,13 @@ public class OCRMainActivity extends AppCompatActivity{
         try {
             Log.d("ocr-result","result 들어왔으!!"+json.toString());
             score =  json.getString("scores");
+            url = json.getString("url");
             Log.d("ocr-result", score);
         }catch(Exception e) {
             System.out.print("ocr-result"+e.toString());
         }
-
-        return score;
+        String result[] = {score, url};
+        return result;
     }
 
     private static String symspell(String input) {
