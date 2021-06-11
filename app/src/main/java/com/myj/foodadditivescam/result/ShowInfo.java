@@ -27,15 +27,23 @@ public class ShowInfo extends AppCompatActivity {
         List<String> finalname=new ArrayList<String>();
         List<String> finaltag=new ArrayList<String>();
         List<String> finalinfo=new ArrayList<String>();
-        // 해당 태그가 있는 원재료만 그 태그를 누르면 보여짐
-        for (RawMaterials rm : rms) {
-            String[] splitarr = rm.getTags().split(" ");
-            for (int i=0; i<splitarr.length;i++) {
-                if(splitarr[i].equals(tag[0])) {
-                    finalname.add(rm.getName());
-                    finaltag.add(rm.getTags());
-                    finalinfo.add(rm.getDescription() + "\n\n출처: " + rm.getReference());
-                    break;
+        if (tag[0].equals("전체 원재료")){
+            for (RawMaterials rm : rms) {
+                finalname.add(rm.getName());
+                finaltag.add(rm.getTags());
+                finalinfo.add(rm.getDescription() + "\n\n출처: " + rm.getReference());
+            }
+        }else {
+            // 해당 태그가 있는 원재료만 그 태그를 누르면 보여짐
+            for (RawMaterials rm : rms) {
+                String[] splitarr = rm.getTags().split(" ");
+                for (int i = 0; i < splitarr.length; i++) {
+                    if (splitarr[i].equals(tag[0])) {
+                        finalname.add(rm.getName());
+                        finaltag.add(rm.getTags());
+                        finalinfo.add(rm.getDescription() + "\n\n출처: " + rm.getReference());
+                        break;
+                    }
                 }
             }
         }
