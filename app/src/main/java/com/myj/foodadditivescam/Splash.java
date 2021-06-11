@@ -23,6 +23,7 @@ public class Splash extends AppCompatActivity {
             Intent intent;
             SharedPreferences pref = getSharedPreferences("isFirst", Activity.MODE_PRIVATE);
             boolean first = pref.getBoolean("isFirst", false);
+
             if(!first){ //최초실행일 경우
                 Log.d("Is first Time?", "first");
 
@@ -30,7 +31,7 @@ public class Splash extends AppCompatActivity {
                 intent = new Intent(this, getUserData.class);
 
             }else{
-                //최초실행이 아니면 OCRMainActivity 실행
+                //최초실행이 아니면 ImageLoadActivity 실행
                 Log.d("Is first Time?", "not first");
                 intent = new Intent(this, ImageLoadActivity.class);
             }

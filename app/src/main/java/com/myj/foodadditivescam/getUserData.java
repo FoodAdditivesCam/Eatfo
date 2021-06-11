@@ -61,7 +61,7 @@ public class getUserData extends AppCompatActivity {
                 //버튼 색 변경 후
                 btn1.setBackgroundColor(Color.WHITE);
                 //리스트에 있는 질병 명 삭제
-                checked.remove((String)btn1.getText());
+                checked.remove(btn1.getText());
             }
         });
         btn2.setOnClickListener(v -> {
@@ -72,7 +72,7 @@ public class getUserData extends AppCompatActivity {
             }else{
                 isClicked[1]=false;
                 btn2.setBackgroundColor(Color.WHITE);
-                checked.remove((String)btn2.getText());
+                checked.remove(btn2.getText());
             }
         });
         btn3.setOnClickListener(v -> {
@@ -83,7 +83,7 @@ public class getUserData extends AppCompatActivity {
             }else{
                 isClicked[2]=false;
                 btn3.setBackgroundColor(Color.WHITE);
-                checked.remove((String)btn3.getText());
+                checked.remove(btn3.getText());
             }
         });
         btn4.setOnClickListener(v -> {
@@ -94,7 +94,7 @@ public class getUserData extends AppCompatActivity {
             }else{
                 isClicked[3]=false;
                 btn4.setBackgroundColor(Color.WHITE);
-                checked.remove((String)btn4.getText());
+                checked.remove(btn4.getText());
             }
         });
         btn5.setOnClickListener(v -> {
@@ -105,7 +105,7 @@ public class getUserData extends AppCompatActivity {
             }else{
                 isClicked[4]=false;
                 btn5.setBackgroundColor(Color.WHITE);
-                checked.remove((String)btn5.getText());
+                checked.remove(btn5.getText());
             }
         });
         btn6.setOnClickListener(v -> {
@@ -116,7 +116,7 @@ public class getUserData extends AppCompatActivity {
             }else{
                 isClicked[5]=false;
                 btn6.setBackgroundColor(Color.WHITE);
-                checked.remove((String)btn6.getText());
+                checked.remove(btn6.getText());
             }
         });
         btn7.setOnClickListener(v -> {
@@ -127,7 +127,7 @@ public class getUserData extends AppCompatActivity {
             }else{
                 isClicked[6]=false;
                 btn7.setBackgroundColor(Color.WHITE);
-                checked.remove((String)btn7.getText());
+                checked.remove(btn7.getText());
             }
         });
         btn8.setOnClickListener(v -> {
@@ -138,7 +138,7 @@ public class getUserData extends AppCompatActivity {
             }else{
                 isClicked[7]=false;
                 btn8.setBackgroundColor(Color.WHITE);
-                checked.remove((String)btn8.getText());
+                checked.remove(btn8.getText());
             }
         });
         btn9.setOnClickListener(v -> {
@@ -149,7 +149,7 @@ public class getUserData extends AppCompatActivity {
             }else{
                 isClicked[8]=false;
                 btn9.setBackgroundColor(Color.WHITE);
-                checked.remove((String)btn9.getText());
+                checked.remove(btn9.getText());
             }
         });
         btn10.setOnClickListener(v -> {
@@ -160,7 +160,7 @@ public class getUserData extends AppCompatActivity {
             }else{
                 isClicked[9]=false;
                 btn10.setBackgroundColor(Color.WHITE);
-                checked.remove((String)btn10.getText());
+                checked.remove(btn10.getText());
             }
         });
         btn11.setOnClickListener(v -> {
@@ -171,7 +171,7 @@ public class getUserData extends AppCompatActivity {
             }else{
                 isClicked[10]=false;
                 btn11.setBackgroundColor(Color.WHITE);
-                checked.remove((String)btn11.getText());
+                checked.remove(btn11.getText());
             }
         });
         btn12.setOnClickListener(v -> {
@@ -182,7 +182,7 @@ public class getUserData extends AppCompatActivity {
             }else{
                 isClicked[11]=false;
                 btn12.setBackgroundColor(Color.WHITE);
-                checked.remove((String)btn12.getText());
+                checked.remove(btn12.getText());
             }
         });
 
@@ -215,7 +215,7 @@ public class getUserData extends AppCompatActivity {
 //                    }
 //                    Log.d("checked values: ", str);
 
-                //OCRMainActivity 실행
+                //ImageLoadActivity 실행
                 Intent intent = new Intent(v.getContext(), ImageLoadActivity.class);
                 startActivity(intent);
                 finish();
