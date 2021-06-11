@@ -1,5 +1,7 @@
 package com.myj.foodadditivescam.result;
 
+import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.myj.foodadditivescam.R;
 
+import java.util.List;
+
 class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements OnInfoClickListener {
-    private String[] NameSet;  //받아온 데이터
-    private String[] TagSet;  //받아온 데이터
-    private String[] InfoSet;  //받아온 데이터
+    private List<String> NameSet;  //받아온 데이터
+    private List<String> TagSet;  //받아온 데이터
+    private List<String> InfoSet;  //받아온 데이터
     OnInfoClickListener listener;
 
     @Override
@@ -30,7 +34,7 @@ class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> impl
         public TextView textInfo;   //설명
         public Button showBtn;      //보기 버튼
 
-        public ViewHolder(View view, final OnInfoClickListener listener) {
+        public ViewHolder(View view) {
             super(view);
             // Define click listener for the ViewHolder's View
             textName = (TextView) view.findViewById(R.id.itemName);
@@ -51,33 +55,33 @@ class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> impl
         }
     }
 
-    public RecyclerAdapter(String[] nameSet, String[] tagset, String[] infoSet){
+    public RecyclerAdapter(List<String> nameSet, List<String> tagset, List<String> infoSet){
         this.NameSet = nameSet;
         this.TagSet = tagset;
         this.InfoSet = infoSet;
     }
 
-    @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.info, parent, false);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Context context = parent.getContext() ;
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) ;
 
-        return new ViewHolder(view, this);
+        View view = inflater.inflate(R.layout.info, parent, false) ;
+        return new RecyclerAdapter.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ViewHolder thisHolder = (ViewHolder) holder;
-        thisHolder.textName.setText(NameSet[position]);
-        thisHolder.textTag.setText(TagSet[position]);
-        thisHolder.textInfo.setText(InfoSet[position]);
+        thisHolder.textName.setText(NameSet.get(position));
+        thisHolder.textTag.setText(TagSet.get(position));
+        thisHolder.textInfo.setText(InfoSet.get(position));
     }
 
     @Override
     public int getItemCount() {
         try{
-            return NameSet.length;
+            return NameSet.size();
         }catch (Exception e){
             return 0;
         }
