@@ -149,29 +149,22 @@
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp">
+        android:layout_marginBottom="50dp"
+        android:orientation="horizontal">
 
-        <LinearLayout
+        <RadioButton
+            android:id="@+id/yes"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:padding="10dp">
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="예" />
 
-            <RadioButton
-                android:id="@+id/yes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="예" />
-
-            <RadioButton
-                android:id="@+id/no"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="아니오" />
-
-        </LinearLayout>
+        <RadioButton
+            android:id="@+id/no"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="아니오" />
 
     </RadioGroup>
 
