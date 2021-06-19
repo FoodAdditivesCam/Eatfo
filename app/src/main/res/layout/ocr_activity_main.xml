@@ -7,46 +7,85 @@
     android:fitsSystemWindows="true"
     tools:context="com.myj.foodadditivescam.OCR.OCRMainActivity">
 
-    <include layout="@layout/content_main" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="30dp">
+
+        <ImageButton
+            android:id="@+id/backBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="30dp"
+            android:layout_weight="1"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/abc_vector_test" />
+
+        <TextView
+            android:id="@+id/image_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="라벨을 촬영하면 \n영양정보를 자동으로 분석합니다."
+            android:textColor="@color/colorPrimary"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/main_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="50dp"
+            android:layout_weight="8"
+            android:scaleType="fitCenter"
+            app:srcCompat="@mipmap/main_image" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/pickPicBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
         android:layout_margin="80dp"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/button_design"
         android:paddingLeft="30dp"
         android:paddingRight="30dp"
         android:text="사진 선택하기"
-        android:textColor="#FFFFFF" />
+        android:textColor="#FFFFFF"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/uploadBtn"
-        android:layout_width="match_parent"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_gravity="bottom|center"
+        android:layout_marginTop="30dp"
         android:layout_marginBottom="150dp"
-        android:backgroundTint="@color/colorPrimary"
+        android:background="@drawable/button_design"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
         android:text="업로드하기"
         android:textColor="#FFFFFF"
+        android:textStyle="bold"
         android:visibility="invisible" />
 
     <Button
         android:id="@+id/pickAgainBtn"
-        android:layout_width="match_parent"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginStart="10dp"
+        android:layout_gravity="bottom|center"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
         android:layout_marginBottom="80dp"
-        android:backgroundTint="#FFFFFF"
+        android:background="@drawable/button_design_white"
         android:text="다시 선택하기"
         android:textColor="@color/colorPrimary"
+        android:textStyle="bold"
         android:visibility="invisible" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
