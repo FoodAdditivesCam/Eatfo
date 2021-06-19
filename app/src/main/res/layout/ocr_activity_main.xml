@@ -15,7 +15,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
         android:layout_margin="80dp"
-        android:text="사진 선택하기" />
+        android:background="@color/colorPrimary"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:text="사진 선택하기"
+        android:textColor="#FFFFFF" />
 
     <Button
         android:id="@+id/uploadBtn"
@@ -26,7 +30,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="150dp"
-        android:backgroundTint="#0067A3"
+        android:backgroundTint="@color/colorPrimary"
         android:text="업로드하기"
         android:textColor="#FFFFFF"
         android:visibility="invisible" />
@@ -42,7 +46,7 @@
         android:layout_marginBottom="80dp"
         android:backgroundTint="#FFFFFF"
         android:text="다시 선택하기"
-        android:textColor="#0067A3"
+        android:textColor="@color/colorPrimary"
         android:visibility="invisible" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
