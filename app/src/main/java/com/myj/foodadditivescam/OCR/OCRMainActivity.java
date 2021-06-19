@@ -16,20 +16,24 @@
 
 package com.myj.foodadditivescam.OCR;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.FileProvider;
 
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,6 +55,7 @@ import com.google.api.services.vision.v1.model.Image;
 import com.myj.foodadditivescam.R;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -110,30 +115,52 @@ public class OCRMainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ocr_activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         mContext =  this.getApplicationContext();
 
         // OpenCV load
         OpenCVLoad();
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(view -> {
-            Intent intent2 = new Intent(this, ImageLoadActivity.class);
-            startActivity(intent2);
-            finish();
-        });
+        Button pickPicBtn = findViewById(R.id.pickPicBtn);
+        Button pickAgainBtn = findViewById(R.id.pickAgainBtn);
+        Button uploadBtn = findViewById(R.id.uploadBtn);
+        ImageButton backBtn = findViewById(R.id.backBtn);
+        TextView image_details = findViewById(R.id.image_details);
 
-        Uri imageUri = (Uri) getIntent().getParcelableExtra("imageUri");
+        pickPicBtn.setVisibility(View.VISIBLE);
+        pickAgainBtn.setVisibility(View.INVISIBLE);
+        uploadBtn.setVisibility(View.INVISIBLE);
+        backBtn.setVisibility(View.INVISIBLE);
+
+        Uri imageUri = getIntent().getParcelableExtra("imageUri");
+
         if(imageUri != null) {
             mImageDetails = findViewById(R.id.image_details);
             mMainImage = findViewById(R.id.main_image);
-
+            pickPicBtn.setVisibility(View.INVISIBLE);
+            image_details.setVisibility(View.INVISIBLE);
+            pickAgainBtn.setVisibility(View.VISIBLE);
+            uploadBtn.setVisibility(View.VISIBLE);
+            backBtn.setVisibility(View.VISIBLE);
 
             Log.d("minjeong", "uri:  " + imageUri);
 
             intent = new Intent(this, ShowResult.class);
-            uploadImage(imageUri);
+            Bitmap grayBitmap = uploadImage(imageUri);
+
+            //업로드하기 버튼 누르면
+            uploadBtn.setOnClickListener(view->{
+                // 클라우드비전 api 시작
+                callCloudVision(grayBitmap);
+            });
+
+            //뒤로가기 화살표 이미지버튼 누르면
+            backBtn.setOnClickListener(view->{
+                //이미지로드 액티비티 호출하여 OCR메인으로 돌아가기
+                Intent intent = new Intent(this, ImageLoadActivity.class);
+                startActivity(intent);
+                finish();
+            });
+
         }
 
     }
@@ -155,18 +182,15 @@ public class OCRMainActivity extends AppCompatActivity{
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(mContext) {
         @Override
         public void onManagerConnected(int status) {
-            switch (status) {
-                case LoaderCallbackInterface.SUCCESS:
-                    Log.i(TAG, "OpenCV loaded successfully");
-                    break;
-                default:
-                    super.onManagerConnected(status);
-                    break;
+            if (status == LoaderCallbackInterface.SUCCESS) {
+                Log.i(TAG, "OpenCV loaded successfully");
+            } else {
+                super.onManagerConnected(status);
             }
         }
     };
 
-    public void uploadImage(Uri uri) {
+    public Bitmap uploadImage(Uri uri) {
         if (uri != null) {
             try {
                 // scale the image to save on bandwidth
@@ -179,15 +203,14 @@ public class OCRMainActivity extends AppCompatActivity{
 //                callCloudVision(bitmap);
 
                 // 이미지 전처리
-                Bitmap grayBitmap=bitmap;
+                Bitmap grayBitmap = bitmap;
                 Log.d(TAG, "isOpenCvLoaded: "+ isOpenCvLoaded);
                 grayBitmap = GrayScaling(bitmap);
 //                grayBitmap = detectEdge(bitmap);
-                // api 시작
-                callCloudVision(grayBitmap);
 
                 // 이미지 로드
                 mMainImage.setImageBitmap(grayBitmap); //bitmap
+                return grayBitmap;
 
             } catch (IOException e) {
                 Log.d(TAG, "Image picking failed because " + e.getMessage());
@@ -197,6 +220,7 @@ public class OCRMainActivity extends AppCompatActivity{
             Log.d(TAG, "Image picker gave us a null image.");
             Toast.makeText(this, R.string.image_picker_error, Toast.LENGTH_LONG).show();
         }
+        return null;
     }
 
     private Vision.Images.Annotate prepareAnnotationRequest(Bitmap bitmap) throws IOException {
@@ -268,7 +292,7 @@ public class OCRMainActivity extends AppCompatActivity{
 
     private class LableDetectionTask extends AsyncTask<Object, Void, String> { //static
         private final WeakReference<OCRMainActivity> mActivityWeakReference;
-        private Vision.Images.Annotate mRequest;
+        private final Vision.Images.Annotate mRequest;
 
         LableDetectionTask(com.myj.foodadditivescam.OCR.OCRMainActivity activity, Vision.Images.Annotate annotate) {
             mActivityWeakReference = new WeakReference<>(activity);
@@ -377,8 +401,10 @@ public class OCRMainActivity extends AppCompatActivity{
 
     private void callCloudVision(final Bitmap bitmap) {
         // Switch text to loading
-        mImageDetails.setText(R.string.loading_message);
+        mImageDetails.setVisibility(View.INVISIBLE);
 
+        Button pickPicBtn = findViewById(R.id.pickPicBtn);
+        pickPicBtn.setVisibility(View.GONE);
         // Do the real work in an async task, because we need to use the network anyway
         try {
             AsyncTask<Object, Void, String> labelDetectionTask = new LableDetectionTask(this, prepareAnnotationRequest(bitmap));
