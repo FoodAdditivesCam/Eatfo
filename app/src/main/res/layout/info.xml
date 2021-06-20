@@ -27,6 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:fontFamily="@font/kopub_world_bold"
                 android:text="원재료 명"
                 android:textColor="#000000"
                 android:textColorHighlight="#FFFFFF"
@@ -36,6 +37,7 @@
                 android:id="@+id/tag"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/kopub_world_light"
                 android:text="태그"
                 android:textColor="@color/colorPrimaryDark" />
         </LinearLayout>
@@ -44,6 +46,7 @@
             android:id="@+id/showBtn"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/kopub_world_medium"
             android:text="보기" />
 
     </LinearLayout>
@@ -52,6 +55,7 @@
         android:id="@+id/info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/kopub_world_medium"
         android:text="설명"
         android:visibility="gone" />
 </LinearLayout>

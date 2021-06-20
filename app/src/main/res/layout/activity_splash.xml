@@ -11,6 +11,7 @@
         android:id="@+id/titleTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/kopub_world_bold"
         android:text="Eatfo"
         android:textColor="#FFFFFF"
         android:textSize="60sp"
