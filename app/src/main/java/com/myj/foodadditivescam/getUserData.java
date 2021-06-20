@@ -6,15 +6,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
-import android.widget.RadioButton;
-import android.widget.Toast;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import com.myj.foodadditivescam.OCR.ImageLoadActivity;
@@ -52,14 +48,16 @@ public class getUserData extends AppCompatActivity {
                 //선택됨으로 바꾸고
                 isClicked[0]=true;
                 //버튼 색 변경 후
-                btn1.setBackgroundColor(Color.LTGRAY);
+                btn1.setBackgroundResource(R.drawable.button_design);
+                btn1.setTextColor(Color.WHITE);
                 //리스트에 질병 명 추가
                 checked.add((String)btn1.getText());
             }else{  //선택되어있으면
                 //선택되지 않음으로 바꾸고
                 isClicked[0]=false;
                 //버튼 색 변경 후
-                btn1.setBackgroundColor(Color.WHITE);
+                btn1.setBackgroundResource(R.drawable.button_design_white);
+                btn1.setTextColor(Color.parseColor("#303F9F"));
                 //리스트에 있는 질병 명 삭제
                 checked.remove(btn1.getText());
             }
@@ -67,132 +65,198 @@ public class getUserData extends AppCompatActivity {
         btn2.setOnClickListener(v -> {
             if(!isClicked[1]){
                 isClicked[1]=true;
-                btn2.setBackgroundColor(Color.LTGRAY);
+
+                btn2.setBackgroundResource(R.drawable.button_design);
+                btn2.setTextColor(Color.WHITE);
+
                 checked.add((String)btn2.getText());
             }else{
                 isClicked[1]=false;
-                btn2.setBackgroundColor(Color.WHITE);
+
+                btn2.setBackgroundResource(R.drawable.button_design_white);
+                btn2.setTextColor(Color.parseColor("#303F9F"));
+
                 checked.remove(btn2.getText());
             }
         });
         btn3.setOnClickListener(v -> {
             if(!isClicked[2]){
                 isClicked[2]=true;
-                btn3.setBackgroundColor(Color.LTGRAY);
+
+                btn3.setBackgroundResource(R.drawable.button_design);
+                btn3.setTextColor(Color.WHITE);
+
                 checked.add((String)btn3.getText());
             }else{
                 isClicked[2]=false;
-                btn3.setBackgroundColor(Color.WHITE);
+
+                btn3.setBackgroundResource(R.drawable.button_design_white);
+                btn3.setTextColor(Color.parseColor("#303F9F"));
+
                 checked.remove(btn3.getText());
             }
         });
         btn4.setOnClickListener(v -> {
             if(!isClicked[3]){
                 isClicked[3]=true;
-                btn4.setBackgroundColor(Color.LTGRAY);
+
+                btn4.setBackgroundResource(R.drawable.button_design);
+                btn4.setTextColor(Color.WHITE);
+
                 checked.add((String)btn4.getText());
             }else{
                 isClicked[3]=false;
-                btn4.setBackgroundColor(Color.WHITE);
+
+                btn4.setBackgroundResource(R.drawable.button_design_white);
+                btn4.setTextColor(Color.parseColor("#303F9F"));
+
                 checked.remove(btn4.getText());
             }
         });
         btn5.setOnClickListener(v -> {
             if(!isClicked[4]){
                 isClicked[4]=true;
-                btn5.setBackgroundColor(Color.LTGRAY);
+
+                btn5.setBackgroundResource(R.drawable.button_design);
+                btn5.setTextColor(Color.WHITE);
+
                 checked.add((String)btn5.getText());
             }else{
                 isClicked[4]=false;
-                btn5.setBackgroundColor(Color.WHITE);
+
+                btn5.setBackgroundResource(R.drawable.button_design_white);
+                btn5.setTextColor(Color.parseColor("#303F9F"));
+
                 checked.remove(btn5.getText());
             }
         });
         btn6.setOnClickListener(v -> {
             if(!isClicked[5]){
                 isClicked[5]=true;
-                btn6.setBackgroundColor(Color.LTGRAY);
+
+                btn6.setBackgroundResource(R.drawable.button_design);
+                btn6.setTextColor(Color.WHITE);
+
                 checked.add((String)btn6.getText());
             }else{
                 isClicked[5]=false;
-                btn6.setBackgroundColor(Color.WHITE);
+
+                btn6.setBackgroundResource(R.drawable.button_design_white);
+                btn6.setTextColor(Color.parseColor("#303F9F"));
+
                 checked.remove(btn6.getText());
             }
         });
         btn7.setOnClickListener(v -> {
             if(!isClicked[6]){
                 isClicked[6]=true;
-                btn7.setBackgroundColor(Color.LTGRAY);
+
+                btn7.setBackgroundResource(R.drawable.button_design);
+                btn7.setTextColor(Color.WHITE);
+
                 checked.add((String)btn7.getText());
             }else{
                 isClicked[6]=false;
-                btn7.setBackgroundColor(Color.WHITE);
+
+                btn7.setBackgroundResource(R.drawable.button_design_white);
+                btn7.setTextColor(Color.parseColor("#303F9F"));
+
                 checked.remove(btn7.getText());
             }
         });
         btn8.setOnClickListener(v -> {
             if(!isClicked[7]){
                 isClicked[7]=true;
-                btn8.setBackgroundColor(Color.LTGRAY);
+
+                btn8.setBackgroundResource(R.drawable.button_design);
+                btn8.setTextColor(Color.WHITE);
+
                 checked.add((String)btn8.getText());
             }else{
                 isClicked[7]=false;
-                btn8.setBackgroundColor(Color.WHITE);
+
+                btn8.setBackgroundResource(R.drawable.button_design_white);
+                btn8.setTextColor(Color.parseColor("#303F9F"));
+
                 checked.remove(btn8.getText());
             }
         });
         btn9.setOnClickListener(v -> {
             if(!isClicked[8]){
                 isClicked[8]=true;
-                btn9.setBackgroundColor(Color.LTGRAY);
+
+                btn9.setBackgroundResource(R.drawable.button_design);
+                btn9.setTextColor(Color.WHITE);
+
                 checked.add((String)btn9.getText());
             }else{
                 isClicked[8]=false;
-                btn9.setBackgroundColor(Color.WHITE);
+
+                btn9.setBackgroundResource(R.drawable.button_design_white);
+                btn9.setTextColor(Color.parseColor("#303F9F"));
+
                 checked.remove(btn9.getText());
             }
         });
         btn10.setOnClickListener(v -> {
             if(!isClicked[9]){
                 isClicked[9]=true;
-                btn10.setBackgroundColor(Color.LTGRAY);
+
+                btn10.setBackgroundResource(R.drawable.button_design);
+                btn10.setTextColor(Color.WHITE);
+
                 checked.add((String)btn10.getText());
             }else{
                 isClicked[9]=false;
-                btn10.setBackgroundColor(Color.WHITE);
+
+                btn10.setBackgroundResource(R.drawable.button_design_white);
+                btn10.setTextColor(Color.parseColor("#303F9F"));
+
                 checked.remove(btn10.getText());
             }
         });
         btn11.setOnClickListener(v -> {
             if(!isClicked[10]){
                 isClicked[10]=true;
-                btn11.setBackgroundColor(Color.LTGRAY);
+
+                btn11.setBackgroundResource(R.drawable.button_design);
+                btn11.setTextColor(Color.WHITE);
+
                 checked.add((String)btn11.getText());
             }else{
                 isClicked[10]=false;
-                btn11.setBackgroundColor(Color.WHITE);
+
+                btn11.setBackgroundResource(R.drawable.button_design_white);
+                btn11.setTextColor(Color.parseColor("#303F9F"));
+
                 checked.remove(btn11.getText());
             }
         });
         btn12.setOnClickListener(v -> {
             if(!isClicked[11]){
                 isClicked[11]=true;
-                btn12.setBackgroundColor(Color.LTGRAY);
+
+                btn12.setBackgroundResource(R.drawable.button_design);
+                btn12.setTextColor(Color.WHITE);
+
                 checked.add((String)btn12.getText());
             }else{
                 isClicked[11]=false;
-                btn12.setBackgroundColor(Color.WHITE);
+
+                btn12.setBackgroundResource(R.drawable.button_design_white);
+                btn12.setTextColor(Color.parseColor("#303F9F"));
+
                 checked.remove(btn12.getText());
             }
         });
 
         //사용자가 완료 버튼을 누르면
         completeBtn.setOnClickListener(v -> {
-            RadioButton radioYes = findViewById(R.id.yes);
-            RadioButton radioNo = findViewById(R.id.no);
-
-            //라디오 버튼을 체크 했는지 확인
-            if(radioNo.isChecked() || radioYes.isChecked()){    //체크 했으면
+//            RadioButton radioYes = findViewById(R.id.yes);
+//            RadioButton radioNo = findViewById(R.id.no);
+//
+//            //라디오 버튼을 체크 했는지 확인
+//            if(radioNo.isChecked() || radioYes.isChecked()){    //체크 했으면
                 //최초실행 했다고 저장
                 SharedPreferences.Editor editor = pref.edit();
                 editor.putBoolean("isFirst",true);
@@ -202,10 +266,10 @@ public class getUserData extends AppCompatActivity {
                 editor.putStringSet("checked", checked);
                 editor.apply();
 
-                //크롤링 데이터 수신 여부 저장
-                editor.putBoolean("crawling", radioYes.isChecked());
-                editor.apply();
-
+//                //크롤링 데이터 수신 여부 저장
+//                editor.putBoolean("crawling", radioYes.isChecked());
+//                editor.apply();
+//
 //                    //제대로 클릭한거 저장됐는지 출력
 //                    String str = "";
 //                    Iterator<String> iterator = pref.getStringSet("checked", Collections.singleton("")).iterator();
@@ -219,9 +283,9 @@ public class getUserData extends AppCompatActivity {
                 Intent intent = new Intent(v.getContext(), ImageLoadActivity.class);
                 startActivity(intent);
                 finish();
-            }else{  //라디오버튼 체크 안했으면
-                Toast.makeText(getApplicationContext(), "크롤링 사용 여부를 선택해 주세요.", Toast.LENGTH_LONG).show();
-            }
+//            }else{  //라디오버튼 체크 안했으면
+//                Toast.makeText(getApplicationContext(), "크롤링 사용 여부를 선택해 주세요.", Toast.LENGTH_LONG).show();
+//            }
         });
 
     }

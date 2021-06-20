@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     android:orientation="vertical"
     android:padding="10dp"
     tools:context=".getUserData">
@@ -12,166 +13,202 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="관심있는 질병 또는 효능을 \n모두 선택해 주세요."
-        android:textSize="24sp" />
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:gravity="center"
+        android:text="관심있는 질병 또는 효능을 \n선택해 주세요."
+        android:textColor="@color/colorPrimary"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:padding="2dp">
 
         <Button
             android:id="@+id/btn1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@android:color/background_light"
-            android:text="충치" />
+            android:layout_height="40dp"
+            android:layout_margin="2dp"
+            android:background="@drawable/button_design_white"
+            android:text="소화불량" />
 
         <Button
             android:id="@+id/btn2"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@android:color/background_light"
-            android:text="심장질환" />
+            android:layout_height="40dp"
+            android:layout_margin="2dp"
+            android:background="@drawable/button_design_white"
+            android:text="충치" />
 
         <Button
             android:id="@+id/btn3"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@android:color/background_light"
-            android:text="당뇨병" />
+            android:layout_height="40dp"
+            android:layout_margin="2dp"
+            android:background="@drawable/button_design_white"
+            android:text="변비" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="2dp">
 
         <Button
             android:id="@+id/btn4"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@android:color/background_light"
-            android:text="유방암" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp">
+            android:layout_height="40dp"
+            android:layout_margin="2dp"
+            android:background="@drawable/button_design_white"
+            android:text="빈혈" />
 
         <Button
             android:id="@+id/btn5"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@android:color/background_light"
-            android:text="고혈압" />
+            android:layout_height="40dp"
+            android:layout_margin="2dp"
+            android:background="@drawable/button_design_white"
+            android:text="당뇨" />
 
         <Button
             android:id="@+id/btn6"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@android:color/background_light"
-            android:text="위암" />
+            android:layout_height="40dp"
+            android:layout_margin="2dp"
+            android:background="@drawable/button_design_white"
+            android:text="혈당" />
 
         <Button
             android:id="@+id/btn7"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@android:color/background_light"
-            android:text="소화" />
-
-        <Button
-            android:id="@+id/btn8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@android:color/background_light"
-            android:text="혈당" />
+            android:layout_height="40dp"
+            android:layout_margin="2dp"
+            android:background="@drawable/button_design_white"
+            android:text="고혈압" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:padding="2dp">
+
+        <Button
+            android:id="@+id/btn8"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_margin="2dp"
+            android:background="@drawable/button_design_white"
+            android:text="위암" />
 
         <Button
             android:id="@+id/btn9"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@android:color/background_light"
-            android:text="빈혈" />
+            android:layout_height="40dp"
+            android:layout_margin="2dp"
+            android:background="@drawable/button_design_white"
+            android:text="직장암" />
 
         <Button
             android:id="@+id/btn10"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@android:color/background_light"
-            android:text="변비" />
+            android:layout_height="40dp"
+            android:layout_margin="2dp"
+            android:background="@drawable/button_design_white"
+            android:text="유방암" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="2dp">
 
         <Button
             android:id="@+id/btn11"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@android:color/background_light"
-            android:text="직장암" />
+            android:layout_height="40dp"
+            android:layout_margin="2dp"
+            android:background="@drawable/button_design_white"
+            android:text="심장질환" />
 
         <Button
             android:id="@+id/btn12"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@android:color/background_light"
+            android:layout_height="40dp"
+            android:layout_margin="2dp"
+            android:background="@drawable/button_design_white"
             android:text="골다공증" />
     </LinearLayout>
 
+    <!--
     <TextView
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:layout_marginTop="50dp"
+        android:gravity="center"
         android:text="크롤링 데이터를 받아보시겠습니까?"
+        android:textColor="@color/colorPrimary"
         android:textSize="24sp" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="크롤링 데이터는 일부 부정확한 정보를 포함할 수 있습니다." />
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="크롤링 데이터는 일부 부정확한 정보를 포함할 수 있습니다."
+        android:textColor="#4A4A4A" />
 
     <RadioGroup
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
-        android:orientation="horizontal">
+        android:layout_gravity="center"
+        android:foregroundGravity="center"
+        android:orientation="vertical"
+        android:padding="30dp">
 
         <RadioButton
             android:id="@+id/yes"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="예" />
+            android:text="네! 정보를 받아볼게요!"
+            android:textColor="#4A4A4A" />
 
         <RadioButton
             android:id="@+id/no"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="아니오" />
+            android:text="아니요, 괜찮습니다!"
+            android:textColor="#4A4A4A" />
 
     </RadioGroup>
-
+-->
     <Button
         android:id="@+id/completeBtn"
-        android:layout_width="match_parent"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:text="완료" />
+        android:layout_gravity="bottom|center"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/button_design"
+        android:text="시작하기"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold" />
 
 </LinearLayout>
