@@ -297,7 +297,7 @@ public class getUserData extends AppCompatActivity {
                 editor.apply();
                 //클한 버튼의 정보를 저장한 int 배열을 string으로 변환 후 sharedPreference에 저장
                 String stringForIntArray = Arrays.toString(checkList);
-                editor.putBoolean("index", Boolean.parseBoolean(stringForIntArray));
+                editor.putString("index", stringForIntArray);
                 editor.apply();
 
 //                //크롤링 데이터 수신 여부 저장
