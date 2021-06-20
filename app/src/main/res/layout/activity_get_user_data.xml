@@ -1,214 +1,277 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    android:orientation="vertical"
-    android:padding="10dp"
-    tools:context=".getUserData">
+    tools:context=".getUserData"
+    android:gravity="bottom"
+    app:umanoDragView="@id/dragView"
+    app:umanoPanelHeight="120dp"
+    app:umanoOverlay="false"
+    app:umanoParallaxOffset="200dp"
+    app:umanoShadowHeight="10dp">
 
-    <TextView
-        android:id="@+id/textView"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary">
+
+
+        <TextView
+            android:id="@+id/helloTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="64dp"
+            android:fontFamily="@font/kopub_world_bold"
+            android:text="반갑습니다!"
+            android:textColor="#FFFFFF"
+            android:textSize="34sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/explainTxt"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/explainTxt"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="44dp"
+            android:fontFamily="@font/kopub_world_bold"
+            android:gravity="center_horizontal"
+            android:text="앱 설명이 들어가면 좋을 것 같음"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/helloTxt" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/dragView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/sliding_up_panel"
+        android:orientation="vertical"
+        android:padding="10dp"
+        tools:context=".getUserData">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="40dp"
+            android:fontFamily="@font/kopub_world_bold"
+            android:gravity="center"
+            android:text="관심있는 질병 또는 효능을 \n선택해 주세요."
+            android:textColor="@color/colorPrimary"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="2dp">
+
+            <Button
+                android:id="@+id/btn1"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_margin="2dp"
+                android:background="@drawable/button_design_white"
+                android:fontFamily="@font/kopub_world_medium"
+                android:text="소화불량" />
+
+            <Button
+                android:id="@+id/btn2"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_margin="2dp"
+                android:background="@drawable/button_design_white"
+                android:fontFamily="@font/kopub_world_medium"
+                android:text="충치" />
+
+            <Button
+                android:id="@+id/btn3"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_margin="2dp"
+                android:background="@drawable/button_design_white"
+                android:fontFamily="@font/kopub_world_medium"
+                android:text="변비" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="2dp">
+
+            <Button
+                android:id="@+id/btn4"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_margin="2dp"
+                android:background="@drawable/button_design_white"
+                android:fontFamily="@font/kopub_world_medium"
+                android:text="빈혈" />
+
+            <Button
+                android:id="@+id/btn5"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_margin="2dp"
+                android:background="@drawable/button_design_white"
+                android:fontFamily="@font/kopub_world_medium"
+                android:text="당뇨" />
+
+            <Button
+                android:id="@+id/btn6"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_margin="2dp"
+                android:background="@drawable/button_design_white"
+                android:fontFamily="@font/kopub_world_medium"
+                android:text="혈당" />
+
+            <Button
+                android:id="@+id/btn7"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_margin="2dp"
+                android:background="@drawable/button_design_white"
+                android:fontFamily="@font/kopub_world_medium"
+                android:text="고혈압" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="2dp">
+
+            <Button
+                android:id="@+id/btn8"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_margin="2dp"
+                android:background="@drawable/button_design_white"
+                android:fontFamily="@font/kopub_world_medium"
+                android:text="위암" />
+
+            <Button
+                android:id="@+id/btn9"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_margin="2dp"
+                android:background="@drawable/button_design_white"
+                android:fontFamily="@font/kopub_world_medium"
+                android:text="직장암" />
+
+            <Button
+                android:id="@+id/btn10"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_margin="2dp"
+                android:background="@drawable/button_design_white"
+                android:fontFamily="@font/kopub_world_medium"
+                android:text="유방암" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="2dp">
+
+            <Button
+                android:id="@+id/btn11"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_margin="2dp"
+                android:background="@drawable/button_design_white"
+                android:fontFamily="@font/kopub_world_medium"
+                android:text="심장질환" />
+
+            <Button
+                android:id="@+id/btn12"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_margin="2dp"
+                android:background="@drawable/button_design_white"
+                android:fontFamily="@font/kopub_world_medium"
+                android:text="골다공증" />
+        </LinearLayout>
+
+        <!--
+<TextView
+    android:id="@+id/textView2"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:layout_marginTop="50dp"
+    android:gravity="center"
+    android:text="크롤링 데이터를 받아보시겠습니까?"
+    android:textColor="@color/colorPrimary"
+    android:textSize="24sp" />
+
+<TextView
+    android:id="@+id/textView3"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:layout_marginTop="10dp"
+    android:gravity="center"
+    android:text="크롤링 데이터는 일부 부정확한 정보를 포함할 수 있습니다."
+    android:textColor="#4A4A4A" />
+
+<RadioGroup
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:foregroundGravity="center"
+    android:orientation="vertical"
+    android:padding="30dp">
+
+    <RadioButton
+        android:id="@+id/yes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp"
-        android:gravity="center"
-        android:text="관심있는 질병 또는 효능을 \n선택해 주세요."
-        android:textColor="@color/colorPrimary"
-        android:textSize="24sp"
-        android:textStyle="bold" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="2dp">
-
-        <Button
-            android:id="@+id/btn1"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_margin="2dp"
-            android:background="@drawable/button_design_white"
-            android:text="소화불량" />
-
-        <Button
-            android:id="@+id/btn2"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_margin="2dp"
-            android:background="@drawable/button_design_white"
-            android:text="충치" />
-
-        <Button
-            android:id="@+id/btn3"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_margin="2dp"
-            android:background="@drawable/button_design_white"
-            android:text="변비" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="2dp">
-
-        <Button
-            android:id="@+id/btn4"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_margin="2dp"
-            android:background="@drawable/button_design_white"
-            android:text="빈혈" />
-
-        <Button
-            android:id="@+id/btn5"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_margin="2dp"
-            android:background="@drawable/button_design_white"
-            android:text="당뇨" />
-
-        <Button
-            android:id="@+id/btn6"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_margin="2dp"
-            android:background="@drawable/button_design_white"
-            android:text="혈당" />
-
-        <Button
-            android:id="@+id/btn7"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_margin="2dp"
-            android:background="@drawable/button_design_white"
-            android:text="고혈압" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="2dp">
-
-        <Button
-            android:id="@+id/btn8"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_margin="2dp"
-            android:background="@drawable/button_design_white"
-            android:text="위암" />
-
-        <Button
-            android:id="@+id/btn9"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_margin="2dp"
-            android:background="@drawable/button_design_white"
-            android:text="직장암" />
-
-        <Button
-            android:id="@+id/btn10"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_margin="2dp"
-            android:background="@drawable/button_design_white"
-            android:text="유방암" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="2dp">
-
-        <Button
-            android:id="@+id/btn11"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_margin="2dp"
-            android:background="@drawable/button_design_white"
-            android:text="심장질환" />
-
-        <Button
-            android:id="@+id/btn12"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_margin="2dp"
-            android:background="@drawable/button_design_white"
-            android:text="골다공증" />
-    </LinearLayout>
-
-    <!--
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginTop="50dp"
-        android:gravity="center"
-        android:text="크롤링 데이터를 받아보시겠습니까?"
-        android:textColor="@color/colorPrimary"
-        android:textSize="24sp" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:text="크롤링 데이터는 일부 부정확한 정보를 포함할 수 있습니다."
+        android:layout_weight="1"
+        android:text="네! 정보를 받아볼게요!"
         android:textColor="#4A4A4A" />
 
-    <RadioGroup
+    <RadioButton
+        android:id="@+id/no"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:foregroundGravity="center"
-        android:orientation="vertical"
-        android:padding="30dp">
+        android:layout_weight="1"
+        android:text="아니요, 괜찮습니다!"
+        android:textColor="#4A4A4A" />
 
-        <RadioButton
-            android:id="@+id/yes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="네! 정보를 받아볼게요!"
-            android:textColor="#4A4A4A" />
-
-        <RadioButton
-            android:id="@+id/no"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="아니요, 괜찮습니다!"
-            android:textColor="#4A4A4A" />
-
-    </RadioGroup>
+</RadioGroup>
 -->
-    <Button
-        android:id="@+id/completeBtn"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/button_design"
-        android:text="시작하기"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold" />
+        <Button
+            android:id="@+id/completeBtn"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/button_design"
+            android:fontFamily="@font/kopub_world_medium"
+            android:text="시작하기"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
 
-</LinearLayout>
+    </LinearLayout>
+</com.sothree.slidinguppanel.SlidingUpPanelLayout>
