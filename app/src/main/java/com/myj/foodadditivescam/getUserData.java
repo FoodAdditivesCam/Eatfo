@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.widget.Button;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -42,7 +43,7 @@ public class getUserData extends AppCompatActivity {
         Button btn12 = findViewById(R.id.btn12); // 골다공증 11
         Boolean[] isClicked;
         isClicked = new Boolean[]{false, false, false, false, false, false, false, false, false, false, false, false};
-        ArrayList checkList = new ArrayList();
+        int[] checkList = new int[11];
 
         //질병 버튼 클릭 시
         btn1.setOnClickListener(v -> { // 소화불량 6
@@ -54,8 +55,8 @@ public class getUserData extends AppCompatActivity {
                 btn1.setTextColor(Color.WHITE);
                 //리스트에 질병 명 추가
                 checked.add((String)btn1.getText());
-                //서버로 보낼 인덱스 추가
-                checkList.add(6, 1);
+                //서버로 보낼 인덱스 추가(1이면 선택)
+                checkList[6] = 1;
             }else{  //선택되어있으면
                 //선택되지 않음으로 바꾸고
                 isClicked[0]=false;
@@ -65,7 +66,7 @@ public class getUserData extends AppCompatActivity {
                 //리스트에 있는 질병 명 삭제
                 checked.remove(btn1.getText());
                 //리스트에 있는 인덱스 삭제
-                checkList.add(6, 0);
+                checkList[6] = 0;
             }
         });
         btn2.setOnClickListener(v -> { // 충치 0
@@ -76,7 +77,7 @@ public class getUserData extends AppCompatActivity {
                 btn2.setTextColor(Color.WHITE);
 
                 checked.add((String)btn2.getText());
-                checkList.add(0, 1);
+                checkList[0] = 1;
 
             }else{
                 isClicked[1]=false;
@@ -85,7 +86,7 @@ public class getUserData extends AppCompatActivity {
                 btn2.setTextColor(Color.parseColor("#303F9F"));
 
                 checked.remove(btn2.getText());
-                checkList.add(6, 0);
+                checkList[0] = 0;
             }
         });
         btn3.setOnClickListener(v -> { // 변비 9
@@ -96,7 +97,7 @@ public class getUserData extends AppCompatActivity {
                 btn3.setTextColor(Color.WHITE);
 
                 checked.add((String)btn3.getText());
-                checkList.add(9, 1);
+                checkList[9] = 1;
             }else{
                 isClicked[2]=false;
 
@@ -104,7 +105,7 @@ public class getUserData extends AppCompatActivity {
                 btn3.setTextColor(Color.parseColor("#303F9F"));
 
                 checked.remove(btn3.getText());
-                checkList.add(9, 0);
+                checkList[9] = 0;
             }
         });
         btn4.setOnClickListener(v -> { // 빈혈 8
@@ -115,7 +116,7 @@ public class getUserData extends AppCompatActivity {
                 btn4.setTextColor(Color.WHITE);
 
                 checked.add((String)btn4.getText());
-                checkList.add(8, 1);
+                checkList[8] = 1;
             }else{
                 isClicked[3]=false;
 
@@ -123,7 +124,7 @@ public class getUserData extends AppCompatActivity {
                 btn4.setTextColor(Color.parseColor("#303F9F"));
 
                 checked.remove(btn4.getText());
-                checkList.add(8, 0;
+                checkList[8] = 0;
             }
         });
         btn5.setOnClickListener(v -> { // 당뇨 2
@@ -134,7 +135,7 @@ public class getUserData extends AppCompatActivity {
                 btn5.setTextColor(Color.WHITE);
 
                 checked.add((String)btn5.getText());
-                checkList.add(2, 1);
+                checkList[2] = 1;
             }else{
                 isClicked[4]=false;
 
@@ -142,7 +143,7 @@ public class getUserData extends AppCompatActivity {
                 btn5.setTextColor(Color.parseColor("#303F9F"));
 
                 checked.remove(btn5.getText());
-                checkList.add(2, 0);
+                checkList[2] = 0;
             }
         });
         btn6.setOnClickListener(v -> { // 혈당 7
@@ -153,7 +154,7 @@ public class getUserData extends AppCompatActivity {
                 btn6.setTextColor(Color.WHITE);
 
                 checked.add((String)btn6.getText());
-                checkList.add(7, 1);
+                checkList[7] = 1;
             }else{
                 isClicked[5]=false;
 
@@ -161,7 +162,7 @@ public class getUserData extends AppCompatActivity {
                 btn6.setTextColor(Color.parseColor("#303F9F"));
 
                 checked.remove(btn6.getText());
-                checkList.add(7, 0);
+                checkList[7] = 0;
             }
         });
         btn7.setOnClickListener(v -> { // 고혈압 4
@@ -172,7 +173,7 @@ public class getUserData extends AppCompatActivity {
                 btn7.setTextColor(Color.WHITE);
 
                 checked.add((String)btn7.getText());
-                checkList.add(4, 1);
+                checkList[4] = 1;
             }else{
                 isClicked[6]=false;
 
@@ -180,7 +181,7 @@ public class getUserData extends AppCompatActivity {
                 btn7.setTextColor(Color.parseColor("#303F9F"));
 
                 checked.remove(btn7.getText());
-                checkList.add(4, 0);
+                checkList[4] = 0;
             }
         });
         btn8.setOnClickListener(v -> { // 위암 5
@@ -191,7 +192,7 @@ public class getUserData extends AppCompatActivity {
                 btn8.setTextColor(Color.WHITE);
 
                 checked.add((String)btn8.getText());
-                checkList.add(5, 1);
+                checkList[5] = 1;
             }else{
                 isClicked[7]=false;
 
@@ -199,7 +200,7 @@ public class getUserData extends AppCompatActivity {
                 btn8.setTextColor(Color.parseColor("#303F9F"));
 
                 checked.remove(btn8.getText());
-                checkList.add(5, 0);
+                checkList[5] = 0;
             }
         });
         btn9.setOnClickListener(v -> { // 직장암 10
@@ -210,7 +211,7 @@ public class getUserData extends AppCompatActivity {
                 btn9.setTextColor(Color.WHITE);
 
                 checked.add((String)btn9.getText());
-                checkList.add(10, 1);
+                checkList[10] = 1;
             }else{
                 isClicked[8]=false;
 
@@ -218,7 +219,7 @@ public class getUserData extends AppCompatActivity {
                 btn9.setTextColor(Color.parseColor("#303F9F"));
 
                 checked.remove(btn9.getText());
-                checkList.add(10, 0);
+                checkList[10] = 0;
             }
         });
         btn10.setOnClickListener(v -> { // 유방암 3
@@ -229,7 +230,7 @@ public class getUserData extends AppCompatActivity {
                 btn10.setTextColor(Color.WHITE);
 
                 checked.add((String)btn10.getText());
-                checkList.add(3, 1);
+                checkList[3] = 1;
             }else{
                 isClicked[9]=false;
 
@@ -237,7 +238,7 @@ public class getUserData extends AppCompatActivity {
                 btn10.setTextColor(Color.parseColor("#303F9F"));
 
                 checked.remove(btn10.getText());
-                checkList.add(3, 0);
+                checkList[3] = 0;
             }
         });
         btn11.setOnClickListener(v -> { // 심장질환 1
@@ -248,7 +249,7 @@ public class getUserData extends AppCompatActivity {
                 btn11.setTextColor(Color.WHITE);
 
                 checked.add((String)btn11.getText());
-                checkList.add(1, 1);
+                checkList[1] = 1;
             }else{
                 isClicked[10]=false;
 
@@ -256,7 +257,7 @@ public class getUserData extends AppCompatActivity {
                 btn11.setTextColor(Color.parseColor("#303F9F"));
 
                 checked.remove(btn11.getText());
-                checkList.add(1, 0);
+                checkList[1] = 1;
             }
         });
         btn12.setOnClickListener(v -> { // 골다공증 11
@@ -267,7 +268,7 @@ public class getUserData extends AppCompatActivity {
                 btn12.setTextColor(Color.WHITE);
 
                 checked.add((String)btn12.getText());
-                checkList.add(11, 1);
+                checkList[11] = 1;
             }else{
                 isClicked[11]=false;
 
@@ -275,7 +276,7 @@ public class getUserData extends AppCompatActivity {
                 btn12.setTextColor(Color.parseColor("#303F9F"));
 
                 checked.remove(btn12.getText());
-                checkList.add(11, 0);
+                checkList[11] = 0;
             }
         });
 
@@ -293,6 +294,10 @@ public class getUserData extends AppCompatActivity {
 
                 //클릭한 버튼의 정보를 저장한 String Set을 sharedPreference에 저장
                 editor.putStringSet("checked", checked);
+                editor.apply();
+                //클한 버튼의 정보를 저장한 int 배열을 string으로 변환 후 sharedPreference에 저장
+                String stringForIntArray = Arrays.toString(checkList);
+                editor.putBoolean("index", Boolean.parseBoolean(stringForIntArray));
                 editor.apply();
 
 //                //크롤링 데이터 수신 여부 저장
