@@ -51,4 +51,7 @@ dependencies {
     // opencv 4.3.0
     implementation 'com.quickbirdstudios:opencv:4.3.0'
     implementation 'com.github.bumptech.glide:glide:4.9.0'
+
+    // 슬라이딩 페이지
+    implementation 'com.sothree.slidinguppanel:library:3.4.0'
 }
