@@ -27,18 +27,18 @@ public class getUserData extends AppCompatActivity {
         Set<String> checked = new HashSet<String>();   //사용자가 체크한 버튼의 텍스트를 저장할 리스트
         pref.getStringSet("checked", checked);
         Button completeBtn = findViewById(R.id.completeBtn);    //완료 버튼
-        Button btn1 = findViewById(R.id.btn1);
-        Button btn2 = findViewById(R.id.btn2);
-        Button btn3 = findViewById(R.id.btn3);
-        Button btn4 = findViewById(R.id.btn4);
-        Button btn5 = findViewById(R.id.btn5);
-        Button btn6 = findViewById(R.id.btn6);
-        Button btn7 = findViewById(R.id.btn7);
-        Button btn8 = findViewById(R.id.btn8);
-        Button btn9 = findViewById(R.id.btn9);
-        Button btn10 = findViewById(R.id.btn10);
-        Button btn11 = findViewById(R.id.btn11);
-        Button btn12 = findViewById(R.id.btn12);
+        Button btn1 = findViewById(R.id.btn1); // 소화불량
+        Button btn2 = findViewById(R.id.btn2); // 충치
+        Button btn3 = findViewById(R.id.btn3); // 변비
+        Button btn4 = findViewById(R.id.btn4); // 빈혈
+        Button btn5 = findViewById(R.id.btn5); // 당뇨
+        Button btn6 = findViewById(R.id.btn6); // 혈당
+        Button btn7 = findViewById(R.id.btn7); // 고혈압
+        Button btn8 = findViewById(R.id.btn8); // 위암
+        Button btn9 = findViewById(R.id.btn9); // 직장암
+        Button btn10 = findViewById(R.id.btn10); // 유방암
+        Button btn11 = findViewById(R.id.btn11); // 심장질환
+        Button btn12 = findViewById(R.id.btn12); // 골다공증
         Boolean[] isClicked;
         isClicked = new Boolean[]{false, false, false, false, false, false, false, false, false, false, false, false};
 
