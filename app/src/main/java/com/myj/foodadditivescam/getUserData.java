@@ -43,7 +43,7 @@ public class getUserData extends AppCompatActivity {
         Button btn12 = findViewById(R.id.btn12); // 골다공증 11
         Boolean[] isClicked;
         isClicked = new Boolean[]{false, false, false, false, false, false, false, false, false, false, false, false};
-        int[] checkList = new int[11];
+        int[] checkList = new int[12];
 
         //질병 버튼 클릭 시
         btn1.setOnClickListener(v -> { // 소화불량 6

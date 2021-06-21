@@ -527,18 +527,19 @@ public class OCRMainActivity extends AppCompatActivity{
 
         SharedPreferences pref = getSharedPreferences("isFirst", Activity.MODE_PRIVATE);
         String weight = pref.getString("index", "");
-        String str = "";
-        String[] array_word = weight.split(""); // 한 글자씩 잘라 저장
-        for(int i = 0; i < array_word.length; i++) {
-            str += array_word[i];
-            if(i != weight.length()-1) {
-                str += ",";
-            }
-        }
+        System.out.println(weight);
+//        String[] array_word = weight.split(""); // 한 글자씩 잘라 저장
+//        System.out.println(array_word);
+//        for(int i = 0; i < array_word.length; i++) {
+//            str += array_word[i];
+//            if(i != weight.length()-1) {
+//                str += ",";
+//            }
+//        }
 
         try {
             obj.accumulate("input", list);
-            obj.accumulate("weight", str);
+            obj.accumulate("weight", weight);
         } catch(Exception e) {
             System.out.print("obj.accumulate err"+e.toString());
         }
