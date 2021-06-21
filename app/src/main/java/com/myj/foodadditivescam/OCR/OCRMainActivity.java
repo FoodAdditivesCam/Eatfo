@@ -16,28 +16,29 @@
 
 package com.myj.foodadditivescam.OCR;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.FileProvider;
 
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.HttpTransport;
@@ -52,10 +53,10 @@ import com.google.api.services.vision.v1.model.BatchAnnotateImagesResponse;
 import com.google.api.services.vision.v1.model.EntityAnnotation;
 import com.google.api.services.vision.v1.model.Feature;
 import com.google.api.services.vision.v1.model.Image;
+import com.myj.foodadditivescam.ProgressDialog;
 import com.myj.foodadditivescam.R;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -94,6 +95,13 @@ public class OCRMainActivity extends AppCompatActivity{
 
     private TextView mImageDetails;
     private ImageView mMainImage;
+    private Button pickPicBtn;
+    private Button pickAgainBtn;
+    private Button uploadBtn;
+    private ImageButton backBtn;
+
+    private ProgressDialog customProgressDialog;
+
     private Bitmap bitmap;
     private List boundary=new ArrayList<List>();
     private boolean isOpenCvLoaded = false;
@@ -120,11 +128,10 @@ public class OCRMainActivity extends AppCompatActivity{
         // OpenCV load
         OpenCVLoad();
 
-        Button pickPicBtn = findViewById(R.id.pickPicBtn);
-        Button pickAgainBtn = findViewById(R.id.pickAgainBtn);
-        Button uploadBtn = findViewById(R.id.uploadBtn);
-        ImageButton backBtn = findViewById(R.id.backBtn);
-        TextView image_details = findViewById(R.id.image_details);
+        pickPicBtn = findViewById(R.id.pickPicBtn);
+        pickAgainBtn = findViewById(R.id.pickAgainBtn);
+        uploadBtn = findViewById(R.id.uploadBtn);
+        backBtn = findViewById(R.id.backBtn);
 
         pickPicBtn.setVisibility(View.VISIBLE);
         pickAgainBtn.setVisibility(View.INVISIBLE);
@@ -136,8 +143,9 @@ public class OCRMainActivity extends AppCompatActivity{
         if(imageUri != null) {
             mImageDetails = findViewById(R.id.image_details);
             mMainImage = findViewById(R.id.main_image);
+
             pickPicBtn.setVisibility(View.INVISIBLE);
-            image_details.setVisibility(View.INVISIBLE);
+            mImageDetails.setVisibility(View.INVISIBLE);
             pickAgainBtn.setVisibility(View.VISIBLE);
             uploadBtn.setVisibility(View.VISIBLE);
             backBtn.setVisibility(View.VISIBLE);
@@ -151,6 +159,20 @@ public class OCRMainActivity extends AppCompatActivity{
             uploadBtn.setOnClickListener(view->{
                 // 클라우드비전 api 시작
                 callCloudVision(grayBitmap);
+
+//                LayoutInflater inflater = getLayoutInflater();
+//                View loading_view = inflater.inflate(R.layout.dialog_progress, null);
+
+                //로딩창 객체 생성
+                customProgressDialog = new ProgressDialog(this);
+                //로딩창을 투명하게
+                customProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                //로딩창 터치로 종료하지 않기
+                customProgressDialog.setCancelable(false);
+                //로딩창 보여주기
+                customProgressDialog.show();
+//                ImageView gif_view = loading_view.findViewById(R.id.gif_view);
+//                Glide.with(OCRMainActivity.this).load(R.raw.loading).into(gif_view);
             });
 
             //뒤로가기 화살표 이미지버튼 누르면
@@ -393,7 +415,8 @@ public class OCRMainActivity extends AppCompatActivity{
 //                    canvas.drawLine((float)boundary.get(box), (float)boundary.get(box+1),(float)boundary.get(box+6), (float)boundary.get(box+7),paint);
 //                }
 //            }
-
+            //로딩창 종료
+            customProgressDialog.dismiss();
             startActivity(intent);
             finish();
         }
