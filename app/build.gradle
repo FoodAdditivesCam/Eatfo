@@ -50,8 +50,13 @@ dependencies {
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
     // opencv 4.3.0
     implementation 'com.quickbirdstudios:opencv:4.3.0'
-    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
 
     // 슬라이딩 페이지
     implementation 'com.sothree.slidinguppanel:library:3.4.0'
+
+    // Glide
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    // annotationProcessor : annotation processor classpath 에서 compile processor classpath를 분리하여 빌드 성능개선
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 }
