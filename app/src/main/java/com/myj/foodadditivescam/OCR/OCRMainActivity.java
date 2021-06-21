@@ -16,8 +16,11 @@
 
 package com.myj.foodadditivescam.OCR;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -537,7 +540,7 @@ public class OCRMainActivity extends AppCompatActivity{
         return result;
     }
 
-    private static String[] getResult(String[] resArr) {
+    private String[] getResult(String[] resArr) {
         JSONObject obj = new JSONObject();
         List<String> list = new ArrayList<String>();
         String score = "";
@@ -546,8 +549,21 @@ public class OCRMainActivity extends AppCompatActivity{
             list.add(resArr[i]);
         }
 
+        SharedPreferences pref = getSharedPreferences("isFirst", Activity.MODE_PRIVATE);
+        String weight = pref.getString("index", "");
+        System.out.println(weight);
+//        String[] array_word = weight.split(""); // 한 글자씩 잘라 저장
+//        System.out.println(array_word);
+//        for(int i = 0; i < array_word.length; i++) {
+//            str += array_word[i];
+//            if(i != weight.length()-1) {
+//                str += ",";
+//            }
+//        }
+
         try {
             obj.accumulate("input", list);
+            obj.accumulate("weight", weight);
         } catch(Exception e) {
             System.out.print("obj.accumulate err"+e.toString());
         }
