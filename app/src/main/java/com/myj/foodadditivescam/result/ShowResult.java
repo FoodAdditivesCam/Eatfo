@@ -1,11 +1,14 @@
 package com.myj.foodadditivescam.result;
 
+import androidx.annotation.DrawableRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -37,24 +40,26 @@ public class ShowResult extends AppCompatActivity {
         //태그 리스트 주고 워드클라우드 그려서 imageView 수정해주기
         Glide.with(this).load(url).into(imageView);
 
-        LinearLayout linearLayout = findViewById(R.id.linearLayout2);
+        LinearLayout linearLayout = findViewById(R.id.linearLayout);
 
-        // 전체 원재료 버튼 추가
-        Button tallBtn = new Button(this);
-        tallBtn.setId(-1);
-        tallBtn.setText("전체 원재료");
-        tallBtn.setHeight(ConstraintLayout.LayoutParams.WRAP_CONTENT);
-        linearLayout.addView(tallBtn);
-        //넘겨줄 데이터 변수로 저장
-        String[] alltag = {"전체 원재료"};
-        //버튼 클릭 이벤트
-        tallBtn.setOnClickListener(v -> {
-            //원재료명, 태그, 설명을 showInfo 액티비티로 넘겨줌
-            Intent intent = new Intent(getApplicationContext(), ShowInfo.class);
-            intent.putExtra("tag", alltag);
-            intent.putExtra("rms",rms);
-            startActivity(intent);
-        });
+//        // 전체 원재료 버튼 추가
+//        Button tallBtn = new Button(this);
+//        tallBtn.setId(-1);
+//        tallBtn.setText("전체 원재료");
+//        tallBtn.setHeight(ConstraintLayout.LayoutParams.WRAP_CONTENT);
+//        tallBtn.setBackground(getDrawable(R.drawable.tag_button_design));
+//        tallBtn.setElevation(20);
+//        linearLayout.addView(tallBtn);
+//        //넘겨줄 데이터 변수로 저장
+//        String[] alltag = {"전체 원재료"};
+//        //버튼 클릭 이벤트
+//        tallBtn.setOnClickListener(v -> {
+//            //원재료명, 태그, 설명을 showInfo 액티비티로 넘겨줌
+//            Intent intent = new Intent(getApplicationContext(), ShowInfo.class);
+//            intent.putExtra("tag", alltag);
+//            intent.putExtra("rms",rms);
+//            startActivity(intent);
+//        });
 
         // 각 테그에 대해서 버튼 생성
         for (RawMaterials rm : rms) {
@@ -66,6 +71,8 @@ public class ShowResult extends AppCompatActivity {
                 tagBtn.setId(rm.getId());
                 tagBtn.setText(splitarr[i]);
                 tagBtn.setHeight(ConstraintLayout.LayoutParams.WRAP_CONTENT);
+                tagBtn.setBackground(getDrawable(R.drawable.tag_button_design));
+                tagBtn.setElevation(20);
                 linearLayout.addView(tagBtn);
 
                 //넘겨줄 데이터 변수로 저장
