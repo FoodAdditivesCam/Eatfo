@@ -59,4 +59,5 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     // annotationProcessor : annotation processor classpath 에서 compile processor classpath를 분리하여 빌드 성능개선
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+    implementation 'com.google.android.flexbox:flexbox:3.0.0' // flexbox-layout
 }

@@ -95,11 +95,31 @@
         android:text="정보를 알고싶은 성분을 터치해주세요"
         android:textColor="@color/colorPrimary" />
 
+<!--    <LinearLayout-->
+<!--        android:id="@+id/linearLayout2"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:background="#FFFFFF"-->
+<!--        android:orientation="horizontal" />-->
+
     <LinearLayout
-        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFFFFF"
-        android:orientation="horizontal" />
+        android:background="#FFFFFF">
+
+
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:flexWrap="wrap"
+            app:alignItems="baseline"
+            app:justifyContent="center"
+            />
+<!--            android:orientation="horizontal"-->
+<!--            android:gravity="center" />-->
+<!--        app:alignContent="stretch"-->
+    </LinearLayout>
 
 </LinearLayout>
