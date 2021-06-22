@@ -4,22 +4,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     android:orientation="vertical"
     tools:context="com.myj.foodadditivescam.result.ShowInfo">
 
     <TextView
-        android:id="@+id/image_details"
+        android:id="@+id/mNameTxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_weight="1"
         android:fontFamily="@font/kopub_world_bold"
-        android:text="RESULT"
-        android:textSize="24sp" />
+        android:gravity="bottom|center_horizontal"
+        android:text="TextView"
+        android:textColor="#FFFFFF"
+        android:textSize="34sp" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <TextView
+        android:id="@+id/mTagTxt"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="182dp"
-        tools:layout_editor_absoluteY="212dp" />
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:fontFamily="@font/kopub_world_light"
+        android:gravity="center_horizontal"
+        android:paddingTop="10dp"
+        android:text="TextView"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/mDescTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:fontFamily="@font/kopub_world_medium"
+        android:paddingLeft="80dp"
+        android:paddingTop="50dp"
+        android:paddingRight="80dp"
+        android:text="TextView"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp" />
 </LinearLayout>
