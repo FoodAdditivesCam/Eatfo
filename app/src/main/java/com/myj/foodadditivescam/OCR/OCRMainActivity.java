@@ -191,7 +191,6 @@ public class OCRMainActivity extends AppCompatActivity{
         }
         //다시 선택하기 버튼을 누르면
         pickAgainBtn.setOnClickListener(view->{
-            Log.d("button", "다시 선택하기");
             //((ImageLoadActivity)ImageLoadActivity.mContext).createAlterDialog();
             Intent intent = new Intent(this, ImageLoadActivity.class);
             intent.putExtra("value", "re");

@@ -54,9 +54,7 @@ public class ImageLoadActivity extends AppCompatActivity {
         setContentView(R.layout.ocr_activity_main);
         mContext = this;
         String value = getIntent().getStringExtra("value");
-        Log.d("button", "value: "+value);
         if(value.equals("re")){
-            Log.d("button", "Re button");
             createAlterDialog();
         }
 
