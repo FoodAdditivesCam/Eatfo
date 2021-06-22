@@ -54,8 +54,12 @@ public class ImageLoadActivity extends AppCompatActivity {
         setContentView(R.layout.ocr_activity_main);
         mContext = this;
         String value = getIntent().getStringExtra("value");
-        if(value.equals("re")){
-            createAlterDialog();
+        try{
+            if(value.equals("re")){
+                createAlterDialog();
+            }
+        }catch (Exception e){
+            Log.d("minjeong",e.getMessage());
         }
 
         Button pickPicBtn = findViewById(R.id.pickPicBtn);
