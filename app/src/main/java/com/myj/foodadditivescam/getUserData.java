@@ -315,6 +315,7 @@ public class getUserData extends AppCompatActivity {
 
                 //ImageLoadActivity 실행
                 Intent intent = new Intent(v.getContext(), ImageLoadActivity.class);
+                intent.putExtra("value", "first");
                 startActivity(intent);
                 finish();
 //            }else{  //라디오버튼 체크 안했으면
