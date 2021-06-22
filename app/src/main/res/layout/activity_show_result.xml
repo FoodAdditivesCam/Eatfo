@@ -50,6 +50,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/kopub_world_bold"
             android:text="질병 태그"
+            android:textColor="#676767"
             android:textSize="20sp" />
 
         <TextView
@@ -66,7 +67,7 @@
     <HorizontalScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="70dp"
         android:background="#05000000"
         android:fillViewport="true"
         android:paddingLeft="25dp"
@@ -112,11 +113,13 @@
             android:id="@+id/linearLayout3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            app:flexWrap="wrap"
+            android:layout_gravity="center_horizontal"
+            android:paddingLeft="30dp"
+            android:paddingTop="30dp"
+            android:paddingRight="30dp"
             app:alignItems="baseline"
-            app:justifyContent="center"
-            />
+            app:flexWrap="wrap"
+            app:justifyContent="center" />
 <!--            android:orientation="horizontal"-->
 <!--            android:gravity="center" />-->
 <!--        app:alignContent="stretch"-->
