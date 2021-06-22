@@ -1,11 +1,14 @@
 package com.myj.foodadditivescam.result;
 
+import androidx.annotation.DrawableRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -74,6 +77,8 @@ public class ShowResult extends AppCompatActivity {
                 tagBtn = new Button(this);
                 tagBtn.setText(splitarr[i]);
                 tagBtn.setHeight(ConstraintLayout.LayoutParams.WRAP_CONTENT);
+                tagBtn.setBackground(getDrawable(R.drawable.tag_button_design));
+                tagBtn.setElevation(20);
                 linearLayout.addView(tagBtn);
 
                 //넘겨줄 데이터 변수로 저장
