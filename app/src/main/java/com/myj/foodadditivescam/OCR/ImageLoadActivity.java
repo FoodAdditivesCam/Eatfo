@@ -17,6 +17,7 @@
 package com.myj.foodadditivescam.OCR;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -45,20 +46,20 @@ public class ImageLoadActivity extends AppCompatActivity {
     public static final int CAMERA_PERMISSIONS_REQUEST = 2;
     public static final int CAMERA_IMAGE_REQUEST = 3;
     public static final int REQUEST_IMAGE_CROP = 4;
+    public static Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ocr_activity_main);
+        mContext = this;
+        String value = getIntent().getStringExtra("value");
+        if(value.equals("re")){
+            createAlterDialog();
+        }
 
         Button pickPicBtn = findViewById(R.id.pickPicBtn);
         pickPicBtn.setOnClickListener(view->{
-            createAlterDialog();
-        });
-
-        Button pickAgainBtn = findViewById(R.id.pickAgainBtn);
-        //다시 선택하기 버튼을 누르면
-        pickAgainBtn.setOnClickListener(view->{
             createAlterDialog();
         });
 
