@@ -49,13 +49,14 @@ public class ShowResult extends AppCompatActivity {
         Glide.with(this).load(url).into(imageView);
 
         // 태그 버튼
-        LinearLayout linearLayout = findViewById(R.id.linearLayout2);
+        LinearLayout linearLayout = findViewById(R.id.linearLayout);
         allContentLoad(rms);
         // 전체 원재료 버튼 추가
         Button tallBtn = new Button(this);
         tallBtn.setId(-1);
         tallBtn.setText("전체 원재료");
         tallBtn.setHeight(ConstraintLayout.LayoutParams.WRAP_CONTENT);
+        tallBtn.setBackground(getDrawable(R.drawable.tag_button_design));
         linearLayout.addView(tallBtn);
         //넘겨줄 데이터 변수로 저장
         String[] alltag = {"전체 원재료"};
