@@ -82,6 +82,8 @@ import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
+import com.myj.foodadditivescam.OCR.ImageLoadActivity;
+
 public class OCRMainActivity extends AppCompatActivity{
     private static final String CLOUD_VISION_API_KEY = "AIzaSyAZhmCpNXx_rXSAhnGLN_MR2U7EH3X5n88";
     public static final String FILE_NAME = "temp.jpg";
@@ -187,7 +189,15 @@ public class OCRMainActivity extends AppCompatActivity{
             });
 
         }
-
+        //다시 선택하기 버튼을 누르면
+        pickAgainBtn.setOnClickListener(view->{
+            Log.d("button", "다시 선택하기");
+            //((ImageLoadActivity)ImageLoadActivity.mContext).createAlterDialog();
+            Intent intent = new Intent(this, ImageLoadActivity.class);
+            intent.putExtra("value", "re");
+            startActivity(intent);
+            finish();
+        });
     }
 
     @Override

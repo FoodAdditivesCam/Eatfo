@@ -34,9 +34,11 @@ public class Splash extends AppCompatActivity {
                 //최초실행이 아니면 ImageLoadActivity 실행
                 Log.d("Is first Time?", "not first");
                 intent = new Intent(this, ImageLoadActivity.class);
+                intent.putExtra("value", "first");
             }
 
             startActivity(intent);
+
             finish();
 
         }, 3000);
