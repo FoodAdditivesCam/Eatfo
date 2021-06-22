@@ -6,6 +6,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -49,9 +50,16 @@ public class ShowResult extends AppCompatActivity {
         // 태그 버튼
         LinearLayout linearLayout = findViewById(R.id.linearLayout);
         String[] startag = {"시작"};
-        oneContentLoad(rms, startag);
+        oneContentLoad(rms, startag,0,0);
         // 각 테그에 대해서 버튼 생성
-        int id=1;
+        int id=0; int taglength = 0;
+        for (RawMaterials rm : rms) {
+            String[] splitarr = rm.getTags().split(" ");
+            for (int i = 0; i < splitarr.length; i++) {
+                if(splitarr[i]=="" || splitarr[i]==null) continue;
+                taglength++;
+            }
+        }
         for (RawMaterials rm : rms) {
             String[] splitarr = rm.getTags().split(" ");
             for (int i=0; i<splitarr.length;i++){
@@ -60,7 +68,7 @@ public class ShowResult extends AppCompatActivity {
                 tagBtn = new Button(this);
                 tagBtn.setText(splitarr[i]);
                 tagBtn.setId(DYNAMIC_TAG_ID+id);
-                id++;
+                Log.d("tempbtn", DYNAMIC_TAG_ID + id+"temp");
                 tagBtn.setHeight(ConstraintLayout.LayoutParams.WRAP_CONTENT);
                 tagBtn.setBackground(getDrawable(R.drawable.tag_button_design));
                 tagBtn.setElevation(20);
@@ -71,48 +79,54 @@ public class ShowResult extends AppCompatActivity {
 
                 //버튼 클릭 이벤트
                 int finalId = id;
+                int finalTaglength = taglength;
                 tagBtn.setOnClickListener(v -> {
-                    Log.d("buttonid", tagBtn.getId()+"tag");
-                    Log.d("buttonid", oneBtn.getId()+"one");
-
                     //전체 버튼 색 초기화
                     Button tmpBtn;
+                    Log.d("mjview", v.getId()+"");
                     for(int j=0; j<splitarr.length;j++){
-                        tmpBtn = findViewById(DYNAMIC_TAG_ID+j+1);
+                        tmpBtn = findViewById(DYNAMIC_TAG_ID+j);
                         tmpBtn.setBackgroundResource(R.drawable.tag_button_design);
                         tmpBtn.setTextColor(Color.BLACK);
                     }
                     //선택된 버튼의 색 바꾸기
-                    tmpBtn = findViewById(DYNAMIC_TAG_ID+ finalId-1);
+                    tmpBtn = findViewById(DYNAMIC_TAG_ID+ finalId);
                     tmpBtn.setBackgroundResource(R.drawable.button_design);
                     tmpBtn.setTextColor(Color.WHITE);
 
-                    oneContentLoad(rms, tagLst);
+                    oneContentLoad(rms, tagLst, v.getId(), finalTaglength);
                 });
+                id++;
             }
         }
-
     }
 
-    public void oneContentLoad(RawMaterials[] rms,String[] tag){
+    public void oneContentLoad(RawMaterials[] rms,String[] tag, int clickid, int taglength){
         // 원재료 버튼 생성
         FlexboxLayout linearLayoutname = (FlexboxLayout) findViewById(R.id.linearLayout3);
         linearLayoutname.removeAllViews();
 
-        List<String> finalname=new ArrayList<String>();
-        List<String> finaltag=new ArrayList<String>();
-        List<String> finalinfo=new ArrayList<String>();
+        if(taglength!=0) {
+            Button tmpBtn;
+            for (int j = 0; j < taglength; j++) {
+                Log.d("tempbtn", DYNAMIC_TAG_ID + j+"");
+                tmpBtn = findViewById(DYNAMIC_TAG_ID + j);
+                tmpBtn.setBackgroundResource(R.drawable.tag_button_design);
+                tmpBtn.setTextColor(Color.BLACK);
+            }
+            //선택된 버튼의 색 바꾸기
+            tmpBtn = findViewById(clickid);
+            tmpBtn.setBackgroundResource(R.drawable.button_design);
+            tmpBtn.setTextColor(Color.WHITE);
+        }
+
         for (RawMaterials r : rms) {
             String[] arr = r.getTags().split(" ");
             for (int ii = 0; ii < arr.length; ii++) {
-                finalname.add(r.getName());
-                finaltag.add(r.getTags());
-                finalinfo.add(r.getDescription() + "\n\n출처: " + r.getReference());
 
                 oneBtn = new Button(this);
                 oneBtn.setId(r.getId());
-                Log.d("id", oneBtn.getId()+"");
-                oneBtn.setText(finalname.get(finalname.size()-1));
+                oneBtn.setText(r.getName());
                 oneBtn.setHeight(ConstraintLayout.LayoutParams.WRAP_CONTENT);
                 oneBtn.setBackgroundResource(R.drawable.button_design_white);
                 oneBtn.setTextColor(getResources().getColor(R.color.colorPrimary));
@@ -120,10 +134,7 @@ public class ShowResult extends AppCompatActivity {
                 if(tag[0].equals("시작")){
 
                 }
-                else if(tag[0].equals("전체 원재료")) {
-                    oneBtn.setBackgroundResource(R.drawable.button_design);
-                    oneBtn.setTextColor(Color.WHITE);
-                }else {
+                else {
                     String[] splitarr = r.getTags().split(" ");
                     for (int i = 0; i < splitarr.length; i++) {
                         if (splitarr[i].equals(tag[0])) {
@@ -132,6 +143,15 @@ public class ShowResult extends AppCompatActivity {
                         }
                     }
                 }
+                //버튼 클릭 이벤트
+                oneBtn.setOnClickListener(v -> {
+                    Intent intent = new Intent(this, ShowInfo.class);
+                    intent.putExtra("name", r.getName());
+                    intent.putExtra("tag", r.getTags());
+                    intent.putExtra("info", r.getDescription() + "\n\n출처: " + r.getReference());
+                    startActivity(intent);
+                });
+
                 FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(this);
                 layoutManager.setFlexWrap(FlexWrap.WRAP);
 
