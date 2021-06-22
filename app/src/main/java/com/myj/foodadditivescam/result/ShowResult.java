@@ -52,7 +52,8 @@ public class ShowResult extends AppCompatActivity {
 
         // 태그 버튼
         LinearLayout linearLayout = findViewById(R.id.linearLayout);
-        allContentLoad(rms);
+        String[] startag = {"시작"};
+        oneContentLoad(rms, startag);
         // 전체 원재료 버튼 추가
         Button tallBtn = new Button(this);
         tallBtn.setId(DYNAMIC_TAG_ID+0);
@@ -61,7 +62,7 @@ public class ShowResult extends AppCompatActivity {
         tallBtn.setBackground(getDrawable(R.drawable.tag_button_design));
         linearLayout.addView(tallBtn);
         //넘겨줄 데이터 변수로 저장
-        String[] alltag = {"전체 원재료"};
+        String[] alltag = new String[]{"전체 원재료"};
         //버튼 클릭 이벤트
         tallBtn.setOnClickListener(v -> {
             oneContentLoad(rms, alltag);
@@ -148,7 +149,10 @@ public class ShowResult extends AppCompatActivity {
                 oneBtn.setText(finalname.get(finalname.size()-1));
                 oneBtn.setHeight(ConstraintLayout.LayoutParams.WRAP_CONTENT);
 
-                if(tag[0].equals("전체 원재료")) {
+                if(tag[0].equals("시작")){
+
+                }
+                else if(tag[0].equals("전체 원재료")) {
                     oneBtn.setBackgroundColor(Color.BLUE);
                 }else {
                     String[] splitarr = r.getTags().split(" ");
