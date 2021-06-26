@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     android:orientation="vertical"
     tools:context="com.myj.foodadditivescam.result.ShowResult">
 
@@ -96,33 +97,39 @@
         android:text="정보를 알고싶은 성분을 터치해주세요"
         android:textColor="@color/colorPrimary" />
 
-<!--    <LinearLayout-->
-<!--        android:id="@+id/linearLayout2"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:background="#FFFFFF"-->
-<!--        android:orientation="horizontal" />-->
+    <!--    <LinearLayout-->
+    <!--        android:id="@+id/linearLayout2"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:background="#FFFFFF"-->
+    <!--        android:orientation="horizontal" />-->
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFFFFF">
+        android:backgroundTint="#FFFFFF">
 
-
-        <com.google.android.flexbox.FlexboxLayout
-            android:id="@+id/linearLayout3"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:paddingLeft="30dp"
-            android:paddingTop="30dp"
-            android:paddingRight="30dp"
-            app:alignItems="baseline"
-            app:flexWrap="wrap"
-            app:justifyContent="center" />
-<!--            android:orientation="horizontal"-->
-<!--            android:gravity="center" />-->
-<!--        app:alignContent="stretch"-->
-    </LinearLayout>
+            android:background="#FFFFFF">
+
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/linearLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:paddingLeft="30dp"
+                android:paddingTop="30dp"
+                android:paddingRight="30dp"
+                app:alignItems="baseline"
+                app:flexWrap="wrap"
+                app:justifyContent="center" />
+            <!--            android:orientation="horizontal"-->
+            <!--            android:gravity="center" />-->
+            <!--        app:alignContent="stretch"-->
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
