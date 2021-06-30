@@ -169,7 +169,7 @@ public class EditUserData extends AppCompatActivity {
                 return; // 아무런 작업도 하지 않고 돌아간다
             }
         });
-        alBuilder.setTitle("프로그램 종료");
+        alBuilder.setTitle("편집 종료");
         alBuilder.show(); // AlertDialog.Bulider로 만든 AlertDialog를 보여준다.
     }
 
