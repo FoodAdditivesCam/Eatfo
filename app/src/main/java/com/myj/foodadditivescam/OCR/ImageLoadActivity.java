@@ -26,12 +26,14 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
+import com.myj.foodadditivescam.EditUserData;
 import com.myj.foodadditivescam.R;
 import com.theartofdev.edmodo.cropper.CropImage;
 
@@ -65,6 +67,14 @@ public class ImageLoadActivity extends AppCompatActivity {
         Button pickPicBtn = findViewById(R.id.pickPicBtn);
         pickPicBtn.setOnClickListener(view->{
             createAlterDialog();
+        });
+
+        ImageButton editUserDataBtn = findViewById(R.id.editUserDataBtn);
+        //공구 이미지버튼 누르면
+        editUserDataBtn.setOnClickListener(view->{
+            //EditUserData 액티비티 실행 후 대기
+            Intent intent = new Intent(this, EditUserData.class);
+            startActivity(intent);
         });
 
     }
