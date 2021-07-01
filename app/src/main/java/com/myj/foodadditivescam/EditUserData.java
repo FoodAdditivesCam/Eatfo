@@ -3,20 +3,22 @@ package com.myj.foodadditivescam;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Button;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
 import com.myj.foodadditivescam.OCR.ImageLoadActivity;
 
-public class getUserData extends AppCompatActivity {
-    Set<String> checked = new HashSet<String>();   //사용자가 체크한 버튼의 텍스트를 저장할 리스트
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
+public class EditUserData extends AppCompatActivity {
+    Set<String> checked;   //사용자가 체크한 버튼의 텍스트를 저장할 리스트
     Button completeBtn, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn10, btn11, btn12;
     Boolean[] isClicked = new Boolean[]{false, false, false, false, false, false, false, false, false, false, false, false};
     int[] checkList = new int[12];
@@ -24,12 +26,12 @@ public class getUserData extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_get_user_data);
+        setContentView(R.layout.activity_edit_user_data);
 
         SharedPreferences pref = getSharedPreferences("isFirst", Activity.MODE_PRIVATE);
 
         pref.getStringSet("checked", checked);
-        completeBtn = findViewById(R.id.completeBtn);    //완료 버튼
+        completeBtn = findViewById(R.id.completeBtn2);    //완료 버튼
         btn1 = findViewById(R.id.btn1); // 소화불량 6
         btn2 = findViewById(R.id.btn2); // 충치 0
         btn3 = findViewById(R.id.btn3); // 변비 9
@@ -42,6 +44,30 @@ public class getUserData extends AppCompatActivity {
         btn10 = findViewById(R.id.btn10); // 유방암 3
         btn11 = findViewById(R.id.btn11); // 심장질환 1
         btn12 = findViewById(R.id.btn12); // 골다공증 11
+
+        //저장된 데이터 불러오기
+        checked = pref.getStringSet("checked", new HashSet<String>());
+
+        //최초실행시 선택한 버튼 색 변경
+        Button[] btnlst = {btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn10, btn11, btn12};
+        for(int i=0; i<12; i++){
+            Button btn = btnlst[i];
+            String dName = (String) btn.getText();
+            Iterator<String> iter = checked.iterator();
+
+            while(iter.hasNext()) { // iterator에 다음 값이 있는 동안 반복
+                if(iter.next().equals(dName)){
+                    //선택됨으로 바꾸고
+                    isClicked[i]=true;
+                    //버튼 색 변경 후
+                    btn.setBackgroundResource(R.drawable.button_design);
+                    btn.setTextColor(Color.WHITE);
+                    //리스트에 질병 명 추가
+                    checked.add((String)btn.getText());
+                    break;
+                }
+            }
+        }
 
         //질병 버튼 클릭 시
         btn1.setOnClickListener(v -> { // 소화불량 6
@@ -83,27 +109,17 @@ public class getUserData extends AppCompatActivity {
 
         //사용자가 완료 버튼을 누르면
         completeBtn.setOnClickListener(v -> {
-//            RadioButton radioYes = findViewById(R.id.yes);
-//            RadioButton radioNo = findViewById(R.id.no);
-//
-                //최초실행 했다고 저장
-                SharedPreferences.Editor editor = pref.edit();
-                editor.putBoolean("isFirst",true);
-                editor.apply();
+            SharedPreferences.Editor editor = pref.edit();
 
-                //클릭한 버튼의 정보를 저장한 String Set을 sharedPreference에 저장
-                editor.putStringSet("checked", checked);
-                editor.apply();
-                //클한 버튼의 정보를 저장한 int 배열을 string으로 변환 후 sharedPreference에 저장
-                String stringForIntArray = Arrays.toString(checkList);
-                editor.putString("index", stringForIntArray);
-                editor.apply();
+            //클릭한 버튼의 정보를 저장한 String Set을 sharedPreference에 저장
+            editor.putStringSet("checked", checked);
+            editor.apply();
+            //클한 버튼의 정보를 저장한 int 배열을 string으로 변환 후 sharedPreference에 저장
+            String stringForIntArray = Arrays.toString(checkList);
+            editor.putString("index", stringForIntArray);
+            editor.apply();
 
-                //ImageLoadActivity 실행
-                Intent intent = new Intent(v.getContext(), ImageLoadActivity.class);
-                intent.putExtra("value", "first");
-                startActivity(intent);
-                finish();
+            finish();
         });
 
     }
@@ -133,5 +149,28 @@ public class getUserData extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        // AlertDialog 빌더를 이용해 종료시 발생시킬 창을 띄운다
+        android.app.AlertDialog.Builder alBuilder = new android.app.AlertDialog.Builder(this);
+        alBuilder.setMessage("변경된 사항을 저장하지 않고 나가겠습니까?");
+
+        // "예" 버튼을 누르면 실행되는 리스너
+        alBuilder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish(); // 현재 액티비티를 종료
+            }
+        });
+        // "아니오" 버튼을 누르면 실행되는 리스너
+        alBuilder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                return; // 아무런 작업도 하지 않고 돌아간다
+            }
+        });
+        alBuilder.setTitle("편집 종료");
+        alBuilder.show(); // AlertDialog.Bulider로 만든 AlertDialog를 보여준다.
+    }
 
 }

@@ -14,6 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true">
+        <activity android:name=".EditUserData"></activity>
         <activity android:name=".Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,7 +23,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".result.ShowInfo" />
-
         <activity android:name=".getUserData" />
         <activity android:name=".result.ShowInfo" />
         <activity android:name=".result.ShowResult" />
@@ -42,8 +42,7 @@
             android:name=".OCR.ImageLoadActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".OCR.OCRMainActivity"
             android:label="@string/app_name"
