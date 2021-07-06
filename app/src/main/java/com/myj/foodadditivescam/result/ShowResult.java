@@ -3,7 +3,9 @@ package com.myj.foodadditivescam.result;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -21,12 +23,23 @@ import com.myj.foodadditivescam.R;
 import com.myj.foodadditivescam.RawMaterials;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ShowResult extends AppCompatActivity {
     private Button oneBtn;
     private Button tagBtn;
     private int DYNAMIC_TAG_ID = 1000;
+    private Map<String, Integer> tag_weight = new HashMap<String, Integer>();
+    Set<String> checked;   //사용자가 체크한 버튼의 텍스트를 저장할 리스트
+    int taglength = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,11 +49,23 @@ public class ShowResult extends AppCompatActivity {
         //인텐트로 넘어온 원재료 정보 객체 리스트 가져오기
         RawMaterials[] rms = (RawMaterials[]) getIntent().getSerializableExtra("rms");
         String url = (String) getIntent().getSerializableExtra("url");
+        //저장된 데이터 불러오기
+        SharedPreferences pref = getSharedPreferences("isFirst", Activity.MODE_PRIVATE);
+        pref.getStringSet("checked", checked);
+        checked = pref.getStringSet("checked", new HashSet<String>());
+        Log.d("userdata", checked.toString());
 
         //태그 리스트 만들기
         String tags="";
+        Map<String, Integer> tag_weight_temp = new HashMap<String, Integer>();
         for(RawMaterials rm : rms){
             tags+=rm.getTags()+" ";
+            String[] splitarr = rm.getTags().split(" ");
+            for (int i=0; i<splitarr.length;i++){
+                if(splitarr[i]=="" || splitarr[i]==null) continue;
+                tag_weight_temp.put(splitarr[i],0);
+                taglength++;
+            }
         }
         Log.d("tags",tags);
         ImageView imageView = (ImageView) findViewById(R.id.imageView);
@@ -51,54 +76,50 @@ public class ShowResult extends AppCompatActivity {
         LinearLayout linearLayout = findViewById(R.id.linearLayout);
         String[] startag = {"시작"};
         oneContentLoad(rms, startag,0,0);
-        // 각 테그에 대해서 버튼 생성
-        int id=0; int taglength = 0;
-        for (RawMaterials rm : rms) {
-            String[] splitarr = rm.getTags().split(" ");
-            for (int i = 0; i < splitarr.length; i++) {
-                if(splitarr[i]=="" || splitarr[i]==null) continue;
-                taglength++;
+        // 가중치 별로 정렬
+        for (String key: tag_weight_temp.keySet()) {
+            for (Iterator<String> it = checked.iterator(); it.hasNext(); ) {
+                String f = it.next();
+                Log.d("tag_weight", f+" "+key);
+                if (key.contains(f)) { // todo: matching 리스트 필요
+                    Log.d("tag_weight", "in if문");
+                    tag_weight_temp.put(key,tag_weight_temp.get(key)+2);
+                    continue;
+                }
             }
         }
-        for (RawMaterials rm : rms) {
-            String[] splitarr = rm.getTags().split(" ");
-            for (int i=0; i<splitarr.length;i++){
-                if(splitarr[i]=="" || splitarr[i]==null) continue;
-                // 버튼 만들기
-                tagBtn = new Button(this);
-                tagBtn.setText(splitarr[i]);
-                tagBtn.setId(DYNAMIC_TAG_ID+id);
-                Log.d("tempbtn", DYNAMIC_TAG_ID + id+"temp");
-                tagBtn.setHeight(ConstraintLayout.LayoutParams.WRAP_CONTENT);
-                tagBtn.setBackground(getDrawable(R.drawable.tag_button_design));
-                tagBtn.setElevation(20);
-                linearLayout.addView(tagBtn);
-
-                //넘겨줄 데이터 변수로 저장
-                String[] tagLst = {splitarr[i]};
-
-                //버튼 클릭 이벤트
-                int finalId = id;
-                int finalTaglength = taglength;
-                tagBtn.setOnClickListener(v -> {
-                    //전체 버튼 색 초기화
-                    Button tmpBtn;
-                    Log.d("mjview", v.getId()+"");
-                    for(int j=0; j<splitarr.length;j++){
-                        tmpBtn = findViewById(DYNAMIC_TAG_ID+j);
-                        tmpBtn.setBackgroundResource(R.drawable.tag_button_design);
-                        tmpBtn.setTextColor(Color.BLACK);
-                    }
-                    //선택된 버튼의 색 바꾸기
-                    tmpBtn = findViewById(DYNAMIC_TAG_ID+ finalId);
-                    tmpBtn.setBackgroundResource(R.drawable.button_design);
-                    tmpBtn.setTextColor(Color.WHITE);
-
-                    oneContentLoad(rms, tagLst, v.getId(), finalTaglength);
-                });
-                id++;
+        // sorting tag_weight(태그 가중치)
+        tag_weight = tag_weight_temp.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+        Log.d("tag_weight", tag_weight.toString());
+        // 버튼 만들기
+        int id=0;
+        for (String key: tag_weight.keySet()) {
+            tagBtn = new Button(this);
+            tagBtn.setText(key);
+            tagBtn.setId(DYNAMIC_TAG_ID+id);
+            Log.d("tempbtn", DYNAMIC_TAG_ID + id+"temp");
+            tagBtn.setHeight(ConstraintLayout.LayoutParams.WRAP_CONTENT);
+            tagBtn.setBackground(getDrawable(R.drawable.tag_button_design));
+            tagBtn.setElevation(20);
+            if(tag_weight_temp.get(key)>0) {
+                tagBtn.setBackground(getDrawable(R.drawable.tag_button_design_person)); // todo: 색 다시 정해서 하드코딩 고치기
+                tagBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.tag_icon, 0,0,0); // todo: 아이콘 바꾸기
             }
+            linearLayout.addView(tagBtn);
+
+            //넘겨줄 데이터 변수로 저장
+            String[] tagLst = {key};
+
+            //버튼 클릭 이벤트
+            int finalTaglength = taglength;
+            tagBtn.setOnClickListener(v -> {
+                oneContentLoad(rms, tagLst, v.getId(), finalTaglength);
+            });
+            id++;
         }
+
     }
 
     public void oneContentLoad(RawMaterials[] rms,String[] tag, int clickid, int taglength){
