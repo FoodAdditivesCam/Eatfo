@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -21,11 +22,13 @@ import com.myj.foodadditivescam.OCR.ImageLoadActivity;
 import com.myj.foodadditivescam.R;
 import com.myj.foodadditivescam.RawMaterials;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -41,6 +44,7 @@ public class ShowResult extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_show_result);
 
         //인텐트로 넘어온 원재료 정보 객체 리스트 가져오기
         RawMaterials[] rms = (RawMaterials[]) getIntent().getSerializableExtra("rms");
@@ -49,103 +53,96 @@ public class ShowResult extends AppCompatActivity {
         SharedPreferences pref = getSharedPreferences("isFirst", Activity.MODE_PRIVATE);
         pref.getStringSet("checked", checked);
         checked = pref.getStringSet("checked", new HashSet<String>());
-        Log.d("userdata", checked.toString());
 
         //태그 리스트 만들기
         String tags="";
         Map<String, Integer> tag_weight_temp = new HashMap<String, Integer>();
-        try{
-            setContentView(R.layout.activity_show_result);
-            for(RawMaterials rm : rms){
-                tags+=rm.getTags()+" ";
-                String[] splitarr = rm.getTags().split(" ");
-                for (int i=0; i<splitarr.length;i++){
-                    if(splitarr[i]=="" || splitarr[i]==null) continue;
-                    tag_weight_temp.put(splitarr[i],0);
-                    taglength++;
+        for(RawMaterials rm : rms){
+            tags+=rm.getTags()+" ";
+            String[] splitarr = rm.getTags().split(" ");
+            for (int i=0; i<splitarr.length;i++){
+                if(splitarr[i]=="" || splitarr[i]==null) continue;
+                tag_weight_temp.put(splitarr[i],0);
+                taglength++;
+            }
+        }
+        ImageView imageView = (ImageView) findViewById(R.id.imageView);
+        //태그 리스트 주고 워드클라우드 그려서 imageView 수정해주기
+        Glide.with(this).load(url).into(imageView);
+
+        // 태그 버튼
+        LinearLayout linearLayout = findViewById(R.id.linearLayout);
+        String[] startag = {"시작"};
+        oneContentLoad(rms, startag,0,0);
+        // 가중치 별로 정렬
+        for (String key: tag_weight_temp.keySet()) {
+            for (Iterator<String> it = checked.iterator(); it.hasNext(); ) {
+                String f = it.next();
+                if (key.contains(f)) { // todo: matching 리스트 필요
+                    tag_weight_temp.put(key,tag_weight_temp.get(key)+2);
+                    continue;
                 }
             }
-            Log.d("tags",tags);
-            ImageView imageView = (ImageView) findViewById(R.id.imageView);
-            //태그 리스트 주고 워드클라우드 그려서 imageView 수정해주기
-            Glide.with(this).load(url).into(imageView);
+        }
+        // sorting tag_weight(태그 가중치)
+        tag_weight = tag_weight_temp.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 
-            // 태그 버튼
-            LinearLayout linearLayout = findViewById(R.id.linearLayout);
-            String[] startag = {"시작"};
-            oneContentLoad(rms, startag,0,0);
-            // 가중치 별로 정렬
-            for (String key: tag_weight_temp.keySet()) {
-                for (Iterator<String> it = checked.iterator(); it.hasNext(); ) {
-                    String f = it.next();
-                    Log.d("tag_weight", f+" "+key);
-                    if (key.contains(f)) { // todo: matching 리스트 필요
-                        Log.d("tag_weight", "in if문");
-                        tag_weight_temp.put(key,tag_weight_temp.get(key)+2);
-                        continue;
-                    }
-                }
+        // 버튼 만들기
+        int id=0;
+        for (String key: tag_weight.keySet()) {
+            tagBtn = new Button(this);
+            tagBtn.setText(key);
+            tagBtn.setId(DYNAMIC_TAG_ID+id);
+            tagBtn.setHeight(ConstraintLayout.LayoutParams.WRAP_CONTENT);
+            tagBtn.setBackground(getDrawable(R.drawable.tag_button_design));
+            tagBtn.setElevation(20);
+            if(tag_weight.get(key)>0) { //tag_temp
+                tagBtn.setBackground(getDrawable(R.drawable.tag_button_design_person)); // todo: 색 다시 정해서 하드코딩 고치기
+                tagBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.tag_icon, 0,0,0); // todo: 아이콘 바꾸기
             }
-            // sorting tag_weight(태그 가중치)
-            tag_weight = tag_weight_temp.entrySet().stream()
-                    .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
-            Log.d("tag_weight", tag_weight.toString());
-            // 버튼 만들기
-            int id=0;
-            for (String key: tag_weight.keySet()) {
-                tagBtn = new Button(this);
-                tagBtn.setText(key);
-                tagBtn.setId(DYNAMIC_TAG_ID+id);
-                Log.d("tempbtn", DYNAMIC_TAG_ID + id+"temp");
-                tagBtn.setHeight(ConstraintLayout.LayoutParams.WRAP_CONTENT);
-                tagBtn.setBackground(getDrawable(R.drawable.tag_button_design));
-                tagBtn.setElevation(20);
-                if(tag_weight_temp.get(key)>0) {
-                    tagBtn.setBackground(getDrawable(R.drawable.tag_button_design_person)); // todo: 색 다시 정해서 하드코딩 고치기
-                    tagBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.tag_icon, 0,0,0); // todo: 아이콘 바꾸기
-                }
-                linearLayout.addView(tagBtn);
+            linearLayout.addView(tagBtn);
 
-                //넘겨줄 데이터 변수로 저장
-                String[] tagLst = {key};
+            //넘겨줄 데이터 변수로 저장
+            String[] tagLst = {key};
 
-                //버튼 클릭 이벤트
-                int finalTaglength = taglength;
-                tagBtn.setOnClickListener(v -> {
-                    oneContentLoad(rms, tagLst, v.getId(), finalTaglength);
-                });
-                id++;
-            }
-        }catch (java.lang.NullPointerException e){
-            setContentView(R.layout.fail_to_get_result);
+            //버튼 클릭 이벤트
+            int finalTaglength = taglength;
+            tagBtn.setOnClickListener(v -> {
+                oneContentLoad(rms, tagLst, v.getId(), finalTaglength);
+            });
+            id++;
         }
 
     }
 
     public void oneContentLoad(RawMaterials[] rms,String[] tag, int clickid, int taglength){
-        // 원재료 버튼 생성
         FlexboxLayout linearLayoutname = (FlexboxLayout) findViewById(R.id.linearLayout3);
         linearLayoutname.removeAllViews();
 
         if(taglength!=0) {
             Button tmpBtn;
-            for (int j = 0; j < taglength; j++) {
-                Log.d("tempbtn", DYNAMIC_TAG_ID + j+"");
-                tmpBtn = findViewById(DYNAMIC_TAG_ID + j);
+            int id=0;
+            for (String key: tag_weight.keySet()) {
+                tmpBtn = findViewById(DYNAMIC_TAG_ID + id);
                 tmpBtn.setBackgroundResource(R.drawable.tag_button_design);
                 tmpBtn.setTextColor(Color.BLACK);
+                if(tag_weight.get(key)>0) {
+                    tmpBtn.setBackground(getDrawable(R.drawable.tag_button_design_person)); // todo: 색 다시 정해서 하드코딩 고치기
+                    tmpBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.tag_icon, 0,0,0); // todo: 아이콘 바꾸기
+                }
+                id++;
             }
-            //선택된 버튼의 색 바꾸기
             tmpBtn = findViewById(clickid);
             tmpBtn.setBackgroundResource(R.drawable.button_design);
             tmpBtn.setTextColor(Color.WHITE);
         }
 
+        //원재료명 버튼 생성
         for (RawMaterials r : rms) {
             String[] arr = r.getTags().split(" ");
             for (int ii = 0; ii < arr.length; ii++) {
-
                 oneBtn = new Button(this);
                 oneBtn.setId(r.getId());
                 oneBtn.setText(r.getName());
@@ -153,10 +150,7 @@ public class ShowResult extends AppCompatActivity {
                 oneBtn.setBackgroundResource(R.drawable.button_design_white);
                 oneBtn.setTextColor(getResources().getColor(R.color.colorPrimary));
 
-                if(tag[0].equals("시작")){
-
-                }
-                else {
+                if(!tag[0].equals("시작")){
                     String[] splitarr = r.getTags().split(" ");
                     for (int i = 0; i < splitarr.length; i++) {
                         if (splitarr[i].equals(tag[0])) {
@@ -165,6 +159,7 @@ public class ShowResult extends AppCompatActivity {
                         }
                     }
                 }
+
                 //버튼 클릭 이벤트
                 oneBtn.setOnClickListener(v -> {
                     Intent intent = new Intent(this, ShowInfo.class);
