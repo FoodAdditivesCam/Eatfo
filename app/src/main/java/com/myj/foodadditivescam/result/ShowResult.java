@@ -53,7 +53,6 @@ public class ShowResult extends AppCompatActivity {
         SharedPreferences pref = getSharedPreferences("isFirst", Activity.MODE_PRIVATE);
         pref.getStringSet("checked", checked);
         checked = pref.getStringSet("checked", new HashSet<String>());
-        Log.d("userdata", checked.toString());
 
         //태그 리스트 만들기
         String tags="";
@@ -67,7 +66,6 @@ public class ShowResult extends AppCompatActivity {
                 taglength++;
             }
         }
-        Log.d("tags",tags);
         ImageView imageView = (ImageView) findViewById(R.id.imageView);
         //태그 리스트 주고 워드클라우드 그려서 imageView 수정해주기
         Glide.with(this).load(url).into(imageView);
@@ -80,9 +78,7 @@ public class ShowResult extends AppCompatActivity {
         for (String key: tag_weight_temp.keySet()) {
             for (Iterator<String> it = checked.iterator(); it.hasNext(); ) {
                 String f = it.next();
-                Log.d("tag_weight", f+" "+key);
                 if (key.contains(f)) { // todo: matching 리스트 필요
-                    Log.d("tag_weight", "in if문");
                     tag_weight_temp.put(key,tag_weight_temp.get(key)+2);
                     continue;
                 }
@@ -92,18 +88,17 @@ public class ShowResult extends AppCompatActivity {
         tag_weight = tag_weight_temp.entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
-        Log.d("tag_weight", tag_weight.toString());
+
         // 버튼 만들기
         int id=0;
         for (String key: tag_weight.keySet()) {
             tagBtn = new Button(this);
             tagBtn.setText(key);
             tagBtn.setId(DYNAMIC_TAG_ID+id);
-            Log.d("tempbtn", DYNAMIC_TAG_ID + id+"temp");
             tagBtn.setHeight(ConstraintLayout.LayoutParams.WRAP_CONTENT);
             tagBtn.setBackground(getDrawable(R.drawable.tag_button_design));
             tagBtn.setElevation(20);
-            if(tag_weight_temp.get(key)>0) {
+            if(tag_weight.get(key)>0) { //tag_temp
                 tagBtn.setBackground(getDrawable(R.drawable.tag_button_design_person)); // todo: 색 다시 정해서 하드코딩 고치기
                 tagBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.tag_icon, 0,0,0); // todo: 아이콘 바꾸기
             }
@@ -123,28 +118,31 @@ public class ShowResult extends AppCompatActivity {
     }
 
     public void oneContentLoad(RawMaterials[] rms,String[] tag, int clickid, int taglength){
-        // 원재료 버튼 생성
         FlexboxLayout linearLayoutname = (FlexboxLayout) findViewById(R.id.linearLayout3);
         linearLayoutname.removeAllViews();
 
         if(taglength!=0) {
             Button tmpBtn;
-            for (int j = 0; j < taglength; j++) {
-                Log.d("tempbtn", DYNAMIC_TAG_ID + j+"");
-                tmpBtn = findViewById(DYNAMIC_TAG_ID + j);
+            int id=0;
+            for (String key: tag_weight.keySet()) {
+                tmpBtn = findViewById(DYNAMIC_TAG_ID + id);
                 tmpBtn.setBackgroundResource(R.drawable.tag_button_design);
                 tmpBtn.setTextColor(Color.BLACK);
+                if(tag_weight.get(key)>0) {
+                    tmpBtn.setBackground(getDrawable(R.drawable.tag_button_design_person)); // todo: 색 다시 정해서 하드코딩 고치기
+                    tmpBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.tag_icon, 0,0,0); // todo: 아이콘 바꾸기
+                }
+                id++;
             }
-            //선택된 버튼의 색 바꾸기
             tmpBtn = findViewById(clickid);
             tmpBtn.setBackgroundResource(R.drawable.button_design);
             tmpBtn.setTextColor(Color.WHITE);
         }
 
+        //원재료명 버튼 생성
         for (RawMaterials r : rms) {
             String[] arr = r.getTags().split(" ");
             for (int ii = 0; ii < arr.length; ii++) {
-
                 oneBtn = new Button(this);
                 oneBtn.setId(r.getId());
                 oneBtn.setText(r.getName());
@@ -152,10 +150,7 @@ public class ShowResult extends AppCompatActivity {
                 oneBtn.setBackgroundResource(R.drawable.button_design_white);
                 oneBtn.setTextColor(getResources().getColor(R.color.colorPrimary));
 
-                if(tag[0].equals("시작")){
-
-                }
-                else {
+                if(!tag[0].equals("시작")){
                     String[] splitarr = r.getTags().split(" ");
                     for (int i = 0; i < splitarr.length; i++) {
                         if (splitarr[i].equals(tag[0])) {
@@ -164,6 +159,7 @@ public class ShowResult extends AppCompatActivity {
                         }
                     }
                 }
+
                 //버튼 클릭 이벤트
                 oneBtn.setOnClickListener(v -> {
                     Intent intent = new Intent(this, ShowInfo.class);
