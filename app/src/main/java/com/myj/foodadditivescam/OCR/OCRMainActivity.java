@@ -340,10 +340,6 @@ public class OCRMainActivity extends AppCompatActivity{
                 BatchAnnotateImagesResponse response = mRequest.execute();
                 String res = "OCR 출력 결과\n\n";
 
-                // 이미지 box boundary
-                BoxBoundary box=new BoxBoundary();
-                boundary = box.ParagraphBoundary(response);
-
                 //text split
                 String[] resArr = splitString(convertResponseToString(response));
                 List<String> wordsArr = responseToList(response);
@@ -413,20 +409,7 @@ public class OCRMainActivity extends AppCompatActivity{
         // doInBackGround()가 정상적으로 완료된 경우 호출되는 함수
         protected void onPostExecute(String result) {
             Log.d(TAG, "이제 결과 화면으로 넘어갈거임");
-//            com.myj.foodadditivescam.OCR.OCRMainActivity activity = mActivityWeakReference.get();
-//            if (activity != null && !activity.isFinishing()) {
-//                Log.d("minjeong","이미지로드 boundary: "+boundary);
-//                Paint paint = new Paint();
-//                paint.setColor(Color.RED);
-//                paint.setStrokeWidth(7f);
-//                Canvas canvas = new Canvas(bitmap);
-//                for(int box=0;box<boundary.size();box+=8){ // -7?
-//                    canvas.drawLine((float)boundary.get(box), (float)boundary.get(box+1),(float)boundary.get(box+2),(float)boundary.get(box+3),paint);
-//                    canvas.drawLine((float)boundary.get(box+4), (float)boundary.get(box+5),(float)boundary.get(box+2),(float)boundary.get(box+3),paint);
-//                    canvas.drawLine((float)boundary.get(box+6), (float)boundary.get(box+7),(float)boundary.get(box+4),(float)boundary.get(box+5),paint);
-//                    canvas.drawLine((float)boundary.get(box), (float)boundary.get(box+1),(float)boundary.get(box+6), (float)boundary.get(box+7),paint);
-//                }
-//            }
+
             //로딩창 종료
             customProgressDialog.dismiss();
             startActivity(intent);
