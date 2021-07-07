@@ -32,16 +32,13 @@ import android.provider.MediaStore;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.HttpTransport;
@@ -82,7 +79,6 @@ import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
-import com.myj.foodadditivescam.OCR.ImageLoadActivity;
 
 public class OCRMainActivity extends AppCompatActivity{
     private static final String CLOUD_VISION_API_KEY = "AIzaSyAZhmCpNXx_rXSAhnGLN_MR2U7EH3X5n88";
