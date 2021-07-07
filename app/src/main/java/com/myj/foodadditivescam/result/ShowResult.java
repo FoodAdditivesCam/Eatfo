@@ -44,7 +44,6 @@ public class ShowResult extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show_result);
 
         //인텐트로 넘어온 원재료 정보 객체 리스트 가져오기
         RawMaterials[] rms = (RawMaterials[]) getIntent().getSerializableExtra("rms");
@@ -57,64 +56,68 @@ public class ShowResult extends AppCompatActivity {
         //태그 리스트 만들기
         String tags="";
         Map<String, Integer> tag_weight_temp = new HashMap<String, Integer>();
-        for(RawMaterials rm : rms){
-            tags+=rm.getTags()+" ";
-            String[] splitarr = rm.getTags().split(" ");
-            for (int i=0; i<splitarr.length;i++){
-                if(splitarr[i]=="" || splitarr[i]==null) continue;
-                tag_weight_temp.put(splitarr[i],0);
-                taglength++;
-            }
-        }
-        ImageView imageView = (ImageView) findViewById(R.id.imageView);
-        //태그 리스트 주고 워드클라우드 그려서 imageView 수정해주기
-        Glide.with(this).load(url).into(imageView);
-
-        // 태그 버튼
-        LinearLayout linearLayout = findViewById(R.id.linearLayout);
-        String[] startag = {"시작"};
-        oneContentLoad(rms, startag,0,0);
-        // 가중치 별로 정렬
-        for (String key: tag_weight_temp.keySet()) {
-            for (Iterator<String> it = checked.iterator(); it.hasNext(); ) {
-                String f = it.next();
-                if (key.contains(f)) { // todo: matching 리스트 필요
-                    tag_weight_temp.put(key,tag_weight_temp.get(key)+2);
-                    continue;
+        try{
+            setContentView(R.layout.activity_show_result);
+            for(RawMaterials rm : rms){
+                tags+=rm.getTags()+" ";
+                String[] splitarr = rm.getTags().split(" ");
+                for (int i=0; i<splitarr.length;i++){
+                    if(splitarr[i]=="" || splitarr[i]==null) continue;
+                    tag_weight_temp.put(splitarr[i],0);
+                    taglength++;
                 }
             }
-        }
-        // sorting tag_weight(태그 가중치)
-        tag_weight = tag_weight_temp.entrySet().stream()
-                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+            ImageView imageView = (ImageView) findViewById(R.id.imageView);
+            //태그 리스트 주고 워드클라우드 그려서 imageView 수정해주기
+            Glide.with(this).load(url).into(imageView);
 
-        // 버튼 만들기
-        int id=0;
-        for (String key: tag_weight.keySet()) {
-            tagBtn = new Button(this);
-            tagBtn.setText(key);
-            tagBtn.setId(DYNAMIC_TAG_ID+id);
-            tagBtn.setHeight(ConstraintLayout.LayoutParams.WRAP_CONTENT);
-            tagBtn.setBackground(getDrawable(R.drawable.tag_button_design));
-            tagBtn.setElevation(20);
-            if(tag_weight.get(key)>0) { //tag_temp
-                tagBtn.setBackground(getDrawable(R.drawable.tag_button_design_person)); // todo: 색 다시 정해서 하드코딩 고치기
-                tagBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.tag_icon, 0,0,0); // todo: 아이콘 바꾸기
+            // 태그 버튼
+            LinearLayout linearLayout = findViewById(R.id.linearLayout);
+            String[] startag = {"시작"};
+            oneContentLoad(rms, startag,0,0);
+            // 가중치 별로 정렬
+            for (String key: tag_weight_temp.keySet()) {
+                for (Iterator<String> it = checked.iterator(); it.hasNext(); ) {
+                    String f = it.next();
+                    if (key.contains(f)) { // todo: matching 리스트 필요
+                        tag_weight_temp.put(key,tag_weight_temp.get(key)+2);
+                        continue;
+                    }
+                }
             }
-            linearLayout.addView(tagBtn);
+            // sorting tag_weight(태그 가중치)
+            tag_weight = tag_weight_temp.entrySet().stream()
+                    .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 
-            //넘겨줄 데이터 변수로 저장
-            String[] tagLst = {key};
+            // 버튼 만들기
+            int id=0;
+            for (String key: tag_weight.keySet()) {
+                tagBtn = new Button(this);
+                tagBtn.setText(key);
+                tagBtn.setId(DYNAMIC_TAG_ID+id);
+                tagBtn.setHeight(ConstraintLayout.LayoutParams.WRAP_CONTENT);
+                tagBtn.setBackground(getDrawable(R.drawable.tag_button_design));
+                tagBtn.setElevation(20);
+                if(tag_weight.get(key)>0) { //tag_temp
+                    tagBtn.setBackground(getDrawable(R.drawable.tag_button_design_person)); // todo: 색 다시 정해서 하드코딩 고치기
+                    tagBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.tag_icon, 0,0,0); // todo: 아이콘 바꾸기
+                }
+                linearLayout.addView(tagBtn);
 
-            //버튼 클릭 이벤트
-            int finalTaglength = taglength;
-            tagBtn.setOnClickListener(v -> {
-                oneContentLoad(rms, tagLst, v.getId(), finalTaglength);
-            });
-            id++;
+                //넘겨줄 데이터 변수로 저장
+                String[] tagLst = {key};
+
+                //버튼 클릭 이벤트
+                int finalTaglength = taglength;
+                tagBtn.setOnClickListener(v -> {
+                    oneContentLoad(rms, tagLst, v.getId(), finalTaglength);
+                });
+                id++;
+            }
+        }catch (java.lang.NullPointerException e){
+            setContentView(R.layout.fail_to_get_result);
         }
-
     }
 
     public void oneContentLoad(RawMaterials[] rms,String[] tag, int clickid, int taglength){

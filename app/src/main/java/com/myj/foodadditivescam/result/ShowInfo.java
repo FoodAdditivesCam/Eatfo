@@ -2,12 +2,10 @@ package com.myj.foodadditivescam.result;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.myj.foodadditivescam.OCR.ImageLoadActivity;
 import com.myj.foodadditivescam.R;
 
 public class ShowInfo extends AppCompatActivity {

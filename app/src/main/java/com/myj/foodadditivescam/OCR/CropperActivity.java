@@ -2,14 +2,11 @@ package com.myj.foodadditivescam.OCR;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.myj.foodadditivescam.R;
 import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
 
 public class CropperActivity extends AppCompatActivity {
 
