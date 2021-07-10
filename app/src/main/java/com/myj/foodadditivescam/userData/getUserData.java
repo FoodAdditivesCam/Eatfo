@@ -12,6 +12,7 @@ import android.widget.Button;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import com.myj.foodadditivescam.OCR.ImageLoadActivity;
 import com.myj.foodadditivescam.R;
@@ -19,8 +20,7 @@ import com.myj.foodadditivescam.R;
 public class getUserData extends AppCompatActivity {
     Set<String> checked = new HashSet<String>();   //사용자가 체크한 버튼의 텍스트를 저장할 리스트
     Button completeBtn, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn10, btn11, btn12;
-    Boolean[] isClicked = new Boolean[]{false, false, false, false, false, false, false, false, false, false, false, false};
-    int[] checkList = new int[12];
+    int[] checkList = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +29,6 @@ public class getUserData extends AppCompatActivity {
 
         SharedPreferences pref = getSharedPreferences("isFirst", Activity.MODE_PRIVATE);
 
-        pref.getStringSet("checked", checked);
         completeBtn = findViewById(R.id.completeBtn);    //완료 버튼
         btn1 = findViewById(R.id.btn1); // 소화불량 6
         btn2 = findViewById(R.id.btn2); // 충치 0
@@ -46,73 +45,67 @@ public class getUserData extends AppCompatActivity {
 
         //질병 버튼 클릭 시
         btn1.setOnClickListener(v -> { // 소화불량 6
-            btnClicked(btn1, 0, 6);
+            btnClicked(btn1, 6);
         });
         btn2.setOnClickListener(v -> { // 충치 0
-            btnClicked(btn2, 1, 0);
+            btnClicked(btn2, 0);
         });
         btn3.setOnClickListener(v -> { // 변비 9
-            btnClicked(btn3, 2, 9);
+            btnClicked(btn3, 9);
         });
         btn4.setOnClickListener(v -> { // 빈혈 8
-            btnClicked(btn4, 3, 8);
+            btnClicked(btn4, 8);
         });
         btn5.setOnClickListener(v -> { // 당뇨 2
-            btnClicked(btn5, 4, 2);
+            btnClicked(btn5, 2);
         });
         btn6.setOnClickListener(v -> { // 혈당 7
-            btnClicked(btn6, 5, 7);
+            btnClicked(btn6, 7);
         });
         btn7.setOnClickListener(v -> { // 고혈압 4
-            btnClicked(btn7, 6, 4);
+            btnClicked(btn7, 4);
         });
         btn8.setOnClickListener(v -> { // 위암 5
-            btnClicked(btn8, 7, 5);
+            btnClicked(btn8, 5);
         });
         btn9.setOnClickListener(v -> { // 직장암 10
-            btnClicked(btn9, 8, 10);
+            btnClicked(btn9, 10);
         });
         btn10.setOnClickListener(v -> { // 유방암 3
-            btnClicked(btn10, 9, 3);
+            btnClicked(btn10, 3);
         });
         btn11.setOnClickListener(v -> { // 심장질환 1
-            btnClicked(btn11, 10, 1);
+            btnClicked(btn11, 1);
         });
         btn12.setOnClickListener(v -> { // 골다공증 11
-            btnClicked(btn12, 11, 11);
+            btnClicked(btn12, 11);
         });
 
         //사용자가 완료 버튼을 누르면
         completeBtn.setOnClickListener(v -> {
-//            RadioButton radioYes = findViewById(R.id.yes);
-//            RadioButton radioNo = findViewById(R.id.no);
-//
-                //최초실행 했다고 저장
-                SharedPreferences.Editor editor = pref.edit();
-                editor.putBoolean("isFirst",true);
-                editor.apply();
+            SharedPreferences.Editor editor = pref.edit();
 
-                //클릭한 버튼의 정보를 저장한 String Set을 sharedPreference에 저장
-                editor.putStringSet("checked", checked);
-                editor.apply();
-                //클한 버튼의 정보를 저장한 int 배열을 string으로 변환 후 sharedPreference에 저장
-                String stringForIntArray = Arrays.toString(checkList);
-                editor.putString("index", stringForIntArray);
-                editor.apply();
-
-                //ImageLoadActivity 실행
-                Intent intent = new Intent(v.getContext(), ImageLoadActivity.class);
-                intent.putExtra("value", "first");
-                startActivity(intent);
-                finish();
+            //최초실행 했다고 저장
+            editor.putBoolean("isFirst", true);
+            editor.apply();
+            //클릭한 버튼의 정보를 저장한 String Set을 sharedPreference에 저장
+            editor.putStringSet("checked", checked);
+            editor.apply();
+            //클릭한 버튼의 정보를 저장한 int 배열을 string으로 변환 후 sharedPreference에 저장
+            String stringForIntArray = Arrays.toString(checkList);
+            editor.putString("index", stringForIntArray);
+            editor.apply();
+            //ImageLoadActivity 실행
+            Intent intent = new Intent(v.getContext(), ImageLoadActivity.class);
+            intent.putExtra("value", "first");
+            startActivity(intent);
+            finish();
         });
 
     }
 
-    private void btnClicked(Button btn, int index, int sIndex){
-        if(!isClicked[index]){    //버튼이 선택되지 않았으면
-            //선택됨으로 바꾸고
-            isClicked[index]=true;
+    private void btnClicked(Button btn, int sIndex){
+        if(checkList[sIndex]==0){    //버튼이 선택되지 않았으면
             //버튼 색 변경 후
             btn.setBackgroundResource(R.drawable.button_design);
             btn.setTextColor(Color.WHITE);
@@ -121,8 +114,6 @@ public class getUserData extends AppCompatActivity {
             //서버로 보낼 인덱스 추가(1이면 선택)
             checkList[sIndex] = 1;
         }else{  //선택되어있으면
-            //선택되지 않음으로 바꾸고
-            isClicked[index]=false;
             //버튼 색 변경 후
             btn.setBackgroundResource(R.drawable.button_design_white);
             btn.setTextColor(Color.parseColor("#303F9F"));
