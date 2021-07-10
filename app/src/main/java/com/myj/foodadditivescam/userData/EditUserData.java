@@ -1,4 +1,4 @@
-package com.myj.foodadditivescam;
+package com.myj.foodadditivescam.userData;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,8 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Button;
+
+import com.myj.foodadditivescam.R;
 
 import java.util.Arrays;
 import java.util.HashSet;

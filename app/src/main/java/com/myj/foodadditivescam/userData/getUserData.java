@@ -1,4 +1,4 @@
-package com.myj.foodadditivescam;
+package com.myj.foodadditivescam.userData;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.myj.foodadditivescam.OCR.ImageLoadActivity;
+import com.myj.foodadditivescam.R;
 
 public class getUserData extends AppCompatActivity {
     Set<String> checked = new HashSet<String>();   //사용자가 체크한 버튼의 텍스트를 저장할 리스트
