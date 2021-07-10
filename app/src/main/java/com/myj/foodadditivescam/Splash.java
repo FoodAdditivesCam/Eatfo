@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.myj.foodadditivescam.OCR.ImageLoadActivity;
+import com.myj.foodadditivescam.userData.getUserData;
 
 public class Splash extends AppCompatActivity {
 
