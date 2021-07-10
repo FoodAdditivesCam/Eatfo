@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".EditUserData"></activity>
+        <activity android:name=".userData.EditUserData"></activity>
         <activity android:name=".Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".result.ShowInfo" />
-        <activity android:name=".getUserData" />
+        <activity android:name=".userData.getUserData" />
         <activity android:name=".result.ShowInfo" />
         <activity android:name=".result.ShowResult" />
         <activity android:name=".OCR.CropperActivity" />

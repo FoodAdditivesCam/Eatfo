@@ -33,7 +33,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
-import com.myj.foodadditivescam.EditUserData;
+import com.myj.foodadditivescam.userData.EditUserData;
 import com.myj.foodadditivescam.R;
 import com.theartofdev.edmodo.cropper.CropImage;
 
