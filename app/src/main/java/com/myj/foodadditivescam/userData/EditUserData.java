@@ -15,12 +15,13 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.stream.Stream;
 
 public class EditUserData extends AppCompatActivity {
     Set<String> checked;   //사용자가 체크한 버튼의 텍스트를 저장할 리스트
     Button completeBtn, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn10, btn11, btn12;
     Boolean[] isClicked = new Boolean[]{false, false, false, false, false, false, false, false, false, false, false, false};
-    int[] checkList = new int[12];
+    int[] checkList = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +30,6 @@ public class EditUserData extends AppCompatActivity {
 
         SharedPreferences pref = getSharedPreferences("isFirst", Activity.MODE_PRIVATE);
 
-        pref.getStringSet("checked", checked);
         completeBtn = findViewById(R.id.completeBtn2);    //완료 버튼
         btn1 = findViewById(R.id.btn1); // 소화불량 6
         btn2 = findViewById(R.id.btn2); // 충치 0
@@ -46,6 +46,10 @@ public class EditUserData extends AppCompatActivity {
 
         //저장된 데이터 불러오기
         checked = pref.getStringSet("checked", new HashSet<String>());
+        String tmp = pref.getString("index", "0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0");
+        tmp = tmp.replace("[", "");
+        tmp = tmp.replace("]", "");
+        checkList = Stream.of(tmp.split(", ")).mapToInt(Integer::parseInt).toArray();
 
         //최초실행시 선택한 버튼 색 변경
         Button[] btnlst = {btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn10, btn11, btn12};
@@ -113,7 +117,7 @@ public class EditUserData extends AppCompatActivity {
             //클릭한 버튼의 정보를 저장한 String Set을 sharedPreference에 저장
             editor.putStringSet("checked", checked);
             editor.apply();
-            //클한 버튼의 정보를 저장한 int 배열을 string으로 변환 후 sharedPreference에 저장
+            //클릭한 버튼의 정보를 저장한 int 배열을 string으로 변환 후 sharedPreference에 저장
             String stringForIntArray = Arrays.toString(checkList);
             editor.putString("index", stringForIntArray);
             editor.apply();
@@ -152,7 +156,7 @@ public class EditUserData extends AppCompatActivity {
     public void onBackPressed() {
         // AlertDialog 빌더를 이용해 종료시 발생시킬 창을 띄운다
         android.app.AlertDialog.Builder alBuilder = new android.app.AlertDialog.Builder(this);
-        alBuilder.setMessage("변경된 사항을 저장하지 않고 나가겠습니까?");
+        alBuilder.setMessage("변경된 사항을 저장하고 나가겠습니까?");
 
         // "예" 버튼을 누르면 실행되는 리스너
         alBuilder.setPositiveButton("예", new DialogInterface.OnClickListener() {
