@@ -1,109 +1,229 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context="com.myj.foodadditivescam.OCR.OCRMainActivity">
+    tools:context=".userData.getUserData"
+    android:gravity="bottom"
+    app:umanoDragView="@id/dragView"
+    app:umanoPanelHeight="120dp"
+    app:umanoOverlay="false"
+    app:umanoParallaxOffset="200dp"
+    app:umanoShadowHeight="10dp">
 
-    <LinearLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="30dp">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:context="com.myj.foodadditivescam.OCR.OCRMainActivity">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageButton
-                android:id="@+id/backBtn"
-                android:layout_width="50dp"
-                android:layout_height="0dp"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
-                android:id="@+id/editUserDataBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@android:drawable/ic_menu_manage" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <TextView
-            android:id="@+id/image_details"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="8dp"
-            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="30dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageButton
+                    android:id="@+id/backBtn"
+                    android:layout_width="50dp"
+                    android:layout_height="0dp"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/editUserDataBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@android:drawable/ic_menu_manage" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/image_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/kopub_world_bold"
+                android:gravity="center"
+                android:text="라벨을 촬영하면 \n영양정보를 자동으로 분석합니다."
+                android:textColor="@color/colorPrimary"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/main_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="8"
+            android:scaleType="fitCenter"
+            app:srcCompat="@mipmap/main_image" />
+
+        <Button
+            android:id="@+id/pickPicBtn"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_margin="80dp"
+            android:background="@drawable/button_design"
+            android:fontFamily="@font/kopub_world_medium"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:text="사진 선택하기"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/uploadBtn"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="150dp"
+            android:background="@drawable/button_design"
+            android:clickable="true"
+            android:fontFamily="@font/kopub_world_medium"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:text="업로드하기"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/pickAgainBtn"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="80dp"
+            android:background="@drawable/button_design_white"
+            android:clickable="true"
+            android:fontFamily="@font/kopub_world_medium"
+            android:text="다시 선택하기"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            android:visibility="invisible" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <LinearLayout
+        android:id="@+id/dragView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical"
+        android:padding="10dp"
+        tools:context=".getUserData">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="40dp"
             android:fontFamily="@font/kopub_world_bold"
             android:gravity="center"
-            android:text="라벨을 촬영하면 \n영양정보를 자동으로 분석합니다."
-            android:textColor="@color/colorPrimary"
+            android:text="슬라이드 업 하여\n원재료를 검색하세요!"
+            android:textColor="#FFFFFF"
             android:textSize="24sp"
             android:textStyle="bold" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="20dp">
+
+            <EditText
+                android:id="@+id/searchTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="원재료 명을 입력하세요."
+                android:inputType="textPersonName"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#ADFFFFFF" />
+
+            <Button
+                android:id="@+id/searchBtn"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_design_white"
+                android:fontFamily="@font/kopub_world_medium"
+                android:text="검색"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!--
+<TextView
+    android:id="@+id/textView2"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:layout_marginTop="50dp"
+    android:gravity="center"
+    android:text="크롤링 데이터를 받아보시겠습니까?"
+    android:textColor="@color/colorPrimary"
+    android:textSize="24sp" />
+
+<TextView
+    android:id="@+id/textView3"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:layout_marginTop="10dp"
+    android:gravity="center"
+    android:text="크롤링 데이터는 일부 부정확한 정보를 포함할 수 있습니다."
+    android:textColor="#4A4A4A" />
+
+<RadioGroup
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:foregroundGravity="center"
+    android:orientation="vertical"
+    android:padding="30dp">
+
+    <RadioButton
+        android:id="@+id/yes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="네! 정보를 받아볼게요!"
+        android:textColor="#4A4A4A" />
+
+    <RadioButton
+        android:id="@+id/no"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="아니요, 괜찮습니다!"
+        android:textColor="#4A4A4A" />
+
+</RadioGroup>
+-->
+
     </LinearLayout>
+</com.sothree.slidinguppanel.SlidingUpPanelLayout>
 
-    <ImageView
-        android:id="@+id/main_image"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="8"
-        android:scaleType="fitCenter"
-        app:srcCompat="@mipmap/main_image" />
-
-    <Button
-        android:id="@+id/pickPicBtn"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
-        android:layout_margin="80dp"
-        android:background="@drawable/button_design"
-        android:fontFamily="@font/kopub_world_medium"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
-        android:text="사진 선택하기"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold" />
-
-    <Button
-        android:id="@+id/uploadBtn"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="150dp"
-        android:background="@drawable/button_design"
-        android:clickable="true"
-        android:fontFamily="@font/kopub_world_medium"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
-        android:text="업로드하기"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        android:visibility="invisible" />
-
-    <Button
-        android:id="@+id/pickAgainBtn"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="80dp"
-        android:background="@drawable/button_design_white"
-        android:clickable="true"
-        android:fontFamily="@font/kopub_world_medium"
-        android:text="다시 선택하기"
-        android:textColor="@color/colorPrimary"
-        android:textStyle="bold"
-        android:visibility="invisible" />
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
