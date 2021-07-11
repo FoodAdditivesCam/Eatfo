@@ -16,7 +16,6 @@
 
 package com.myj.foodadditivescam.OCR;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -193,6 +192,7 @@ public class OCRMainActivity extends AppCompatActivity{
             startActivity(intent);
             finish();
         });
+
     }
 
     @Override
