@@ -7,28 +7,103 @@
     android:fitsSystemWindows="true"
     tools:context="com.myj.foodadditivescam.OCR.OCRMainActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:orientation="vertical"
+        android:padding="30dp">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:layout_height="wrap_content">
 
-    </com.google.android.material.appbar.AppBarLayout>
+            <ImageButton
+                android:id="@+id/backBtn"
+                android:layout_width="50dp"
+                android:layout_height="0dp"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <include layout="@layout/content_main" />
+            <ImageButton
+                android:id="@+id/editUserDataBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@android:drawable/ic_menu_manage" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/image_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/kopub_world_bold"
+            android:gravity="center"
+            android:text="라벨을 촬영하면 \n영양정보를 자동으로 분석합니다."
+            android:textColor="@color/colorPrimary"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/main_image"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_menu_gallery" />
+        android:layout_gravity="center"
+        android:layout_weight="8"
+        android:scaleType="fitCenter"
+        app:srcCompat="@mipmap/main_image" />
+
+    <Button
+        android:id="@+id/pickPicBtn"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_margin="80dp"
+        android:background="@drawable/button_design"
+        android:fontFamily="@font/kopub_world_medium"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:text="사진 선택하기"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/uploadBtn"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="150dp"
+        android:background="@drawable/button_design"
+        android:clickable="true"
+        android:fontFamily="@font/kopub_world_medium"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:text="업로드하기"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/pickAgainBtn"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="80dp"
+        android:background="@drawable/button_design_white"
+        android:clickable="true"
+        android:fontFamily="@font/kopub_world_medium"
+        android:text="다시 선택하기"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"
+        android:visibility="invisible" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

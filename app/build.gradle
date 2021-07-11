@@ -12,6 +12,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        //ndk { abiFilters 'armeabi-v7a', 'arm64-v8a' }
     }
 
     buildTypes {
@@ -46,4 +47,17 @@ dependencies {
     implementation 'com.google.http-client:google-http-client-gson:1.23.0' exclude module: 'httpclient'
     implementation 'com.google.apis:google-api-services-vision:v1-rev369-1.23.0'
     implementation 'com.soundcloud.android:android-crop:1.0.1@aar'
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
+    // opencv 4.3.0
+    implementation 'com.quickbirdstudios:opencv:4.3.0'
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+
+    // 슬라이딩 페이지
+    implementation 'com.sothree.slidinguppanel:library:3.4.0'
+
+    // Glide
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    // annotationProcessor : annotation processor classpath 에서 compile processor classpath를 분리하여 빌드 성능개선
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+    implementation 'com.google.android.flexbox:flexbox:3.0.0' // flexbox-layout
 }

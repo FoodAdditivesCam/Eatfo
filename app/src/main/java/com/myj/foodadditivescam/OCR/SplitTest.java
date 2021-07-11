@@ -9,7 +9,7 @@ class SplitTest {
         //읽어오는 과정에서 생긴 엔터 삭제
         text = text.replace("\r\n", "");
         text = text.replace("\n", "");
-
+//
 //        //괄호 안 데이터 삭제
 //		while(true) {
 //			if(text.contains("(")){
@@ -31,6 +31,22 @@ class SplitTest {
         for(int i = 0; i<txtLst.length; i++) {
             String[] strlst = txtLst[i].split(" ");
             for(int j = 0; j<strlst.length;j++) {
+                if(strlst[j].contains("(")){
+                    String[] tmp = strlst[j].split("\\(");
+                    for(int k=0; k<tmp.length; k++){
+                        txtLst2.add(tmp[k]);
+                    }
+                    if(!strlst[j].contains(")")){
+                        continue;
+                    }
+                }
+                if(strlst[j].contains(")")){
+                    String[] tmp = strlst[j].split("\\)");
+                    for(int k=0; k<tmp.length; k++){
+                        txtLst2.add(tmp[k]);
+                    }
+                    continue;
+                }
                 txtLst2.add(strlst[j]);
             }
         }
