@@ -44,6 +44,7 @@ import java.io.File;
 
 public class ImageLoadActivity extends AppCompatActivity {
     public static final String FILE_NAME = "temp.jpg";
+    public static String Tag = ImageLoadActivity.class.getSimpleName();
 
     private static final int GALLERY_PERMISSIONS_REQUEST = 0;
     private static final int GALLERY_IMAGE_REQUEST = 1;
@@ -60,31 +61,33 @@ public class ImageLoadActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ocr_activity_main);
         mContext = this;
-        String value = getIntent().getStringExtra("value");
+
         try{
+            String value = getIntent().getStringExtra("value");
             if(value.equals("re")){
                 createAlterDialog();
             }
         }catch (Exception e){
-            Log.d("minjeong",e.getMessage());
+            Log.d(Tag, e.getMessage());
         }
 
+        // 사진 선택하기 버튼
         Button pickPicBtn = findViewById(R.id.pickPicBtn);
         pickPicBtn.setOnClickListener(view->{
             createAlterDialog();
         });
 
-        ImageButton editUserDataBtn = findViewById(R.id.editUserDataBtn);
         //공구 이미지버튼 누르면
+        ImageButton editUserDataBtn = findViewById(R.id.editUserDataBtn);
         editUserDataBtn.setOnClickListener(view->{
             //EditUserData 액티비티 실행 후 대기
             Intent intent = new Intent(this, EditUserData.class);
             startActivity(intent);
         });
 
+        //드래그 뷰의 검색 버튼을 누른 경우
         searchBtn = findViewById(R.id.searchBtn);
         searchTxt = findViewById(R.id.searchTxt);
-        //드래그 뷰의 검색 버튼을 누른 경우
         searchBtn.setOnClickListener(view->{
             //검색 창에 원재료명을 입력했는지 확인
             String inputMName = searchTxt.getText().toString();
@@ -97,8 +100,6 @@ public class ImageLoadActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 
     public void createAlterDialog(){
@@ -153,21 +154,16 @@ public class ImageLoadActivity extends AppCompatActivity {
                     .start(this);
         }
 
-//        CropImage.activity(uri)
-//                .start(this);
-
         CropImage.ActivityResult res = CropImage.getActivityResult(data);
         if(res!=null){
-            Log.d("minjeong","ocrmainacititydml res:  "+res);
+            Log.d(Tag,"ocrmainacititydml res:  "+res);
             Uri resUri = res.getUri();
 
-            Log.d("minjeong","ocrmainacititydml uri:  "+resUri);
+            Log.d(Tag,"ocrmainacititydml uri:  "+resUri);
             Intent intent = new Intent(this, OCRMainActivity.class);
             intent.putExtra("imageUri", resUri);
             startActivity(intent);
-            finish();
         }
-
     }
 
 
@@ -191,27 +187,22 @@ public class ImageLoadActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-//        super.onBackPressed();
-        // AlertDialog 빌더를 이용해 종료시 발생시킬 창을 띄운다
         android.app.AlertDialog.Builder alBuilder = new android.app.AlertDialog.Builder(this);
         alBuilder.setMessage("종료하시겠습니까?");
 
-        // "예" 버튼을 누르면 실행되는 리스너
         alBuilder.setPositiveButton("예", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 finish(); // 현재 액티비티를 종료한다. (MainActivity에서 작동하기 때문에 애플리케이션을 종료한다.)
             }
         });
-        // "아니오" 버튼을 누르면 실행되는 리스너
         alBuilder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                return; // 아무런 작업도 하지 않고 돌아간다
+                return;
             }
         });
         alBuilder.setTitle("프로그램 종료");
-        alBuilder.show(); // AlertDialog.Bulider로 만든 AlertDialog를 보여준다.
+        alBuilder.show();
     }
-
 }
