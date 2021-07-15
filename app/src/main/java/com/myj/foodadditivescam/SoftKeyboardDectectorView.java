@@ -6,7 +6,7 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 
-class SoftKeyboardDectectorView extends View {
+public class SoftKeyboardDectectorView extends View {
 
     private boolean mShownKeyboard;
     private OnShownKeyboardListener mOnShownSoftKeyboard;

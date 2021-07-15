@@ -27,7 +27,9 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -35,6 +37,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
+import com.myj.foodadditivescam.SoftKeyboardDectectorView;
 import com.myj.foodadditivescam.userData.EditUserData;
 import com.myj.foodadditivescam.R;
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -85,21 +88,21 @@ public class ImageLoadActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        //드래그 뷰의 검색 버튼을 누른 경우
-        searchBtn = findViewById(R.id.searchBtn);
-        searchTxt = findViewById(R.id.searchWordTxt);
-        searchBtn.setOnClickListener(view->{
-            //검색 창에 원재료명을 입력했는지 확인
-            String inputMName = searchTxt.getText().toString();
-            if(inputMName.equals("")||inputMName.equals(null)){   //입력을 하지 않은 경우
-                //포커스를 원재료명 입력 창으로 두고
-                searchTxt.requestFocus();
-                //토스트 띄우기
-                Toast.makeText(this, "검색하고자 하는 원재료명을 입력하세요.", Toast.LENGTH_LONG).show();
-            }else{  //입력한 경우
-
-            }
-        });
+//        //드래그 뷰의 검색 버튼을 누른 경우
+//        searchBtn = findViewById(R.id.searchBtn);
+//        searchTxt = findViewById(R.id.searchWordTxt);
+//        searchBtn.setOnClickListener(view->{
+//            //검색 창에 원재료명을 입력했는지 확인
+//            String inputMName = searchTxt.getText().toString();
+//            if(inputMName.equals("")||inputMName.equals(null)){   //입력을 하지 않은 경우
+//                //포커스를 원재료명 입력 창으로 두고
+//                searchTxt.requestFocus();
+//                //토스트 띄우기
+//                Toast.makeText(this, "검색하고자 하는 원재료명을 입력하세요.", Toast.LENGTH_LONG).show();
+//            }else{  //입력한 경우
+//
+//            }
+//        });
     }
 
     public void createAlterDialog(){

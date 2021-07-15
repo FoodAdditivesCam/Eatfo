@@ -60,17 +60,16 @@
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
-            <ImageView
-                android:id="@+id/main_image"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="50dp"
-                android:layout_weight="8"
-                android:scaleType="fitCenter"
-                app:srcCompat="@mipmap/main_image" />
-
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/main_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="8"
+            android:scaleType="fitCenter"
+            app:srcCompat="@mipmap/main_image" />
 
         <Button
             android:id="@+id/pickPicBtn"
@@ -124,7 +123,6 @@
         android:id="@+id/dragView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
         android:background="@color/colorPrimary"
         android:orientation="vertical"
         android:padding="10dp"
@@ -153,12 +151,11 @@
             android:paddingLeft="10dp"
             android:paddingRight="20dp">
 
-            <AutoCompleteTextView
+            <EditText
                 android:id="@+id/searchWordTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:completionThreshold="1"
                 android:ems="10"
                 android:hint="원재료 명을 입력하세요."
                 android:inputType="textPersonName"
@@ -176,7 +173,6 @@
                 android:text="검색"
                 android:textColor="@color/colorPrimary"
                 android:textStyle="bold" />
-
         </LinearLayout>
 
     </LinearLayout>
