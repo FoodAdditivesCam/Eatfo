@@ -74,41 +74,29 @@ public class EditUserData extends AppCompatActivity {
 
         //질병 버튼 클릭 시
         btn1.setOnClickListener(v -> { // 소화불량 6
-            btnClicked(btn1, 0, 6);
-        });
+            btnClicked(btn1, 0, 6); });
         btn2.setOnClickListener(v -> { // 충치 0
-            btnClicked(btn2, 1, 0);
-        });
+            btnClicked(btn2, 1, 0); });
         btn3.setOnClickListener(v -> { // 변비 9
-            btnClicked(btn3, 2, 9);
-        });
+            btnClicked(btn3, 2, 9); });
         btn4.setOnClickListener(v -> { // 빈혈 8
-            btnClicked(btn4, 3, 8);
-        });
+            btnClicked(btn4, 3, 8); });
         btn5.setOnClickListener(v -> { // 당뇨 2
-            btnClicked(btn5, 4, 2);
-        });
+            btnClicked(btn5, 4, 2); });
         btn6.setOnClickListener(v -> { // 혈당 7
-            btnClicked(btn6, 5, 7);
-        });
+            btnClicked(btn6, 5, 7); });
         btn7.setOnClickListener(v -> { // 고혈압 4
-            btnClicked(btn7, 6, 4);
-        });
+            btnClicked(btn7, 6, 4); });
         btn8.setOnClickListener(v -> { // 위암 5
-            btnClicked(btn8, 7, 5);
-        });
+            btnClicked(btn8, 7, 5); });
         btn9.setOnClickListener(v -> { // 직장암 10
-            btnClicked(btn9, 8, 10);
-        });
+            btnClicked(btn9, 8, 10); });
         btn10.setOnClickListener(v -> { // 유방암 3
-            btnClicked(btn10, 9, 3);
-        });
+            btnClicked(btn10, 9, 3); });
         btn11.setOnClickListener(v -> { // 심장질환 1
-            btnClicked(btn11, 10, 1);
-        });
+            btnClicked(btn11, 10, 1); });
         btn12.setOnClickListener(v -> { // 골다공증 11
-            btnClicked(btn12, 11, 11);
-        });
+            btnClicked(btn12, 11, 11); });
 
         //사용자가 완료 버튼을 누르면
         completeBtn.setOnClickListener(v -> {
@@ -121,10 +109,8 @@ public class EditUserData extends AppCompatActivity {
             String stringForIntArray = Arrays.toString(checkList);
             editor.putString("index", stringForIntArray);
             editor.apply();
-
             finish();
         });
-
     }
 
     private void btnClicked(Button btn, int index, int sIndex){
@@ -143,37 +129,33 @@ public class EditUserData extends AppCompatActivity {
             isClicked[index]=false;
             //버튼 색 변경 후
             btn.setBackgroundResource(R.drawable.button_design_white);
-            btn.setTextColor(Color.parseColor("#303F9F"));
+            btn.setTextColor(Color.parseColor("#303F9F")); // todo: 하드코딩 수정
             //리스트에 있는 질병 명 삭제
             checked.remove(btn.getText());
             //리스트에 있는 인덱스 삭제
             checkList[sIndex] = 0;
         }
-
     }
 
     @Override
     public void onBackPressed() {
-        // AlertDialog 빌더를 이용해 종료시 발생시킬 창을 띄운다
         android.app.AlertDialog.Builder alBuilder = new android.app.AlertDialog.Builder(this);
         alBuilder.setMessage("변경된 사항을 저장하고 나가겠습니까?");
 
-        // "예" 버튼을 누르면 실행되는 리스너
         alBuilder.setPositiveButton("예", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 finish(); // 현재 액티비티를 종료
             }
         });
-        // "아니오" 버튼을 누르면 실행되는 리스너
         alBuilder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 return; // 아무런 작업도 하지 않고 돌아간다
+                // todo: return 안한다면 여기도 finish 필요
             }
         });
         alBuilder.setTitle("편집 종료");
         alBuilder.show(); // AlertDialog.Bulider로 만든 AlertDialog를 보여준다.
     }
-
 }

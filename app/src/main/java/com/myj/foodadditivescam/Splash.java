@@ -13,7 +13,7 @@ import com.myj.foodadditivescam.OCR.ImageLoadActivity;
 import com.myj.foodadditivescam.userData.getUserData;
 
 public class Splash extends AppCompatActivity {
-
+    public static String Tag = Splash.class.getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,22 +26,17 @@ public class Splash extends AppCompatActivity {
             boolean first = pref.getBoolean("isFirst", false);
 
             if(!first){ //최초실행일 경우
-                Log.d("Is first Time?", "first");
-
+                Log.d(Tag, "first");
                 //getUserData 액티비티로 이동
                 intent = new Intent(this, getUserData.class);
-
             }else{
                 //최초실행이 아니면 ImageLoadActivity 실행
-                Log.d("Is first Time?", "not first");
+                Log.d(Tag, "not first");
                 intent = new Intent(this, ImageLoadActivity.class);
-                intent.putExtra("value", "first");
             }
 
             startActivity(intent);
-
             finish();
-
         }, 3000);
     }
 }

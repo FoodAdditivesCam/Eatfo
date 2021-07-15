@@ -45,7 +45,7 @@ public class ShowResult extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //인텐트로 넘어온 원재료 정보 객체 리스트 가져오기
+        //원재료 정보 객체 리스트, 이미지 url 가져오기
         RawMaterials[] rms = (RawMaterials[]) getIntent().getSerializableExtra("rms");
         String url = (String) getIntent().getSerializableExtra("url");
         //저장된 데이터 불러오기
@@ -73,7 +73,7 @@ public class ShowResult extends AppCompatActivity {
 
             // 태그 버튼
             LinearLayout linearLayout = findViewById(R.id.linearLayout);
-            String[] startag = {"시작"};
+            String startag = "시작";
             oneContentLoad(rms, startag,0,0);
             // 가중치 별로 정렬
             for (String key: tag_weight_temp.keySet()) {
@@ -101,17 +101,14 @@ public class ShowResult extends AppCompatActivity {
                 tagBtn.setElevation(20);
                 if(tag_weight.get(key)>0) { //tag_temp
                     tagBtn.setBackground(getDrawable(R.drawable.tag_button_design_person)); // todo: 색 다시 정해서 하드코딩 고치기
-                    tagBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.tag_icon, 0,0,0); // todo: 아이콘 바꾸기
+                    tagBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.tag_icon, 0,0,0); // todo: 아이콘 바꾸기, 하드코딩
                 }
                 linearLayout.addView(tagBtn);
-
-                //넘겨줄 데이터 변수로 저장
-                String[] tagLst = {key};
 
                 //버튼 클릭 이벤트
                 int finalTaglength = taglength;
                 tagBtn.setOnClickListener(v -> {
-                    oneContentLoad(rms, tagLst, v.getId(), finalTaglength);
+                    oneContentLoad(rms, key, v.getId(), finalTaglength);
                 });
                 id++;
             }
@@ -120,11 +117,12 @@ public class ShowResult extends AppCompatActivity {
         }
     }
 
-    public void oneContentLoad(RawMaterials[] rms,String[] tag, int clickid, int taglength){
+    //태그 버튼 클릭 이벤트(원재료 버튼 만들기)
+    public void oneContentLoad(RawMaterials[] rms,String tag, int clickid, int taglength){
         FlexboxLayout linearLayoutname = (FlexboxLayout) findViewById(R.id.linearLayout3);
         linearLayoutname.removeAllViews();
 
-        if(taglength!=0) {
+        if(taglength!=0) { //태그 버튼 setting
             Button tmpBtn;
             int id=0;
             for (String key: tag_weight.keySet()) {
@@ -144,40 +142,36 @@ public class ShowResult extends AppCompatActivity {
 
         //원재료명 버튼 생성
         for (RawMaterials r : rms) {
-            String[] arr = r.getTags().split(" ");
-            for (int ii = 0; ii < arr.length; ii++) {
-                oneBtn = new Button(this);
-                oneBtn.setId(r.getId());
-                oneBtn.setText(r.getName());
-                oneBtn.setHeight(ConstraintLayout.LayoutParams.WRAP_CONTENT);
-                oneBtn.setBackgroundResource(R.drawable.button_design_white);
-                oneBtn.setTextColor(getResources().getColor(R.color.colorPrimary));
+            oneBtn = new Button(this);
+            oneBtn.setId(r.getId());
+            oneBtn.setText(r.getName());
+            oneBtn.setHeight(ConstraintLayout.LayoutParams.WRAP_CONTENT);
+            oneBtn.setBackgroundResource(R.drawable.button_design_white);
+            oneBtn.setTextColor(getResources().getColor(R.color.colorPrimary));
 
-                if(!tag[0].equals("시작")){
-                    String[] splitarr = r.getTags().split(" ");
-                    for (int i = 0; i < splitarr.length; i++) {
-                        if (splitarr[i].equals(tag[0])) {
-                            oneBtn.setBackgroundResource(R.drawable.button_design);
-                            oneBtn.setTextColor(Color.WHITE);
-                        }
+            if(!tag.equals("시작")){ // 해당 원재료명 표시
+                String[] splitarr = r.getTags().split(" ");
+                for (int i = 0; i < splitarr.length; i++) {
+                    if (splitarr[i].equals(tag)) {
+                        oneBtn.setBackgroundResource(R.drawable.button_design);
+                        oneBtn.setTextColor(Color.WHITE);
                     }
                 }
-
-                //버튼 클릭 이벤트
-                oneBtn.setOnClickListener(v -> {
-                    Intent intent = new Intent(this, ShowInfo.class);
-                    intent.putExtra("name", r.getName());
-                    intent.putExtra("tag", r.getTags());
-                    intent.putExtra("info", r.getDescription() + "\n\n출처: " + r.getReference());
-                    startActivity(intent);
-                });
-
-                FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(this);
-                layoutManager.setFlexWrap(FlexWrap.WRAP);
-
-                linearLayoutname.addView(oneBtn);
-                break;
             }
+
+            //버튼 클릭 이벤트
+            oneBtn.setOnClickListener(v -> {
+                Intent intent = new Intent(this, ShowInfo.class);
+                intent.putExtra("name", r.getName());
+                intent.putExtra("tag", r.getTags());
+                intent.putExtra("info", r.getDescription() + "\n\n출처: " + r.getReference());
+                startActivity(intent);
+            });
+
+            FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(this);
+            layoutManager.setFlexWrap(FlexWrap.WRAP);
+
+            linearLayoutname.addView(oneBtn);
         }
     }
 
