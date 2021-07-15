@@ -87,7 +87,7 @@ public class ImageLoadActivity extends AppCompatActivity {
 
         //드래그 뷰의 검색 버튼을 누른 경우
         searchBtn = findViewById(R.id.searchBtn);
-        searchTxt = findViewById(R.id.searchTxt);
+        searchTxt = findViewById(R.id.searchWordTxt);
         searchBtn.setOnClickListener(view->{
             //검색 창에 원재료명을 입력했는지 확인
             String inputMName = searchTxt.getText().toString();

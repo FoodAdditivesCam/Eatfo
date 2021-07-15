@@ -128,8 +128,8 @@
         android:padding="10dp"
         tools:context=".getUserData">
 
-        <TextView
-            android:id="@+id/textView"
+        <AutoCompleteTextView
+            android:id="@+id/searchWordTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -140,7 +140,8 @@
             android:text="슬라이드 업 하여\n원재료를 검색하세요!"
             android:textColor="#FFFFFF"
             android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:completionThreshold="1"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -152,7 +153,7 @@
             android:paddingRight="20dp">
 
             <EditText
-                android:id="@+id/searchTxt"
+                android:id="@+id/searchWordTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
