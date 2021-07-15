@@ -60,17 +60,16 @@
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
-            <ImageView
-                android:id="@+id/main_image"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="50dp"
-                android:layout_weight="8"
-                android:scaleType="fitCenter"
-                app:srcCompat="@mipmap/main_image" />
-
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/main_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="8"
+            android:scaleType="fitCenter"
+            app:srcCompat="@mipmap/main_image" />
 
         <Button
             android:id="@+id/pickPicBtn"
@@ -124,14 +123,13 @@
         android:id="@+id/dragView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
         android:background="@color/colorPrimary"
         android:orientation="vertical"
         android:padding="10dp"
         tools:context=".getUserData">
 
-        <TextView
-            android:id="@+id/searchTxt"
+        <AutoCompleteTextView
+            android:id="@+id/searchWordTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -142,7 +140,8 @@
             android:text="슬라이드 업 하여\n원재료를 검색하세요!"
             android:textColor="#FFFFFF"
             android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:completionThreshold="1"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -153,12 +152,11 @@
             android:paddingLeft="10dp"
             android:paddingRight="20dp">
 
-            <AutoCompleteTextView
+            <EditText
                 android:id="@+id/searchWordTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:completionThreshold="1"
                 android:ems="10"
                 android:hint="원재료 명을 입력하세요."
                 android:inputType="textPersonName"
@@ -176,8 +174,56 @@
                 android:text="검색"
                 android:textColor="@color/colorPrimary"
                 android:textStyle="bold" />
-
         </LinearLayout>
+
+        <!--
+<TextView
+    android:id="@+id/textView2"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:layout_marginTop="50dp"
+    android:gravity="center"
+    android:text="크롤링 데이터를 받아보시겠습니까?"
+    android:textColor="@color/colorPrimary"
+    android:textSize="24sp" />
+
+<TextView
+    android:id="@+id/textView3"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:layout_marginTop="10dp"
+    android:gravity="center"
+    android:text="크롤링 데이터는 일부 부정확한 정보를 포함할 수 있습니다."
+    android:textColor="#4A4A4A" />
+
+<RadioGroup
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:foregroundGravity="center"
+    android:orientation="vertical"
+    android:padding="30dp">
+
+    <RadioButton
+        android:id="@+id/yes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="네! 정보를 받아볼게요!"
+        android:textColor="#4A4A4A" />
+
+    <RadioButton
+        android:id="@+id/no"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="아니요, 괜찮습니다!"
+        android:textColor="#4A4A4A" />
+
+</RadioGroup>
+-->
 
     </LinearLayout>
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>
