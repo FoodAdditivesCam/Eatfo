@@ -29,10 +29,6 @@ public class ShowInfo extends AppCompatActivity {
         backBtn2 = findViewById(R.id.backBtn2);
 
         nameText.setText(name);
-//        String tagstr="";
-//        for(int i=0;i<tag.length;i++){
-//            tagstr+=(tag[i]+" ");
-//        }
         tagText.setText(tag);
         infoText.setText(info);
 

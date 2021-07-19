@@ -163,6 +163,7 @@ public class OCRMainActivity extends AppCompatActivity{
                 //이미지로드 액티비티 호출하여 OCR메인으로 돌아가기
                 Intent btnIntent = new Intent(this, ImageLoadActivity.class);
                 startActivity(btnIntent);
+                finish();
             });
         }
         //다시 선택하기 버튼을 누르면
@@ -171,6 +172,7 @@ public class OCRMainActivity extends AppCompatActivity{
             Intent AgainIntent = new Intent(this, ImageLoadActivity.class);
             AgainIntent.putExtra("value", "re");
             startActivity(AgainIntent);
+            finish();
         });
 
         //공구 이미지버튼 누르면
@@ -413,31 +415,6 @@ public class OCRMainActivity extends AppCompatActivity{
         return message; //xml에 메세지 띄울 data
     }
 
-    // OCR에서 직접 split된 것 가져오기
-    private static List responseToList(BatchAnnotateImagesResponse response){
-        List<String> words = new ArrayList<>();
-        String cur = "", temp="";
-        try {
-            List<EntityAnnotation> labels = response.getResponses().get(0).getTextAnnotations();
-            for (int i = 1; i < labels.size(); i++) {
-                cur=labels.get(i).getDescription();
-                if (cur.equals(",")) {
-                    words.add(temp);
-                    temp="";
-                }else{
-                    temp+=cur;
-                }
-            }
-            words.add("<<OCR이 split>>");
-            for (int i = 1; i < labels.size(); i++) {
-                words.add(labels.get(i).getDescription());
-            }
-        }catch (Exception e){
-            Log.d(TAG, "responseToList error: "+e);
-        }
-        return words;
-    }
-
     private static String[] splitString(String txt){
         List<String> resList= SplitTest.splitText(txt);
         String[] res = new String[resList.size()];
@@ -445,38 +422,6 @@ public class OCRMainActivity extends AppCompatActivity{
             res[i] = resList.get(i);
         }
         return res;
-    }
-
-    // 네이버 백과사전 API 검색 결과를 JSON으로 받아와 파싱해주는 함수
-    private static String resultAPI(String word) {
-        String jsonResult = SearchAPI.search(word);
-        String result = null;
-
-        try {
-            JSONObject jsonObject = new JSONObject(jsonResult);
-            String items = jsonObject.getString("items");
-            JSONArray jsonArray = new JSONArray(items);
-
-            result += word + "검색 결과\n";
-
-            for (int i=0; i < jsonArray.length(); i++) {
-                JSONObject subJsonObject = jsonArray.getJSONObject(i);
-                String title = subJsonObject.getString("title");
-                String link  = subJsonObject.getString("link");
-                String description = subJsonObject.getString("description");
-                if ("".equals(title)) {
-                    continue;
-                }
-
-                result += ("title : " + title + "\n" + "link : " + link + "\n"
-                        + "description : " + description + "\n\n");
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return result;
     }
 
     private String[] getResult(String[] resArr) {
