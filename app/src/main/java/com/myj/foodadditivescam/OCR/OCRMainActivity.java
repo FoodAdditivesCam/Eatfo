@@ -30,11 +30,15 @@ import android.provider.MediaStore;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,6 +71,7 @@ import com.myj.foodadditivescam.result.ShowResult;
 import com.myj.foodadditivescam.search.SearchAPI;
 import com.myj.foodadditivescam.search.Symspell;
 import com.myj.foodadditivescam.search.GetResult;
+import com.myj.foodadditivescam.search_m.SearchAdapter;
 import com.myj.foodadditivescam.userData.EditUserData;
 
 import org.json.JSONArray;
@@ -108,6 +113,13 @@ public class OCRMainActivity extends AppCompatActivity{
     private Context mContext;
     Intent intent;
 
+    private Button searchBtn;
+    private List<String> list;          // 데이터를 넣은 리스트변수
+    private ListView listView;          // 검색을 보여줄 리스트변수
+    private EditText searchTxt;        // 검색어를 입력할 Input 창
+    private SearchAdapter adapter;      // 리스트뷰에 연결할 아답터
+    private ArrayList<String> arraylist;
+
     static {
         System.loadLibrary("opencv_java4");
     }
@@ -130,7 +142,6 @@ public class OCRMainActivity extends AppCompatActivity{
         pickAgainBtn.setVisibility(View.INVISIBLE);
         uploadBtn.setVisibility(View.INVISIBLE);
         backBtn.setVisibility(View.INVISIBLE);
-//        editUserDataBtn.setVisibility(View.INVISIBLE);
 
         Uri imageUri = getIntent().getParcelableExtra("imageUri");
 
@@ -163,6 +174,7 @@ public class OCRMainActivity extends AppCompatActivity{
                 //이미지로드 액티비티 호출하여 OCR메인으로 돌아가기
                 Intent btnIntent = new Intent(this, ImageLoadActivity.class);
                 startActivity(btnIntent);
+                finish();
             });
         }
         //다시 선택하기 버튼을 누르면
@@ -171,6 +183,7 @@ public class OCRMainActivity extends AppCompatActivity{
             Intent AgainIntent = new Intent(this, ImageLoadActivity.class);
             AgainIntent.putExtra("value", "re");
             startActivity(AgainIntent);
+            finish();
         });
 
         //공구 이미지버튼 누르면
@@ -179,6 +192,111 @@ public class OCRMainActivity extends AppCompatActivity{
             Intent EditIntent = new Intent(this, EditUserData.class);
             startActivity(EditIntent);
         });
+
+        //드래그 뷰의 검색 버튼을 누른 경우
+        searchBtn = findViewById(R.id.searchBtn);
+        searchTxt = findViewById(R.id.searchTxt);
+        searchBtn.setOnClickListener(view->{
+            //검색 창에 원재료명을 입력했는지 확인
+            String inputMName = searchTxt.getText().toString();
+            if(inputMName.equals("")||inputMName.equals(null)){   //입력을 하지 않은 경우
+                //포커스를 원재료명 입력 창으로 두고
+                searchTxt.requestFocus();
+                //토스트 띄우기
+                Toast.makeText(this, "검색하고자 하는 원재료명을 입력하세요.", Toast.LENGTH_LONG).show();
+            }else{  //입력한 경우
+
+            }
+        });
+
+        searchTxt = (EditText) findViewById(R.id.searchTxt);
+        listView = (ListView) findViewById(R.id.listView);
+        // 리스트를 생성한다.
+        list = new ArrayList<String>();
+        // 검색에 사용할 데이터을 미리 저장한다.
+        settingList();
+        // 리스트의 모든 데이터를 arraylist에 복사한다.// list 복사본을 만든다.
+        arraylist = new ArrayList<String>();
+        arraylist.addAll(list);
+        // 리스트에 연동될 아답터를 생성한다.
+        adapter = new SearchAdapter(list, this);
+        // 리스트뷰에 아답터를 연결한다.
+        listView.setAdapter(adapter);
+        // input창에 검색어를 입력시 "addTextChangedListener" 이벤트 리스너를 정의한다.
+        searchTxt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // input창에 문자를 입력할때마다 호출된다.
+                // search 메소드를 호출한다.
+                String text = searchTxt.getText().toString();
+                search(text);
+            }
+        });
+
+    }
+    // 검색에 사용될 데이터를 리스트에 추가한다.
+    private void settingList(){
+        list.add("채수빈");
+        list.add("박지현");
+        list.add("수지");
+        list.add("남태현");
+        list.add("하성운");
+        list.add("크리스탈");
+        list.add("강승윤");
+        list.add("손나은");
+        list.add("남주혁");
+        list.add("루이");
+        list.add("진영");
+        list.add("슬기");
+        list.add("이해인");
+        list.add("고원희");
+        list.add("설리");
+        list.add("공명");
+        list.add("김예림");
+        list.add("혜리");
+        list.add("웬디");
+        list.add("박혜수");
+        list.add("카이");
+        list.add("진세연");
+        list.add("동호");
+        list.add("박세완");
+        list.add("도희");
+        list.add("창모");
+        list.add("허영지");
+    }
+    // 검색을 수행하는 메소드
+    public void search(String charText) {
+        // 문자 입력시마다 리스트를 지우고 새로 뿌려준다.
+        list.clear();
+        // 문자 입력이 없을때는 모든 데이터를 보여준다.
+        if (charText.length() == 0) {
+            list.addAll(arraylist);
+        }
+        // 문자 입력을 할때..
+        else
+        {
+            // 리스트의 모든 데이터를 검색한다.
+            for(int i = 0;i < arraylist.size(); i++)
+            {
+                // arraylist의 모든 데이터에 입력받은 단어(charText)가 포함되어 있으면 true를 반환한다.
+                if (arraylist.get(i).toLowerCase().contains(charText))
+                {
+                    // 검색된 데이터를 리스트에 추가한다.
+                    list.add(arraylist.get(i));
+                }
+            }
+        }
+        // 리스트 데이터가 변경되었으므로 아답터를 갱신하여 검색된 데이터를 화면에 보여준다.
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -413,31 +531,6 @@ public class OCRMainActivity extends AppCompatActivity{
         return message; //xml에 메세지 띄울 data
     }
 
-    // OCR에서 직접 split된 것 가져오기
-    private static List responseToList(BatchAnnotateImagesResponse response){
-        List<String> words = new ArrayList<>();
-        String cur = "", temp="";
-        try {
-            List<EntityAnnotation> labels = response.getResponses().get(0).getTextAnnotations();
-            for (int i = 1; i < labels.size(); i++) {
-                cur=labels.get(i).getDescription();
-                if (cur.equals(",")) {
-                    words.add(temp);
-                    temp="";
-                }else{
-                    temp+=cur;
-                }
-            }
-            words.add("<<OCR이 split>>");
-            for (int i = 1; i < labels.size(); i++) {
-                words.add(labels.get(i).getDescription());
-            }
-        }catch (Exception e){
-            Log.d(TAG, "responseToList error: "+e);
-        }
-        return words;
-    }
-
     private static String[] splitString(String txt){
         List<String> resList= SplitTest.splitText(txt);
         String[] res = new String[resList.size()];
@@ -445,38 +538,6 @@ public class OCRMainActivity extends AppCompatActivity{
             res[i] = resList.get(i);
         }
         return res;
-    }
-
-    // 네이버 백과사전 API 검색 결과를 JSON으로 받아와 파싱해주는 함수
-    private static String resultAPI(String word) {
-        String jsonResult = SearchAPI.search(word);
-        String result = null;
-
-        try {
-            JSONObject jsonObject = new JSONObject(jsonResult);
-            String items = jsonObject.getString("items");
-            JSONArray jsonArray = new JSONArray(items);
-
-            result += word + "검색 결과\n";
-
-            for (int i=0; i < jsonArray.length(); i++) {
-                JSONObject subJsonObject = jsonArray.getJSONObject(i);
-                String title = subJsonObject.getString("title");
-                String link  = subJsonObject.getString("link");
-                String description = subJsonObject.getString("description");
-                if ("".equals(title)) {
-                    continue;
-                }
-
-                result += ("title : " + title + "\n" + "link : " + link + "\n"
-                        + "description : " + description + "\n\n");
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return result;
     }
 
     private String[] getResult(String[] resArr) {
