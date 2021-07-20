@@ -27,9 +27,10 @@ import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -63,7 +64,7 @@ public class ImageLoadActivity extends AppCompatActivity {
     private Button searchBtn;
     private List<String> list;          // 데이터를 넣은 리스트변수
     private ListView listView;          // 검색을 보여줄 리스트변수
-    private EditText searchTxt;        // 검색어를 입력할 Input 창
+    private AutoCompleteTextView searchTxt;        // 검색어를 입력할 Input 창
     private SearchAdapter adapter;      // 리스트뷰에 연결할 아답터
     private ArrayList<String> arraylist;
 
@@ -112,7 +113,6 @@ public class ImageLoadActivity extends AppCompatActivity {
             }
         });
 
-        searchTxt = (EditText) findViewById(R.id.searchTxt);
         listView = (ListView) findViewById(R.id.listView);
 
         // 리스트를 생성한다.
@@ -130,6 +130,14 @@ public class ImageLoadActivity extends AppCompatActivity {
 
         // 리스트뷰에 아답터를 연결한다.
         listView.setAdapter(adapter);
+
+        //리스트 뷰에 클릭 이벤트 추가
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                searchTxt.setText(adapter.getItem(position).toString());
+            }
+        });
 
         // input창에 검색어를 입력시 "addTextChangedListener" 이벤트 리스너를 정의한다.
         searchTxt.addTextChangedListener(new TextWatcher() {
