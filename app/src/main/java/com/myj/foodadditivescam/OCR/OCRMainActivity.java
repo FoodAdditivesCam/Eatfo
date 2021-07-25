@@ -85,7 +85,7 @@ import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
 public class OCRMainActivity extends AppCompatActivity{
-    private static final String CLOUD_VISION_API_KEY = "AIzaSyAZhmCpNXx_rXSAhnGLN_MR2U7EH3X5n88";
+    private static final String CLOUD_VISION_API_KEY = "AIzaSyCwFZrxdSyRaON_lDIdofIQ1f1kh4MwxyM";
     public static final String FILE_NAME = "temp.jpg";
     private static final String ANDROID_CERT_HEADER = "X-Android-Cert";
     private static final String ANDROID_PACKAGE_HEADER = "X-Android-Package";
