@@ -563,7 +563,7 @@ public class OCRMainActivity extends AppCompatActivity{
         }
         System.out.println(obj);
 
-        JSONObject json = GetResult.POST(obj);
+        JSONObject json = GetResult.POST(obj, "result");
         try {
             Log.d("ocr-result","result 들어왔으!!"+json.toString());
             score =  json.getString("scores");
