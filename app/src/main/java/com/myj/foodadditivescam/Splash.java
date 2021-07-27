@@ -18,6 +18,7 @@ import com.myj.foodadditivescam.userData.getUserData;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -33,7 +34,8 @@ import java.util.Map;
 
 public class Splash extends AppCompatActivity {
     public static String Tag = Splash.class.getSimpleName();
-    public String res;
+    public JSONObject jsonResult;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,9 +48,11 @@ public class Splash extends AppCompatActivity {
             boolean first = pref.getBoolean("isFirst", false);
 
             String url = "http://3.35.255.25/searchArray";
-            // AsyncTask를 통해 HttpURLConnection 수행.
+            // AsyncTask를 통해 HttpURLConnection 수행.(비동기 방식)
             NetworkTask networkTask = new NetworkTask(url, null);
             networkTask.execute();
+
+
 
             if(!first){ //최초실행일 경우
                 Log.d(Tag, "first");
@@ -76,7 +80,16 @@ public class Splash extends AppCompatActivity {
             String result; // 요청 결과를 저장할 변수.
             RequestHttpURLConnection requestHttpURLConnection = new RequestHttpURLConnection();
             result = requestHttpURLConnection.request(url, values);  // 해당 URL로 부터 결과물을 얻어온다.
-            res = result;
+            System.out.println(result);
+            try {
+                jsonResult = new JSONObject(result); // JSONObject로 변환
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            System.out.println(jsonResult);
+
+            String arr[];
+
             return result;
         }
 
