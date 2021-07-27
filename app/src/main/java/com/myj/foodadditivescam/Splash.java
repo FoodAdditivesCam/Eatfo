@@ -18,6 +18,7 @@ import com.myj.foodadditivescam.userData.getUserData;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -29,6 +30,7 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,11 +49,10 @@ public class Splash extends AppCompatActivity {
             SharedPreferences pref = getSharedPreferences("isFirst", Activity.MODE_PRIVATE);
             boolean first = pref.getBoolean("isFirst", false);
 
-            String url = "http://3.35.255.25/searchArray";
             // AsyncTask를 통해 HttpURLConnection 수행.(비동기 방식)
+            String url = "http://3.35.255.25/searchArray";
             NetworkTask networkTask = new NetworkTask(url, null);
             networkTask.execute();
-
 
 
             if(!first){ //최초실행일 경우
@@ -81,19 +82,48 @@ public class Splash extends AppCompatActivity {
             RequestHttpURLConnection requestHttpURLConnection = new RequestHttpURLConnection();
             result = requestHttpURLConnection.request(url, values);  // 해당 URL로 부터 결과물을 얻어온다.
             System.out.println(result);
+
+            ArrayList<String> data = new ArrayList<String>();
             try {
                 jsonResult = new JSONObject(result); // JSONObject로 변환
+                JSONArray jArray = jsonResult.getJSONArray("result"); // jSONArray 가져오기
+
+                SharedPreferences prefs = getSharedPreferences("searchArray", Activity.MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("searchArray", jArray.toString());
+                editor.apply();
+
+//            // jSONArray to string list
+//                if (jArray != null) {
+//                    for (int i=0;i<jArray.length();i++){
+//                        data.add(jArray.getString(i));
+//                    }
+//                }
+//                System.out.println(data);
+//
+                // sharedPreferences에서 arrayList 꺼내기
+                String json = prefs.getString("searchArray", null);
+                ArrayList arr = new ArrayList();
+                if (json != null) {
+                    try {
+                        JSONArray a = new JSONArray(json);
+                        for (int i = 0; i < a.length(); i++) {
+                            String word = a.optString(i);
+                            arr.add(word);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println(arr);
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            System.out.println(jsonResult);
-
-            String arr[];
 
             return result;
         }
 
-        @Override protected void onPostExecute(String s) {
+            @Override protected void onPostExecute(String s) {
             super.onPostExecute(s); //doInBackground()로 부터 리턴된 값이 onPostExecute()의 매개변수로 넘어오므로 s를 출력한다.
             // tv_outPut.setText(s);
         }
