@@ -18,18 +18,20 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 public class EditUserData extends AppCompatActivity {
+    SharedPreferences pref;
     Set<String> checked;   //사용자가 체크한 버튼의 텍스트를 저장할 리스트
+    Set<String> beforeChangeChecked = new HashSet<String>();   //사용자가 수정하기 전 버튼의 텍스트를 저장할 리스트
     Button completeBtn, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn10, btn11, btn12;
     Boolean[] isClicked = new Boolean[]{false, false, false, false, false, false, false, false, false, false, false, false};
     int[] checkList = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    int[] beforeChangeCheckList = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_user_data);
 
-        SharedPreferences pref = getSharedPreferences("isFirst", Activity.MODE_PRIVATE);
-
+        pref = (SharedPreferences) getSharedPreferences("isFirst", Activity.MODE_PRIVATE);
         completeBtn = findViewById(R.id.completeBtn2);    //완료 버튼
         btn1 = findViewById(R.id.btn1); // 소화불량 6
         btn2 = findViewById(R.id.btn2); // 충치 0
@@ -46,18 +48,20 @@ public class EditUserData extends AppCompatActivity {
 
         //저장된 데이터 불러오기
         checked = pref.getStringSet("checked", new HashSet<String>());
+        beforeChangeChecked.addAll(checked);
         String tmp = pref.getString("index", "0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0");
         tmp = tmp.replace("[", "");
         tmp = tmp.replace("]", "");
         checkList = Stream.of(tmp.split(", ")).mapToInt(Integer::parseInt).toArray();
+        beforeChangeCheckList = checkList.clone();
 
         //최초실행시 선택한 버튼 색 변경
         Button[] btnlst = {btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn10, btn11, btn12};
         for(int i=0; i<12; i++){
             Button btn = btnlst[i];
             String dName = (String) btn.getText();
-            Iterator<String> iter = checked.iterator();
 
+            Iterator<String> iter = checked.iterator();
             while(iter.hasNext()) { // iterator에 다음 값이 있는 동안 반복
                 if(iter.next().equals(dName)){
                     //선택됨으로 바꾸고
@@ -140,11 +144,20 @@ public class EditUserData extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         android.app.AlertDialog.Builder alBuilder = new android.app.AlertDialog.Builder(this);
-        alBuilder.setMessage("변경된 사항을 저장하고 나가겠습니까?");
+        alBuilder.setMessage("변경된 사항을 저장하지 않고 나가겠습니까?");
 
         alBuilder.setPositiveButton("예", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                SharedPreferences.Editor editor = pref.edit();
+
+                //수정되기 전의 정보를 저장한 String Set을 sharedPreference에 저장
+                editor.putStringSet("checked", beforeChangeChecked);
+                editor.apply();
+                //수정되기 전의 정보를 저장한 int 배열을 string으로 변환 후 sharedPreference에 저장
+                String stringForIntArray = Arrays.toString(beforeChangeCheckList);
+                editor.putString("index", stringForIntArray);
+                editor.apply();
                 finish(); // 현재 액티비티를 종료
             }
         });
