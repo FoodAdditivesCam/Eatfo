@@ -124,6 +124,7 @@ public class ImageLoadActivity extends AppCompatActivity {
         // 리스트의 모든 데이터를 arraylist에 복사한다.// list 복사본을 만든다.
         arraylist = new ArrayList<String>();
         arraylist.addAll(list);
+        list.clear();
 
         // 리스트에 연동될 아답터를 생성한다.
         adapter = new SearchAdapter(list, this);
@@ -274,7 +275,7 @@ public class ImageLoadActivity extends AppCompatActivity {
 
         // 문자 입력이 없을때는 모든 데이터를 보여준다.
         if (charText.length() == 0) {
-            list.addAll(arraylist);
+//            list.addAll(arraylist);
         }
         // 문자 입력을 할때..
         else
