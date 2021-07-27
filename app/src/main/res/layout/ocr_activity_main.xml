@@ -12,84 +12,78 @@
     app:umanoParallaxOffset="200dp"
     app:umanoShadowHeight="10dp">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        tools:context="com.myj.foodadditivescam.OCR.OCRMainActivity">
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="30dp">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <ImageButton
+                android:id="@+id/backBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="?attr/homeAsUpIndicator"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageButton
-                    android:id="@+id/backBtn"
-                    android:layout_width="50dp"
-                    android:layout_height="0dp"
-                    android:visibility="invisible"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <ImageButton
+                android:id="@+id/editUserDataBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@android:drawable/ic_menu_manage" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <ImageButton
-                    android:id="@+id/editUserDataBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@android:drawable/ic_menu_manage" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/image_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/kopub_world_bold"
+            android:gravity="center"
+            android:text="라벨을 촬영하면 \n영양정보를 자동으로 분석합니다."
+            android:textColor="@color/colorPrimary"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/image_details"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="8dp"
-                android:fontFamily="@font/kopub_world_bold"
-                android:gravity="center"
-                android:text="라벨을 촬영하면 \n영양정보를 자동으로 분석합니다."
-                android:textColor="@color/colorPrimary"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+        <ImageView
+            android:id="@+id/main_image"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@mipmap/main_image" />
 
-            <ImageView
-                android:id="@+id/main_image"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:scaleType="fitCenter"
-                app:srcCompat="@mipmap/main_image" />
-
-            <Button
-                android:id="@+id/pickPicBtn"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center"
-                android:layout_marginTop="50dp"
-                android:background="@drawable/button_design"
-                android:fontFamily="@font/kopub_world_medium"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
-                android:text="사진 선택하기"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold" />
-
-        </LinearLayout>
+        <Button
+            android:id="@+id/pickPicBtn"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/button_design"
+            android:fontFamily="@font/kopub_world_medium"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:text="사진 선택하기"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/uploadBtn"
             android:layout_width="200dp"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
             android:layout_gravity="bottom|center"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="150dp"
+            android:layout_marginTop="50dp"
             android:background="@drawable/button_design"
             android:clickable="true"
             android:fontFamily="@font/kopub_world_medium"
@@ -98,12 +92,12 @@
             android:text="업로드하기"
             android:textColor="#FFFFFF"
             android:textStyle="bold"
-            android:visibility="invisible" />
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/pickAgainBtn"
             android:layout_width="200dp"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
             android:layout_gravity="bottom|center"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="80dp"
@@ -113,19 +107,17 @@
             android:text="다시 선택하기"
             android:textColor="@color/colorPrimary"
             android:textStyle="bold"
-            android:visibility="invisible" />
+            android:visibility="gone" />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/dragView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="200dp"
+        android:layout_height="400dp"
         android:background="@color/colorPrimary"
         android:orientation="vertical"
-        android:padding="10dp"
-        tools:context=".getUserData">
+        android:padding="10dp">
 
         <TextView
             android:id="@+id/textView"
@@ -180,7 +172,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:divider="#999999"
-            android:dividerHeight="1dp" />
+            android:dividerHeight="1dp"
+            tools:visibility="visible" />
     </LinearLayout>
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 
