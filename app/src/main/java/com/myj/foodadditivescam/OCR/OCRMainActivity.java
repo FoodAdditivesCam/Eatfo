@@ -149,8 +149,8 @@ public class OCRMainActivity extends AppCompatActivity{
             mImageDetails = findViewById(R.id.image_details);
             mMainImage = findViewById(R.id.main_image);
 
-            pickPicBtn.setVisibility(View.INVISIBLE);
-            mImageDetails.setVisibility(View.INVISIBLE);
+            pickPicBtn.setVisibility(View.GONE);
+            mImageDetails.setVisibility(View.GONE);
             pickAgainBtn.setVisibility(View.VISIBLE);
             uploadBtn.setVisibility(View.VISIBLE);
             backBtn.setVisibility(View.VISIBLE);
@@ -171,9 +171,10 @@ public class OCRMainActivity extends AppCompatActivity{
             });
             //뒤로가기 화살표 이미지버튼 누르면
             backBtn.setOnClickListener(view->{
-                //이미지로드 액티비티 호출하여 OCR메인으로 돌아가기
-                Intent btnIntent = new Intent(this, ImageLoadActivity.class);
-                startActivity(btnIntent);
+//                //이미지로드 액티비티 호출하여 OCR메인으로 돌아가기
+//                Intent btnIntent = new Intent(this, ImageLoadActivity.class);
+//                startActivity(btnIntent);
+                //이미지 선택 하기 전에 있던 OCR메인으로 돌아가기
                 finish();
             });
         }
@@ -218,6 +219,7 @@ public class OCRMainActivity extends AppCompatActivity{
         // 리스트의 모든 데이터를 arraylist에 복사한다.// list 복사본을 만든다.
         arraylist = new ArrayList<String>();
         arraylist.addAll(list);
+        list.clear();
         // 리스트에 연동될 아답터를 생성한다.
         adapter = new SearchAdapter(list, this);
         // 리스트뷰에 아답터를 연결한다.
@@ -279,7 +281,7 @@ public class OCRMainActivity extends AppCompatActivity{
         list.clear();
         // 문자 입력이 없을때는 모든 데이터를 보여준다.
         if (charText.length() == 0) {
-            list.addAll(arraylist);
+            //list.addAll(arraylist);
         }
         // 문자 입력을 할때..
         else
