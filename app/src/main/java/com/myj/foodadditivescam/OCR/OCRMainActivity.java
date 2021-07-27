@@ -213,6 +213,7 @@ public class OCRMainActivity extends AppCompatActivity{
         listView = (ListView) findViewById(R.id.listView);
         // 리스트를 생성한다.
         list = new ArrayList<String>();
+        System.out.println("2222222222");
         // 검색에 사용할 데이터을 미리 저장한다.
         settingList();
         // 리스트의 모든 데이터를 arraylist에 복사한다.// list 복사본을 만든다.
@@ -243,35 +244,27 @@ public class OCRMainActivity extends AppCompatActivity{
         });
 
     }
+
     // 검색에 사용될 데이터를 리스트에 추가한다.
     private void settingList(){
-        list.add("채수빈");
-        list.add("박지현");
-        list.add("수지");
-        list.add("남태현");
-        list.add("하성운");
-        list.add("크리스탈");
-        list.add("강승윤");
-        list.add("손나은");
-        list.add("남주혁");
-        list.add("루이");
-        list.add("진영");
-        list.add("슬기");
-        list.add("이해인");
-        list.add("고원희");
-        list.add("설리");
-        list.add("공명");
-        list.add("김예림");
-        list.add("혜리");
-        list.add("웬디");
-        list.add("박혜수");
-        list.add("카이");
-        list.add("진세연");
-        list.add("동호");
-        list.add("박세완");
-        list.add("도희");
-        list.add("창모");
-        list.add("허영지");
+        SharedPreferences prefs = getSharedPreferences("searchArray", Activity.MODE_PRIVATE);
+        // sharedPreferences에서 arrayList 꺼내기
+        String json = prefs.getString("searchArray", null);
+        if (json != null) {
+            try {
+                JSONArray a = new JSONArray(json);
+                for (int i = 0; i < a.length(); i++) {
+                    String word = a.optString(i);
+                    list.add(word);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            System.out.println("?");
+            System.out.println(list);
+        }
+
+
     }
     // 검색을 수행하는 메소드
     public void search(String charText) {
