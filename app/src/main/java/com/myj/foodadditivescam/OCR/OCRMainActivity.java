@@ -17,6 +17,7 @@
 package com.myj.foodadditivescam.OCR;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -119,6 +120,7 @@ public class OCRMainActivity extends AppCompatActivity{
     private EditText searchTxt;        // 검색어를 입력할 Input 창
     private SearchAdapter adapter;      // 리스트뷰에 연결할 아답터
     private ArrayList<String> arraylist;
+    private ArrayList<String> searchInfoList;
 
     static {
         System.loadLibrary("opencv_java4");
@@ -213,7 +215,6 @@ public class OCRMainActivity extends AppCompatActivity{
         listView = (ListView) findViewById(R.id.listView);
         // 리스트를 생성한다.
         list = new ArrayList<String>();
-        System.out.println("2222222222");
         // 검색에 사용할 데이터을 미리 저장한다.
         settingList();
         // 리스트의 모든 데이터를 arraylist에 복사한다.// list 복사본을 만든다.
@@ -408,6 +409,7 @@ public class OCRMainActivity extends AppCompatActivity{
     private class LableDetectionTask extends AsyncTask<Object, Void, String> { //static
         private final WeakReference<OCRMainActivity> mActivityWeakReference;
         private final Vision.Images.Annotate mRequest;
+
 
         LableDetectionTask(com.myj.foodadditivescam.OCR.OCRMainActivity activity, Vision.Images.Annotate annotate) {
             mActivityWeakReference = new WeakReference<>(activity);

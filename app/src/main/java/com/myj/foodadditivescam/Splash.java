@@ -101,21 +101,7 @@ public class Splash extends AppCompatActivity {
 //                }
 //                System.out.println(data);
 //
-                // sharedPreferences에서 arrayList 꺼내기
-                String json = prefs.getString("searchArray", null);
-                ArrayList arr = new ArrayList();
-                if (json != null) {
-                    try {
-                        JSONArray a = new JSONArray(json);
-                        for (int i = 0; i < a.length(); i++) {
-                            String word = a.optString(i);
-                            arr.add(word);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    System.out.println(arr);
-                }
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
