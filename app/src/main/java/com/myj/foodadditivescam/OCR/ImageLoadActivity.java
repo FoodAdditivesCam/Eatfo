@@ -42,6 +42,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
+import com.myj.foodadditivescam.result.ShowInfo;
 import com.myj.foodadditivescam.search_m.SearchAdapter;
 import com.myj.foodadditivescam.userData.EditUserData;
 import com.myj.foodadditivescam.R;
@@ -114,7 +115,14 @@ public class ImageLoadActivity extends AppCompatActivity {
                 //토스트 띄우기
                 Toast.makeText(this, "검색하고자 하는 원재료명을 입력하세요.", Toast.LENGTH_LONG).show();
             }else{  //입력한 경우
+                SharedPreferences prefs = getSharedPreferences("isSearch", Activity.MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putBoolean("isSearch", true);
+                editor.commit();
 
+                Intent intent2 = new Intent(this, ShowInfo.class);
+                intent2.putExtra("word", inputMName);
+                startActivity(intent2);
             }
         });
 

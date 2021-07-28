@@ -27,9 +27,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,7 +56,6 @@ public class Splash extends AppCompatActivity {
             String url = "http://3.35.255.25/searchArray";
             NetworkTask networkTask = new NetworkTask(url, null);
             networkTask.execute();
-
 
             if(!first){ //최초실행일 경우
                 Log.d(Tag, "first");

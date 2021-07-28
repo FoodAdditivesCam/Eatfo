@@ -7,11 +7,11 @@ import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.myj.foodadditivescam.R;
-import com.myj.foodadditivescam.Splash;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,9 +22,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -34,66 +37,70 @@ public class ShowInfo extends AppCompatActivity {
     private TextView infoText;
     private ImageButton backBtn2;
     public JSONObject jsonResult;
+    private String name;
+    private String tag;
+    private String info;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_info); //activity_show_info);
 
-        String name = getIntent().getStringExtra("name");
-        String tag = getIntent().getStringExtra("tag");
-        String info = getIntent().getStringExtra("info");
+        SharedPreferences pref = getSharedPreferences("isSearch", Activity.MODE_PRIVATE);
+        boolean isSearch = pref.getBoolean("isSearch", false);
 
-        nameText= (TextView)findViewById(R.id.mNameTxt);
-        tagText= (TextView)findViewById(R.id.mTagTxt);
-        infoText= (TextView)findViewById(R.id.mDescTxt);
-        backBtn2 = findViewById(R.id.backBtn2);
 
-        nameText.setText(name);
-        tagText.setText(tag);
-        infoText.setText(info);
+        if (isSearch == true) { // 검색 화면에서 넘어온 경우
+            System.out.println("isSearch");
+
+            // AsyncTask를 통해 HttpURLConnection 수행.(비동기 방식)
+            String url = "http://3.35.255.25/" + getIntent().getStringExtra("word");
+            System.out.println(url);
+
+            NetworkTask2 networkTask = new NetworkTask2(url, null);
+            networkTask.execute();
+
+            // 다시 false로 되돌려줌
+            SharedPreferences prefs = getSharedPreferences("isSearch", Activity.MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("isSearch", false);
+            editor.apply();
+
+        } else { // 결과화면에서 넘어온 경우
+            System.out.println("not Search");
+
+            name = getIntent().getStringExtra("name");
+            tag = getIntent().getStringExtra("tag");
+            info = getIntent().getStringExtra("info");
+
+            nameText= (TextView)findViewById(R.id.mNameTxt);
+            tagText= (TextView)findViewById(R.id.mTagTxt);
+            infoText= (TextView)findViewById(R.id.mDescTxt);
+            backBtn2 = findViewById(R.id.backBtn2);
+
+            nameText.setText(name);
+            tagText.setText(tag);
+            infoText.setText(info);
+        }
 
         backBtn2.setOnClickListener(view->{
             finish();
         });
     }
 
-
-    public class NetworkTask extends AsyncTask<Void, Void, String> {
+    public class NetworkTask2 extends AsyncTask<Void, Void, String> {
         private String url;
         private ContentValues values;
-        public NetworkTask(String url, ContentValues values) {
+        public NetworkTask2(String url, ContentValues values) {
             this.url = url; this.values = values;
         }
 
         @Override protected String doInBackground(Void... params) {
             String result; // 요청 결과를 저장할 변수.
-            RequestHttpURLConnection requestHttpURLConnection = new RequestHttpURLConnection();
+            RequestHttpURLConnection2 requestHttpURLConnection = new RequestHttpURLConnection2();
             result = requestHttpURLConnection.request(url, values);  // 해당 URL로 부터 결과물을 얻어온다.
+            System.out.println("#####");
             System.out.println(result);
-
-            ArrayList<String> data = new ArrayList<String>();
-            try {
-                jsonResult = new JSONObject(result); // JSONObject로 변환
-                JSONArray jArray = jsonResult.getJSONArray("result"); // jSONArray 가져오기
-
-                SharedPreferences prefs = getSharedPreferences("searchArray", Activity.MODE_PRIVATE);
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putString("searchArray", jArray.toString());
-                editor.apply();
-
-//            // jSONArray to string list
-//                if (jArray != null) {
-//                    for (int i=0;i<jArray.length();i++){
-//                        data.add(jArray.getString(i));
-//                    }
-//                }
-//                System.out.println(data);
-//
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
 
             return result;
         }
@@ -104,42 +111,9 @@ public class ShowInfo extends AppCompatActivity {
         }
     }
 
-    public class RequestHttpURLConnection {
+    public class RequestHttpURLConnection2 {
         public String request(String _url, ContentValues _params) {
             HttpURLConnection urlConn = null;
-            // URL 뒤에 붙여서 보낼 파라미터.
-            StringBuffer sbParams = new StringBuffer();
-
-            /**
-             * 1. StringBuffer에 파라미터 연결
-             * */
-            // 보낼 데이터가 없으면 파라미터를 비운다.
-            if (_params == null)
-                sbParams.append("");
-                // 보낼 데이터가 있으면 파라미터를 채운다.
-            else {
-                // 파라미터가 2개 이상이면 파라미터 연결에 &가 필요하므로 스위칭할 변수 생성.
-                boolean isAnd = false;
-                // 파라미터 키와 값.
-                String key;
-                String value;
-
-                for (Map.Entry<String, Object> parameter : _params.valueSet()) {
-                    key = parameter.getKey();
-                    value = parameter.getValue().toString();
-
-                    // 파라미터가 두개 이상일때, 파라미터 사이에 &를 붙인다.
-                    if (isAnd)
-                        sbParams.append("&");
-
-                    sbParams.append(key).append("=").append(value);
-
-                    // 파라미터가 2개 이상이면 isAnd를 true로 바꾸고 다음 루프부터 &를 붙인다.
-                    if (!isAnd)
-                        if (_params.size() >= 2)
-                            isAnd = true;
-                }
-            }
 
             /**
              * 2. HttpURLConnection을 통해 web의 데이터를 가져온다.
@@ -151,17 +125,13 @@ public class ShowInfo extends AppCompatActivity {
                 // [2-1]. urlConn 설정.
                 urlConn.setReadTimeout(10000);
                 urlConn.setConnectTimeout(15000);
-                urlConn.setRequestMethod("POST"); // URL 요청에 대한 메소드 설정 : GET/POST.
-                urlConn.setDoOutput(true);
+                urlConn.setRequestMethod("GET"); // URL 요청에 대한 메소드 설정 : GET/POST.
+                System.out.println("3333333333");
+                //urlConn.setDoOutput(true);
                 urlConn.setDoInput(true);
                 urlConn.setRequestProperty("Accept-Charset", "utf-8"); // Accept-Charset 설정.
                 urlConn.setRequestProperty("Context_Type", "application/x-www-form-urlencoded");
 
-                // [2-2]. parameter 전달 및 데이터 읽어오기.
-                PrintWriter pw = new PrintWriter(new OutputStreamWriter(urlConn.getOutputStream()));
-                pw.write(sbParams.toString());
-                pw.flush(); // 출력 스트림을 flush. 버퍼링 된 모든 출력 바이트를 강제 실행.
-                pw.close(); // 출력 스트림을 닫고 모든 시스템 자원을 해제.
 
                 // [2-3]. 연결 요청 확인.
                 // 실패 시 null을 리턴하고 메서드를 종료.
