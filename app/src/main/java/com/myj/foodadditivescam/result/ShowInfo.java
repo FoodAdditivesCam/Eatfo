@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.myj.foodadditivescam.R;
+import com.myj.foodadditivescam.RawMaterials;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -72,16 +73,17 @@ public class ShowInfo extends AppCompatActivity {
             name = getIntent().getStringExtra("name");
             tag = getIntent().getStringExtra("tag");
             info = getIntent().getStringExtra("info");
-
-            nameText= (TextView)findViewById(R.id.mNameTxt);
-            tagText= (TextView)findViewById(R.id.mTagTxt);
-            infoText= (TextView)findViewById(R.id.mDescTxt);
-            backBtn2 = findViewById(R.id.backBtn2);
-
-            nameText.setText(name);
-            tagText.setText(tag);
-            infoText.setText(info);
         }
+
+
+        nameText= (TextView)findViewById(R.id.mNameTxt);
+        tagText= (TextView)findViewById(R.id.mTagTxt);
+        infoText= (TextView)findViewById(R.id.mDescTxt);
+        backBtn2 = findViewById(R.id.backBtn2);
+
+        nameText.setText(name);
+        tagText.setText(tag);
+        infoText.setText(info);
 
         backBtn2.setOnClickListener(view->{
             finish();
@@ -99,7 +101,6 @@ public class ShowInfo extends AppCompatActivity {
             String result; // 요청 결과를 저장할 변수.
             RequestHttpURLConnection2 requestHttpURLConnection = new RequestHttpURLConnection2();
             result = requestHttpURLConnection.request(url, values);  // 해당 URL로 부터 결과물을 얻어온다.
-            System.out.println("#####");
             System.out.println(result);
 
             return result;
@@ -126,7 +127,6 @@ public class ShowInfo extends AppCompatActivity {
                 urlConn.setReadTimeout(10000);
                 urlConn.setConnectTimeout(15000);
                 urlConn.setRequestMethod("GET"); // URL 요청에 대한 메소드 설정 : GET/POST.
-                System.out.println("3333333333");
                 //urlConn.setDoOutput(true);
                 urlConn.setDoInput(true);
                 urlConn.setRequestProperty("Accept-Charset", "utf-8"); // Accept-Charset 설정.
@@ -150,11 +150,46 @@ public class ShowInfo extends AppCompatActivity {
                 while ((line = reader.readLine()) != null) {
                     page += line;
                 }
+
+                // JSONObjct로 받아와 name, tag, info 파싱해서 화면에 보여줌
+                JSONObject jsonObj = new JSONObject(page);
+                JSONObject jsonObject = new JSONObject(jsonObj.getString("result").replace("[", "").replace("]", ""));
+                System.out.println(jsonObject);
+                name = jsonObject.getString("name");
+
+                String tagString = "";
+                System.out.println(jsonObject.getString("tag1"));
+
+                for(int i = 1; i <= 5; i++) {
+                    if (!jsonObject.isNull("tag" + i)) {
+                        tagString += jsonObject.getString("tag" + i) + ", ";
+                        System.out.println(tagString);
+                    }
+                }
+                tag = tagString;
+
+                tag = tag.substring(0, tag.length()-2); // 마지막 컴마 제거
+                info = jsonObject.getString("description");
+
+
+                nameText= (TextView)findViewById(R.id.mNameTxt);
+                tagText= (TextView)findViewById(R.id.mTagTxt);
+                infoText= (TextView)findViewById(R.id.mDescTxt);
+                backBtn2 = findViewById(R.id.backBtn2);
+
+                nameText.setText(name);
+                tagText.setText(tag);
+                infoText.setText(info);
+
+
+
                 return page;
 
             } catch (MalformedURLException e) { // for URL.
                 e.printStackTrace();
             } catch (IOException e) { // for openConnection().
+                e.printStackTrace();
+            } catch (JSONException e) {
                 e.printStackTrace();
             } finally {
                 if (urlConn != null)
