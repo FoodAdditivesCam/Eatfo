@@ -17,6 +17,7 @@
 package com.myj.foodadditivescam.OCR;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -67,6 +68,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.myj.foodadditivescam.RawMaterials;
+import com.myj.foodadditivescam.result.ShowInfo;
 import com.myj.foodadditivescam.result.ShowResult;
 import com.myj.foodadditivescam.search.SearchAPI;
 import com.myj.foodadditivescam.search.Symspell;
@@ -119,6 +121,7 @@ public class OCRMainActivity extends AppCompatActivity{
     private EditText searchTxt;        // 검색어를 입력할 Input 창
     private SearchAdapter adapter;      // 리스트뷰에 연결할 아답터
     private ArrayList<String> arraylist;
+    private ArrayList<String> searchInfoList;
 
     static {
         System.loadLibrary("opencv_java4");
@@ -206,6 +209,14 @@ public class OCRMainActivity extends AppCompatActivity{
                 //토스트 띄우기
                 Toast.makeText(this, "검색하고자 하는 원재료명을 입력하세요.", Toast.LENGTH_LONG).show();
             }else{  //입력한 경우
+                SharedPreferences prefs = getSharedPreferences("isSearch", Activity.MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putBoolean("isSearch", true);
+                editor.commit();
+
+                Intent intent2 = new Intent(this, ShowInfo.class);
+                intent2.putExtra("word", inputMName);
+                startActivity(intent2);
 
             }
         });
@@ -245,35 +256,27 @@ public class OCRMainActivity extends AppCompatActivity{
         });
 
     }
+
     // 검색에 사용될 데이터를 리스트에 추가한다.
     private void settingList(){
-        list.add("채수빈");
-        list.add("박지현");
-        list.add("수지");
-        list.add("남태현");
-        list.add("하성운");
-        list.add("크리스탈");
-        list.add("강승윤");
-        list.add("손나은");
-        list.add("남주혁");
-        list.add("루이");
-        list.add("진영");
-        list.add("슬기");
-        list.add("이해인");
-        list.add("고원희");
-        list.add("설리");
-        list.add("공명");
-        list.add("김예림");
-        list.add("혜리");
-        list.add("웬디");
-        list.add("박혜수");
-        list.add("카이");
-        list.add("진세연");
-        list.add("동호");
-        list.add("박세완");
-        list.add("도희");
-        list.add("창모");
-        list.add("허영지");
+        SharedPreferences prefs = getSharedPreferences("searchArray", Activity.MODE_PRIVATE);
+        // sharedPreferences에서 arrayList 꺼내기
+        String json = prefs.getString("searchArray", null);
+        if (json != null) {
+            try {
+                JSONArray a = new JSONArray(json);
+                for (int i = 0; i < a.length(); i++) {
+                    String word = a.optString(i);
+                    list.add(word);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            System.out.println("?");
+            System.out.println(list);
+        }
+
+
     }
     // 검색을 수행하는 메소드
     public void search(String charText) {
@@ -417,6 +420,7 @@ public class OCRMainActivity extends AppCompatActivity{
     private class LableDetectionTask extends AsyncTask<Object, Void, String> { //static
         private final WeakReference<OCRMainActivity> mActivityWeakReference;
         private final Vision.Images.Annotate mRequest;
+
 
         LableDetectionTask(com.myj.foodadditivescam.OCR.OCRMainActivity activity, Vision.Images.Annotate annotate) {
             mActivityWeakReference = new WeakReference<>(activity);
@@ -563,7 +567,7 @@ public class OCRMainActivity extends AppCompatActivity{
         }
         System.out.println(obj);
 
-        JSONObject json = GetResult.POST(obj);
+        JSONObject json = GetResult.POST(obj, "result");
         try {
             Log.d("ocr-result","result 들어왔으!!"+json.toString());
             score =  json.getString("scores");
