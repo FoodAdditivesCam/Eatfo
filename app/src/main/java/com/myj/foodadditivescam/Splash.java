@@ -53,9 +53,9 @@ public class Splash extends AppCompatActivity {
             boolean first = pref.getBoolean("isFirst", false);
 
             // AsyncTask를 통해 HttpURLConnection 수행.(비동기 방식)
-            String url = "http://3.35.255.25/searchArray";
-            NetworkTask networkTask = new NetworkTask(url, null);
-            networkTask.execute();
+            String url = "http://3.35.255.25:80/searchArray";
+            //NetworkTask networkTask = new NetworkTask(url, null);
+            //networkTask.execute();
 
             if(!first){ //최초실행일 경우
                 Log.d(Tag, "first");
@@ -87,6 +87,8 @@ public class Splash extends AppCompatActivity {
 
             ArrayList<String> data = new ArrayList<String>();
             try {
+                System.out.println("$$");
+                System.out.println(jsonResult);
                 jsonResult = new JSONObject(result); // JSONObject로 변환
                 JSONArray jArray = jsonResult.getJSONArray("result"); // jSONArray 가져오기
 
