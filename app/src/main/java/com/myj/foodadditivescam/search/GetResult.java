@@ -21,7 +21,7 @@ public class GetResult {
             System.out.println(str);
             byte[] postDataBytes = str.toString().getBytes("UTF-8");
 
-            URL url = new URL("http://172.30.1.20:80/" + address); // 3.35.255.25:80
+            URL url = new URL("http://3.35.255.25:80/" + address); // 3.35.255.25:80
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json");

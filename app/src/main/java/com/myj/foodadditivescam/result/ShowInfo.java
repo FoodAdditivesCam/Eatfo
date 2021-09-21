@@ -55,7 +55,7 @@ public class ShowInfo extends AppCompatActivity {
             System.out.println("isSearch");
 
             // AsyncTask를 통해 HttpURLConnection 수행.(비동기 방식)
-            String url = "http://3.35.255.25/" + getIntent().getStringExtra("word");
+            String url = "http://3.35.255.25:80/" + getIntent().getStringExtra("word");
             System.out.println(url);
 
             NetworkTask2 networkTask = new NetworkTask2(url, null);
