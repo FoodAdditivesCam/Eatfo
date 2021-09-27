@@ -288,7 +288,7 @@ public class ImageLoadActivity extends AppCompatActivity {
 
         // 문자 입력이 없을때는 모든 데이터를 보여준다.
         if (charText.length() == 0) {
-//            list.addAll(arraylist);
+            //list.addAll(arraylist);
         }
         // 문자 입력을 할때..
         else
