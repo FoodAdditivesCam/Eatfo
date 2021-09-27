@@ -67,9 +67,6 @@ public class ShowResult extends AppCompatActivity {
                     taglength++;
                 }
             }
-            ImageView imageView = (ImageView) findViewById(R.id.imageView);
-            //태그 리스트 주고 워드클라우드 그려서 imageView 수정해주기
-            Glide.with(this).load(url).into(imageView);
 
             // 태그 버튼
             LinearLayout linearLayout = findViewById(R.id.linearLayout);

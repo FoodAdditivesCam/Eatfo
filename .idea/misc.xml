@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/FoodAdditivesCam/app/src/main/res/drawable/sliding_up_panel.xml" value="0.26979166666666665" />
+        <entry key="..\:/FoodAdditivesCam/app/src/main/res/layout/activity_edit_user_data.xml" value="0.25364583333333335" />
+        <entry key="..\:/FoodAdditivesCam/app/src/main/res/layout/activity_get_user_data.xml" value="0.15" />
+        <entry key="..\:/FoodAdditivesCam/app/src/main/res/layout/activity_show_result.xml" value="0.2" />
+      </map>
+    </option>
+  </component>
   <component name="FindBugsConfigurable">
     <option name="make" value="true" />
     <option name="effort" value="default" />
