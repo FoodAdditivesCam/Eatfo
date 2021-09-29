@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".EditUserData">
+    tools:context=".userData.EditUserData">
 
     <TextView
         android:id="@+id/textView2"

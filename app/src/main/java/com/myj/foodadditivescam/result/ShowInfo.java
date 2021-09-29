@@ -168,10 +168,7 @@ public class ShowInfo extends AppCompatActivity {
                 }
                 tag = tagString;
 
-                if(tag.length() != 0) {
-                    tag = tag.substring(0, tag.length()-2); // 마지막 컴마 제거
-                }
-
+                tag = tag.substring(0, tag.length()-2); // 마지막 컴마 제거
                 info = jsonObject.getString("description");
 
 

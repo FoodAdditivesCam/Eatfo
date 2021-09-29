@@ -17,12 +17,12 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_width="150dp"
+            android:layout_height="200dp"
             android:layout_gravity="center"
             android:paddingTop="20dp"
             android:paddingBottom="20dp"
-            app:srcCompat="@mipmap/ic_launcher" />
+            app:srcCompat="@drawable/glasses" />
 
         <TextView
             android:id="@+id/image_details"
@@ -107,7 +107,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:backgroundTint="#FFFFFF">
+        android:backgroundTint="#FFFFFF"
+        android:paddingBottom="40dp">
 
         <LinearLayout
             android:layout_width="match_parent"
