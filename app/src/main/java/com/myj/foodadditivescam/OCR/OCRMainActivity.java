@@ -87,6 +87,7 @@ import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
 public class OCRMainActivity extends AppCompatActivity{
+    public static String Tag = OCRMainActivity.class.getSimpleName();
     private static final String CLOUD_VISION_API_KEY = "AIzaSyAJKJkvZy76r_-VinFFEVJxI8yDNhJ4wwA";
     public static final String FILE_NAME = "temp.jpg";
     private static final String ANDROID_CERT_HEADER = "X-Android-Cert";
@@ -263,6 +264,8 @@ public class OCRMainActivity extends AppCompatActivity{
         // sharedPreferences에서 arrayList 꺼내기
         String json = prefs.getString("searchArray", null);
         if (json != null) {
+            Log.d(Tag, "원재료명 자동완성 리스트");
+
             try {
                 JSONArray a = new JSONArray(json);
                 for (int i = 0; i < a.length(); i++) {

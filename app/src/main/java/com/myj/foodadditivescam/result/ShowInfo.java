@@ -167,8 +167,11 @@ public class ShowInfo extends AppCompatActivity {
                     }
                 }
                 tag = tagString;
-
-                tag = tag.substring(0, tag.length()-2); // 마지막 컴마 제거
+                try{
+                    tag = tag.substring(0, tag.length()-2); // 마지막 컴마 제거
+                }catch(Exception e){
+                    tag = "";
+                }
                 info = jsonObject.getString("description");
 
 
