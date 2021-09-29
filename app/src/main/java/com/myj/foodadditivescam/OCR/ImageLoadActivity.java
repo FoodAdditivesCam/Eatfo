@@ -314,6 +314,8 @@ public class ImageLoadActivity extends AppCompatActivity {
         // sharedPreferences에서 arrayList 꺼내기
         String json = prefs.getString("searchArray", null);
         if (json != null) {
+            Log.d(Tag, "원재료명 자동완성 리스트");
+
             try {
                 JSONArray a = new JSONArray(json);
                 for (int i = 0; i < a.length(); i++) {
