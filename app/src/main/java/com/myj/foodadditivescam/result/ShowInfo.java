@@ -4,9 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -38,9 +42,22 @@ public class ShowInfo extends AppCompatActivity {
     private TextView infoText;
     private ImageButton backBtn2;
     public JSONObject jsonResult;
-    private String name;
-    private String tag;
-    private String info;
+    private String name="";
+    private String tag="";
+    private String info="";
+
+    Handler handler = new Handler(){
+        public void handleMessage(Message msg){
+            nameText= (TextView)findViewById(R.id.mNameTxt);
+            tagText= (TextView)findViewById(R.id.mTagTxt);
+            infoText= (TextView)findViewById(R.id.mDescTxt);
+
+            nameText.setText(name);
+            tagText.setText(tag);
+            infoText.setText(info);
+        }
+
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,18 +90,17 @@ public class ShowInfo extends AppCompatActivity {
             name = getIntent().getStringExtra("name");
             tag = getIntent().getStringExtra("tag");
             info = getIntent().getStringExtra("info");
+
+            nameText= (TextView)findViewById(R.id.mNameTxt);
+            tagText= (TextView)findViewById(R.id.mTagTxt);
+            infoText= (TextView)findViewById(R.id.mDescTxt);
+
+            nameText.setText(name);
+            tagText.setText(tag);
+            infoText.setText(info);
         }
-
-
-        nameText= (TextView)findViewById(R.id.mNameTxt);
-        tagText= (TextView)findViewById(R.id.mTagTxt);
-        infoText= (TextView)findViewById(R.id.mDescTxt);
+        
         backBtn2 = findViewById(R.id.backBtn2);
-
-        nameText.setText(name);
-        tagText.setText(tag);
-        infoText.setText(info);
-
         backBtn2.setOnClickListener(view->{
             finish();
         });
@@ -174,17 +190,10 @@ public class ShowInfo extends AppCompatActivity {
                 }
                 info = jsonObject.getString("description");
 
-
-                nameText= (TextView)findViewById(R.id.mNameTxt);
-                tagText= (TextView)findViewById(R.id.mTagTxt);
-                infoText= (TextView)findViewById(R.id.mDescTxt);
                 backBtn2 = findViewById(R.id.backBtn2);
 
-                nameText.setText(name);
-                tagText.setText(tag);
-                infoText.setText(info);
-
-
+                Message msg = handler.obtainMessage();
+                handler.handleMessage(msg);
 
                 return page;
 
