@@ -466,6 +466,7 @@ public class OCRMainActivity extends AppCompatActivity{
                             jsonObject.getString("reference"),
                             jsonObject.getString("link"));
                     rms[i] = rm;
+                    Log.d(TAG, i+": "+rm.getName());
                 }
 
                 intent.putExtra("rms", rms);
