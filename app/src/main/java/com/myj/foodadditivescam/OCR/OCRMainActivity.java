@@ -88,7 +88,7 @@ import org.opencv.imgproc.Imgproc;
 
 public class OCRMainActivity extends AppCompatActivity{
     public static String Tag = OCRMainActivity.class.getSimpleName();
-    private static final String CLOUD_VISION_API_KEY = "AIzaSyAJKJkvZy76r_-VinFFEVJxI8yDNhJ4wwA";
+    private static final String CLOUD_VISION_API_KEY = "AIzaSyCtg9P-C34UriZhK6LqTg_tbo5a-zI17Ys";
     public static final String FILE_NAME = "temp.jpg";
     private static final String ANDROID_CERT_HEADER = "X-Android-Cert";
     private static final String ANDROID_PACKAGE_HEADER = "X-Android-Package";
@@ -439,6 +439,7 @@ public class OCRMainActivity extends AppCompatActivity{
 
                 //text split
                 String[] resArr = splitString(convertResponseToString(response));
+                Log.d(TAG, "<<직접 텍스트 처리 전 결과>>\n"+convertResponseToString(response));
                 for(int i=0; i<resArr.length;i++){
                     res+=resArr[i];
                     res+="\n"; // "\n"으로 수정
