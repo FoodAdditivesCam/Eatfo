@@ -53,19 +53,19 @@ public class RawMaterials implements Serializable {
 
         if(!tag1.equals("null")&&!tag1.equals("")){
             res+=tag1;
-            res+=" ";
+            res+=", ";
         }
         if(!tag2.equals("null")&&!tag2.equals("")){
             res+=tag2;
-            res+=" ";
+            res+=", ";
         }
         if(!tag3.equals("null")&&!tag3.equals("")){
             res+=tag3;
-            res+=" ";
+            res+=", ";
         }
         if(!tag4.equals("null")&&!tag4.equals("")){
             res+=tag4;
-            res+=" ";
+            res+=", ";
         }
         if(!tag5.equals("null")&&!tag5.equals("")){
             res+=tag5;

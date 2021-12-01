@@ -60,7 +60,7 @@ public class ShowResult extends AppCompatActivity {
             setContentView(R.layout.activity_show_result);
             for(RawMaterials rm : rms){
                 tags+=rm.getTags()+" ";
-                String[] splitarr = rm.getTags().split(" ");
+                String[] splitarr = rm.getTags().split(", ");
                 for (int i=0; i<splitarr.length;i++){
                     if(splitarr[i]=="" || splitarr[i]==null) continue;
                     tag_weight_temp.put(splitarr[i],0);
@@ -147,7 +147,7 @@ public class ShowResult extends AppCompatActivity {
             oneBtn.setTextColor(getResources().getColor(R.color.colorPrimary));
 
             if(!tag.equals("시작")){ // 해당 원재료명 표시
-                String[] splitarr = r.getTags().split(" ");
+                String[] splitarr = r.getTags().split(", ");
                 for (int i = 0; i < splitarr.length; i++) {
                     if (splitarr[i].equals(tag)) {
                         oneBtn.setBackgroundResource(R.drawable.button_design);
