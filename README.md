@@ -1,5 +1,5 @@
 # Eatfo
-> 2021 서울여자대학교 소프트웨어융합학과 졸업프로젝트  
+> 2021 서울여자대학교 소프트웨어융합학과 졸업프로젝트 우수작 선정
  
 ## 소개
 ![frame1](https://user-images.githubusercontent.com/46108770/144413238-0560ad72-f877-4b6f-bc08-04ac6fb46f34.png)
@@ -12,3 +12,4 @@
 
 ## 시연 영상 보러가기
 https://www.youtube.com/watch?v=kbw2AdoWbl8
+
